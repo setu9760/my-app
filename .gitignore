@@ -25,7 +25,9 @@ web-console-app/src/main/webapp/META-INF/
 web-console-app/src/main/webapp/WEB-INF/.gitignore
 web-console-app/src/main/webapp/WEB-INF/views/scripts/
 web-console-app/.settings/org.eclipse.wst.common.project.facet.core.xml
-
+common/target/
+desktop-app/target/
+web-console-app/target/
 
 
 

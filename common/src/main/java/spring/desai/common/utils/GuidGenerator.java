@@ -2,11 +2,8 @@ package spring.desai.common.utils;
 
 import java.io.Serializable;
 
-import org.json.JSONArray;
 import org.springframework.cache.annotation.Cacheable;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class GuidGenerator {
 
@@ -70,19 +67,7 @@ public class GuidGenerator {
 //		}
 	
 		
-		JsonObject obj = new JsonObject();
-		
-		obj.addProperty("key1", "value1");
-		JsonArray array = new JsonArray();
-		
-		JsonObject obj2 = new JsonObject();
-		obj2.addProperty("key2", "value2");
-		
-		array.add(obj2);
-		
-		obj.add("jsonArray",array);
-		
-		System.out.println(obj.toString());
+
 		
 	}
 
