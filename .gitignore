@@ -1,5 +1,7 @@
 .project
+.settings/
 common/.project
+common/.classpath
 common/.settings/org.eclipse.core.resources.prefs
 common/.settings/org.eclipse.jdt.core.prefs
 common/.settings/org.eclipse.m2e.core.prefs
@@ -8,9 +10,11 @@ common/.settings/org.eclipse.wst.validation.prefs
 common/.settings/org.eclipse.wst.common.project.facet.core.xml
 common/.springBeans
 desktop-app/.project
+desktop-app/.classpath
 desktop-app/.settings/
 desktop-app/src/main/resources/
 web-console-app/.project
+web-console-app/.classpath
 web-console-app/.settings/.jsdtscope
 web-console-app/.settings/org.eclipse.core.resources.prefs
 web-console-app/.settings/org.eclipse.jdt.core.prefs
