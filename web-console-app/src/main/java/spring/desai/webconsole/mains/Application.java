@@ -9,9 +9,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import spring.desai.common.dao.StudentDao;
-import spring.desai.common.dao.SubjectDao;
-import spring.desai.common.dao.TutorDao;
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.model.pojo.Tutor;
@@ -71,13 +68,13 @@ public class Application {
 			// log4j2.info("log4j2 info");
 		}
 		Tutor tutor = (Tutor) context.getBean("tutorBean");
-		TutorDao tutorDao = (TutorDao) context.getBean("tutorDao");
+//		TutorDao tutorDao = (TutorDao) context.getBean("tutorDao");
 
 		Student student = (Student) context.getBean("studentBean");
-		StudentDao studentDao = (StudentDao) context.getBean("studentDao");
+//		StudentDao studentDao = (StudentDao) context.getBean("studentDao");
 
 		Subject subject = (Subject) context.getBean("subjectBean");
-		SubjectDao subjectDao = (SubjectDao) context.getBean("subjectDao");
+//		SubjectDao subjectDao = (SubjectDao) context.getBean("subjectDao");
 
 		Tutor tutor2 = (Tutor) context.getBean("tutorBean2");
 
@@ -85,46 +82,46 @@ public class Application {
 
 		Subject subject2 = (Subject) context.getBean("subjectBean2");
 
-		subjectDao.insert(subject);
-		subjectDao.insert(subject2);
-
-		tutorDao.insert(tutor);
-		tutorDao.insert(tutor2);
-
-		studentDao.insert(student);
-		studentDao.insert(student2);
-
-		//System.out.println(studentDao.findById(1));
-		System.out.println(studentDao.findByName("student 1"));
-		System.out.println(studentDao.countAll());
-		System.out.println(studentDao.findAssociatedSubjects(1));
-
-	//	System.out.println(tutorDao.findById(1));
-		System.out.println(tutorDao.findByName("tutor 2"));
-		System.out.println(tutorDao.countAll());
-
-		//System.out.println(tutorDao.findSubjectOfTutor(6));
-
-		System.out.println(subjectDao.findAllTutorsForSubject(1));
-
-	//	System.out.println(subjectDao.findById(1));
-
-		// subjectDao.dropById(2);
-		// studentDao.dropById(2);
-		// tutorDao.dropById(3);
-
-		if (log.isInfoEnabled())
-			log.info("info");
-		if (log.isDebugEnabled())
-			log.debug("debug", new RuntimeException());
-		if (log.isEnabledFor(Level.ERROR))
-			log.error("error", new RuntimeException());
-		if (log.isEnabledFor(Level.FATAL))
-			log.fatal("fatal", new RuntimeException());
-		if (log.isTraceEnabled())
-			log.trace("trace");
-
-		context.registerShutdownHook();
+//		subjectDao.insert(subject);
+//		subjectDao.insert(subject2);
+//
+//		tutorDao.insert(tutor);
+//		tutorDao.insert(tutor2);
+//
+//		studentDao.insert(student);
+//		studentDao.insert(student2);
+//
+//		//System.out.println(studentDao.findById(1));
+//		System.out.println(studentDao.findByName("student 1"));
+//		System.out.println(studentDao.countAll());
+//		System.out.println(studentDao.findAssociatedSubjects(1));
+//
+//	//	System.out.println(tutorDao.findById(1));
+//		System.out.println(tutorDao.findByName("tutor 2"));
+//		System.out.println(tutorDao.countAll());
+//
+//		//System.out.println(tutorDao.findSubjectOfTutor(6));
+//
+//		System.out.println(subjectDao.findAllTutorsForSubject(1));
+//
+//	//	System.out.println(subjectDao.findById(1));
+//
+//		// subjectDao.dropById(2);
+//		// studentDao.dropById(2);
+//		// tutorDao.dropById(3);
+//
+//		if (log.isInfoEnabled())
+//			log.info("info");
+//		if (log.isDebugEnabled())
+//			log.debug("debug", new RuntimeException());
+//		if (log.isEnabledFor(Level.ERROR))
+//			log.error("error", new RuntimeException());
+//		if (log.isEnabledFor(Level.FATAL))
+//			log.fatal("fatal", new RuntimeException());
+//		if (log.isTraceEnabled())
+//			log.trace("trace");
+//
+//		context.registerShutdownHook();
 		context.close();
 	}
 }
