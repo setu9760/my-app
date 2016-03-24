@@ -1,4 +1,4 @@
-package spring.desai.common.service.impl;
+package spring.desai.webconsole.service.impl;
 
 import java.util.Collection;
 

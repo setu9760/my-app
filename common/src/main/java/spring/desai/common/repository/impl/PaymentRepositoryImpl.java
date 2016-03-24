@@ -36,20 +36,12 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		try {
-			
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		deleteImpl(getDeleteBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), id);
 	}
 
 	@Override
 	public int countAll() throws RepositoryDataAccessException {
-		try {
-			return 0;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return countAllImpl(getCountAllSql(DataBaseConstants.PAYMENT_TABLE_NAME));
 	}
 
 	@Override
