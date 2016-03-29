@@ -120,6 +120,25 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		return sb.toString();
 	}
 	
+	protected final String getUpdateSqlForFields(String tableName, String... fields){
+		if (fields == null || fields.length == 0) {
+			return getUpdateSql();
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE ");
+		sb.append(tableName);
+		sb.append(" SET ");
+		for (int i = 0; i < fields.length; i++) {
+			sb.append(fields[i]);
+			sb.append(" = ? ");
+			if (i < fields.length-1) {
+				sb.append(",");
+			}
+		}
+		sb.append(" WHERE id = ?");
+		return sb.toString();
+	}
+	
 	protected final Collection<? extends Persistable> getAllImpl(String sql, Class<? extends Persistable> classType){
 		try {
 			return getJdbcTemplate().query(sql, getRowMapperForClass(classType));

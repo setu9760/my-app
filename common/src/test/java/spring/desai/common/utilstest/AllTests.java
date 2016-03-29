@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+import spring.desai.common.model.enums.PaymentType;
+import spring.desai.common.model.pojo.Payment;
 import spring.desai.common.repository.PaymentRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,9 +52,17 @@ public class AllTests {
 		 PaymentRepository pr = context.getBean(PaymentRepository.class);
 		 
 		 System.out.println(pr.countAll());
-		 System.out.println();
-		 System.out.println();
-		 System.out.println();
+		 System.out.println(pr.findById("payment1"));
+		 System.out.println(pr.findbyStudentId("studentid1"));
+		 System.out.println(pr.findByType(PaymentType.CHEQUE));
+		 Payment p = new Payment("DummyInsertPaymentID", 300d, PaymentType.BRAC);
+		 p.setStud_id("studentid3");
+		 pr.save(p);
+		 
+		 p.setStud_id("studentid2");
+		 p.setAmount(300d);
+		 p.setPaymentType(PaymentType.CASH);
+		 pr.update(p);
 		 System.out.println();
 		 System.out.println();
 		 System.out.println();

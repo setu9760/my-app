@@ -47,7 +47,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public Collection<Payment> findByType(PaymentType type) throws RepositoryDataAccessException {
 		try {
-			return null;
+			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.TYPE), new Object[]{ type.toString()}, getPaymentRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -56,7 +56,8 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public void save(Persistable persistable) throws RepositoryDataAccessException {
 		try {
-			
+			Payment payment = (Payment) persistable;
+			getJdbcTemplate().update(getInsertSql(), new Object[] {payment.getId(), payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -65,7 +66,8 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public void update(Persistable persistable) throws RepositoryDataAccessException {
 		try {
-			
+			Payment payment = (Payment) persistable;
+			getJdbcTemplate().update(getUpdateSql(), new Object[] {payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id(), payment.getId()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -73,12 +75,11 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO payment VALUES (?, ?, ?, ?)";
+		return "INSERT INTO payment (id, amount, type, stud_id) VALUES (?, ?, ?, ?)";
 	}
 
 	@Override
 	protected String getUpdateSql() {
-		return "UPDATE payment SET amount = ?, type = ?, student_id = ? where id = ?";
+		return "UPDATE payment SET amount = ?, type = ?, stud_id = ? where id = ?";
 	}
-
 }
