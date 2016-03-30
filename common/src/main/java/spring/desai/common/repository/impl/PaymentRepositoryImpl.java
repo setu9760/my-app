@@ -80,6 +80,6 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 
 	@Override
 	protected String getUpdateSql() {
-		return "UPDATE payment SET amount = ?, type = ?, stud_id = ? where id = ?";
+		return "UPDATE payment SET amount = ?, type = ?, stud_id = ? WHERE id = ?";
 	}
 }

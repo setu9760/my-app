@@ -40,6 +40,8 @@
 	<bean id="subjectRowMapper" class="spring.desai.common.rowmappers.SubjectRowMapper"/>
 	
 	<bean id="paymentRowMapper" class="spring.desai.common.rowmappers.PaymentRowMapper"/>
+	
+	<bean id="scholorshipRowMapper" class="spring.desai.common.rowmappers.ScholorshipRowMapper"/>
 	<!-- bean id="studentRepository" class="spring.desai.common.repository.impl.StudentRepositoryImpl" />
 	
 	<bean id="subjectRepository" class="spring.desai.common.repository.impl.SubjectRepositoryImpl" />

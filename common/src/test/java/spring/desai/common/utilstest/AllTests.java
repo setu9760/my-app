@@ -15,8 +15,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.enums.PaymentType;
+import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.model.pojo.Payment;
 import spring.desai.common.repository.PaymentRepository;
+import spring.desai.common.repository.ScholorshipRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
@@ -63,10 +65,13 @@ public class AllTests {
 		 p.setAmount(300d);
 		 p.setPaymentType(PaymentType.CASH);
 		 pr.update(p);
-		 System.out.println();
-		 System.out.println();
-		 System.out.println();
-		 System.out.println();
+		 
+		 ScholorshipRepository sr = context.getBean(ScholorshipRepository.class);
+		 
+		 System.out.println(sr.countAll());
+		 System.out.println(sr.findByType(ScholorshipType.STATE_PART));
+		 System.out.println(sr.findById("schlrid1"));
+		 System.out.println(sr.findByStudent("studentid1"));
 		 System.out.println();
 		 System.out.println();
 		 System.out.println();

@@ -1,4 +1,13 @@
 
+CREATE TABLE `student` (
+  `id` varchar(36) NOT NULL,
+  `f_name` varchar(45) NOT NULL,
+  `l_name` varchar(45) NOT NULL,
+  `age` int(11) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `scholorship` (
   `id` varchar(36) NOT NULL,
   `external_ref` varchar(45) NOT NULL DEFAULT 'N/A',
@@ -8,16 +17,9 @@ CREATE TABLE `scholorship` (
   `isFullyPaid` varchar(6) NOT NULL DEFAULT 'false',
   `isPostPay` varchar(6) NOT NULL DEFAULT 'false',
   `additional_comments` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `student` (
-  `id` varchar(36) NOT NULL,
-  `f_name` varchar(45) NOT NULL,
-  `l_name` varchar(45) NOT NULL,
-  `age` int(11) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  `stud_id` varchar(36) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `student_ids_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `cost` (
@@ -56,13 +58,13 @@ CREATE TABLE `payment` (
   CONSTRAINT `student_id_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `stud_schlrshp_link` (
-  `stud_id` varchar(36) NOT NULL,
-  `schlrshp_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`stud_id`,`schlrshp_id`),
-  CONSTRAINT `schlrshp_id_fk` FOREIGN KEY (`schlrshp_id`) REFERENCES `scholorship` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `stud_idd_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--CREATE TABLE `stud_schlrshp_link` (
+-- `stud_id` varchar(36) NOT NULL,
+--`schlrshp_id` varchar(36) NOT NULL,
+--  PRIMARY KEY (`stud_id`,`schlrshp_id`),
+--  CONSTRAINT `schlrshp_id_fk` FOREIGN KEY (`schlrshp_id`) REFERENCES `scholorship` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+--  CONSTRAINT `stud_idd_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `subj_stud_link` (
   `subj_id` varchar(36) NOT NULL,
