@@ -1,8 +1,13 @@
 package spring.desai.common.repository.impl;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.ScholorshipType;
@@ -20,25 +25,89 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	public void save(Persistable persistable) throws RepositoryDataAccessException  {
 		try {
 			Scholorship scholorship = (Scholorship) persistable;
-			getJdbcTemplate().update(getInsertSql(), new Object[] {scholorship.getId(), scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments()});
+			getJdbcTemplate().update(getInsertSql(), new Object[] {scholorship.getId(), scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
+					scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}		
 	}
-
-	@Override
-	public void update(Persistable persistable) throws RepositoryDataAccessException {
+	
+	public void saveAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
 		try {
-			Scholorship scholorship = (Scholorship) persistable;
-			getJdbcTemplate().update(getUpdateSql(), new Object[] {scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments(), scholorship.getId()});
+			final List<Scholorship> scholorships = new ArrayList<>(persistables.size());
+			for (Persistable persistable : persistables) {
+				scholorships.add((Scholorship)persistable);
+			}
+			
+			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					Scholorship sch = scholorships.get(i);
+					ps.setString(1, sch.getId());
+					ps.setString(2, sch.getExternal_ref());
+					ps.setString(3, sch.getType().toString());
+					ps.setDouble(4, sch.getTotal_amount());
+					ps.setDouble(5, sch.getPaid_amount());
+					ps.setString(6, String.valueOf(sch.isFullyPaid()));
+					ps.setString(7, String.valueOf(sch.isPostPay()));
+					ps.setString(8, sch.getStud_id());
+					ps.setString(9, sch.getAdditional_comments());
+				}
+				
+				@Override
+				public int getBatchSize() {
+					return persistables.size();
+				}
+			});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
 	}
 
 	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME));
+	public void update(Persistable persistable) throws RepositoryDataAccessException {
+		try {
+			Scholorship scholorship = (Scholorship) persistable;
+			getJdbcTemplate().update(getUpdateSql(), new Object[] {scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
+					scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments(), scholorship.getId()});
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public void updateAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+		try {
+			final List<Scholorship> scholorships = new ArrayList<>(persistables.size());
+			for (Persistable persistable : persistables) {
+				scholorships.add((Scholorship)persistable);
+			}
+			
+			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					Scholorship sch = scholorships.get(i);
+					ps.setString(1, sch.getExternal_ref());
+					ps.setString(2, sch.getType().toString());
+					ps.setDouble(3, sch.getTotal_amount());
+					ps.setDouble(4, sch.getPaid_amount());
+					ps.setString(5, String.valueOf(sch.isFullyPaid()));
+					ps.setString(6, String.valueOf(sch.isPostPay()));
+					ps.setString(7, sch.getStud_id());
+					ps.setString(8, sch.getAdditional_comments());
+					ps.setString(9, sch.getId());
+				}
+				
+				@Override
+				public int getBatchSize() {
+					return persistables.size();
+				}
+			});
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 
 	@Override
@@ -59,7 +128,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		}
 	}
 	
-	public Collection<Scholorship> findByStudent(String stud_id) throws RepositoryDataAccessException{
+	public Collection<Scholorship> findByStudentId(String stud_id) throws RepositoryDataAccessException{
 		try {
 			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.STUD_ID), new Object[] { stud_id }, getScholorshipRowMapper());
 		} catch (DataAccessException e) {
@@ -70,6 +139,17 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
 		deleteImpl(getDeleteBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), id);
+	}
+	
+	@Override
+	public void deleteAll() throws RepositoryDataAccessException{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public int countAll() throws RepositoryDataAccessException {
+		return countAllImpl(getCountAllSql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME));
 	}
 
 	@Override

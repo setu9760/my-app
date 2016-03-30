@@ -13,5 +13,5 @@ public interface ScholorshipRepository extends BasePersistableRepository{
 
 	Collection<Scholorship> findByType(ScholorshipType type) throws DataAccessException;
 	
-	Collection<Scholorship> findByStudent(String stud_id) throws DataAccessException;
+	Collection<Scholorship> findByStudentId(String stud_id) throws DataAccessException;
 }

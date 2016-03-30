@@ -16,6 +16,38 @@ import spring.desai.common.utils.DataBaseConstants;
 public class TutorRepositoryImpl extends AbstractBaseRepository implements TutorRepository {
 
 	@Override
+	public void save(Persistable persistable) {
+		Tutor tutor = (Tutor) persistable;
+		try {
+			getJdbcTemplate().update(getInsertSql(), new Object[] { tutor.getId(), tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubject().getId()} );
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public void saveAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Persistable persistable) {
+		Tutor tutor = (Tutor) persistable;
+		try {
+			getJdbcTemplate().update(getUpdateSql(), new Object[] {tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubject().getId(), tutor.getId()});
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public void updateAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public Tutor findById(String id) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getTutorRowMapper()).get(0);
@@ -28,26 +60,6 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	public Collection<Tutor> findbyName(String f_name) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.F_NAME), new Object[] { f_name }, getTutorRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	public void save(Persistable persistable) {
-		Tutor tutor = (Tutor) persistable;
-		try {
-			getJdbcTemplate().update(getInsertSql(), new Object[] { tutor.getId(), tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubject().getId()} );
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public void update(Persistable persistable) {
-		Tutor tutor = (Tutor) persistable;
-		try {
-			getJdbcTemplate().update(getUpdateSql(), new Object[] {tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubject().getId(), tutor.getId()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -75,6 +87,12 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	@Override
 	public void deleteByName(String f_name) throws RepositoryDataAccessException {
 		deleteImpl(getDeleteBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.F_NAME), f_name);
+	}
+	
+	@Override
+	public void deleteAll() throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

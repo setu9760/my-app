@@ -17,6 +17,44 @@ import spring.desai.common.utils.DataBaseConstants;
 public class PaymentRepositoryImpl extends AbstractBaseRepository implements PaymentRepository {
 
 	@Override
+	public void save(Persistable persistable) throws RepositoryDataAccessException {
+		try {
+			Payment payment = (Payment) persistable;
+			getJdbcTemplate().update(getInsertSql(), new Object[] {payment.getId(), payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id()});
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public void saveAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+		try {
+			
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+
+	@Override
+	public void update(Persistable persistable) throws RepositoryDataAccessException {
+		try {
+			Payment payment = (Payment) persistable;
+			getJdbcTemplate().update(getUpdateSql(), new Object[] {payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id(), payment.getId()});
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public void updateAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+		try {
+			
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
 	public Payment findById(String id) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getPaymentRowMapper()).get(0);
@@ -35,16 +73,6 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 
 	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), id);
-	}
-
-	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(DataBaseConstants.PAYMENT_TABLE_NAME));
-	}
-
-	@Override
 	public Collection<Payment> findByType(PaymentType type) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.TYPE), new Object[]{ type.toString()}, getPaymentRowMapper());
@@ -54,24 +82,24 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 
 	@Override
-	public void save(Persistable persistable) throws RepositoryDataAccessException {
+	public void deleteById(String id) throws RepositoryDataAccessException {
+		deleteImpl(getDeleteBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), id);
+	}
+	
+	@Override
+	public void deleteAll() throws RepositoryDataAccessException {
 		try {
-			Payment payment = (Payment) persistable;
-			getJdbcTemplate().update(getInsertSql(), new Object[] {payment.getId(), payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id()});
+			// TODO
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
 	}
 
 	@Override
-	public void update(Persistable persistable) throws RepositoryDataAccessException {
-		try {
-			Payment payment = (Payment) persistable;
-			getJdbcTemplate().update(getUpdateSql(), new Object[] {payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id(), payment.getId()});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+	public int countAll() throws RepositoryDataAccessException {
+		return countAllImpl(getCountAllSql(DataBaseConstants.PAYMENT_TABLE_NAME));
 	}
+
 
 	@Override
 	protected String getInsertSql() {

@@ -1,6 +1,8 @@
 package spring.desai.common.utilstest;
 
 import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,8 +19,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.model.pojo.Payment;
+import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.StudentRepository;
+import spring.desai.common.repository.SubjectRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
@@ -71,12 +76,26 @@ public class AllTests {
 		 System.out.println(sr.countAll());
 		 System.out.println(sr.findByType(ScholorshipType.STATE_PART));
 		 System.out.println(sr.findById("schlrid1"));
-		 System.out.println(sr.findByStudent("studentid1"));
-		 System.out.println();
-		 System.out.println();
-		 System.out.println();
-		 System.out.println();
-		 System.out.println();
+		 System.out.println(sr.findByStudentId("studentid1"));
+		
+		 List<Scholorship> scholorships = new ArrayList<>();
+		 
+		 scholorships.add(new Scholorship("sch1", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholorship("sch2", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholorship("sch3", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholorship("sch4", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholorship("sch5", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 sr.saveAll(scholorships);
+		 System.out.println(sr.countAll());
+		 
+		 SubjectRepository sbr = context.getBean(SubjectRepository.class);
+		 
+		 System.out.println(sbr.getSubjectsForStudentId("studentid5"));
+		 
+		 StudentRepository str = context.getBean(StudentRepository.class);
+		 
+		 System.out.println(str.getStudentsForSubjectId("subject5"));
+		 
 //		System.out.println(roService.getPaymentById("payment1"));
 //
 //		System.out.println(roService.getPaymentsForStudent("studentid1"));

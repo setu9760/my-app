@@ -22,4 +22,6 @@ public interface StudentRepository extends BasePersistableRepository{
 	int countAll() throws RepositoryDataAccessException;
 
 	Collection<Student> getAll() throws RepositoryDataAccessException;
+	
+	Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException;
 }
