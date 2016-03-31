@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -15,10 +16,13 @@ import org.springframework.stereotype.Component;
 public class LoggerAspect {
 
 	private static final Logger LOGGER = Logger.getLogger("aspectLogger");
-
-	@Pointcut("execution(* spring.desai.common.dao.*.*(..))")
-	public void logMethods() {
-
+	
+	@Value("${aspect.active}")
+    private static boolean active = true;
+	
+	@Pointcut("execution(* spring.desai.common.repository.impl.*.*(..)) && if()")
+	public static boolean logMethods() {
+		return active;
 	}
 
 	@Before("logMethods()")

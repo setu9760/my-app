@@ -2,7 +2,7 @@ package spring.desai.common.model.pojo;
 
 import spring.desai.common.model.enums.CostCode;
 
-public class Subject implements Persistable {
+public class Subject implements Persistable, GuidGenerator {
 
 	private static final long serialVersionUID = -4367164667167006540L;
 	private String id;
@@ -30,6 +30,9 @@ public class Subject implements Persistable {
 	}
 
 	public String getId() {
+		if (id == null || id.isEmpty()) {
+			generateGuid();
+		}
 		return id;
 	}
 
@@ -111,6 +114,24 @@ public class Subject implements Persistable {
 		builder.append(isMandatory);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public void generateGuid() {
+		if (id == null || id.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(name.substring(0, 3));
+			sb.append(Integer.toHexString(hashCode()));
+			setId(sb.substring(0, 9).toUpperCase());
+		}
+	}
+	
+	public static void main(String[] args) {
+		Subject s = new Subject("Science", CostCode.BASIC);
+		s.setMandatory(true);
+//		s.generateGuid();
+		
+		System.out.println(s.getId());
 	}
 
 }

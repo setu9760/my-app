@@ -41,9 +41,9 @@ public class AllTests {
 	@Test(expected = ConnectException.class)
 	public void testThis() throws Exception {
 		//
-		for (String string : context.getBeanDefinitionNames()) {
-			System.out.println(string);
-		}
+//		for (String string : context.getBeanDefinitionNames()) {
+//			System.out.println(string);
+//		}
 		//
 		throw new ConnectException();
 	}
@@ -93,8 +93,11 @@ public class AllTests {
 		 System.out.println(sbr.getSubjectsForStudentId("studentid5"));
 		 
 		 StudentRepository str = context.getBean(StudentRepository.class);
+		 str.deleteById("studentid1");
 		 
 		 System.out.println(str.getStudentsForSubjectId("subject5"));
+		 
+		 System.out.println(sr.findByStudentId("studentid1"));
 		 
 //		System.out.println(roService.getPaymentById("payment1"));
 //
