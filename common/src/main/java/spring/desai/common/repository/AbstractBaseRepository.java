@@ -180,6 +180,10 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 			return getSubjectRowMapper();
 		} else if (classType.getName().contains("Tutor")){
 			return getTutorRowMapper();
+		} else if (classType.getName().contains("Payment")){
+			return getPaymentRowMapper();
+		} else if (classType.getName().contains("Scholorship")){
+			return getScholorshipRowMapper();
 		} else {
 			throw new IllegalArgumentException("Rowmapper for classtype " + classType.getName() + " is unsupported.");
 		}

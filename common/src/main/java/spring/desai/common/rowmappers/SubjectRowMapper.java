@@ -13,14 +13,10 @@ public class SubjectRowMapper implements RowMapper<Subject> {
 	@Override
 	public Subject mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 		Subject subject = null;
-		try {
-			subject = new Subject();
-			subject.setId(resultSet.getString(DataBaseConstants.ID));
-			subject.setName(resultSet.getString(DataBaseConstants.NAME));
-			subject.setMandatory(resultSet.getBoolean(DataBaseConstants.IS_MANDATORY));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		subject = new Subject();
+		subject.setId(resultSet.getString(DataBaseConstants.ID));
+		subject.setName(resultSet.getString(DataBaseConstants.NAME));
+		subject.setMandatory(resultSet.getBoolean(DataBaseConstants.IS_MANDATORY));
 		return subject;
 	}
 }

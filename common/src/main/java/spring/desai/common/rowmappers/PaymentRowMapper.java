@@ -9,14 +9,15 @@ import org.springframework.jdbc.core.RowMapper;
 
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.pojo.Payment;
+import spring.desai.common.utils.DataBaseConstants;
 
 public class PaymentRowMapper implements RowMapper<Payment>{
 
 	@Override
 	public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Payment payment = new Payment(rs.getString(1), rs.getDouble(2), PaymentType.valueOf(rs.getString(3)));
-		payment.setStud_id(rs.getString(4));
-		payment.setPaymentDateTime(new DateTime(Timestamp.valueOf(rs.getString(5))));
+		Payment payment = new Payment(rs.getString(DataBaseConstants.ID), rs.getDouble(DataBaseConstants.AMOUNT), PaymentType.valueOf(rs.getString(DataBaseConstants.TYPE)));
+		payment.setStud_id(rs.getString(DataBaseConstants.STUD_ID));
+		payment.setPaymentDateTime(new DateTime(Timestamp.valueOf(rs.getString(DataBaseConstants.DATETIME))));
 		return payment;
 	}
 

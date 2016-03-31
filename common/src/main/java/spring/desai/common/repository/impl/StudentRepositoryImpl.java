@@ -76,7 +76,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 			for (Persistable persistable : persistables) {
 				studs.add((Student) persistable);
 			}
-			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
+			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -144,6 +144,9 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 		deleteImpl(getDeleteBySql(DataBaseConstants.STUDENT_TABLE_NAME, DataBaseConstants.F_NAME), f_name);
 	}
 	
+	/**
+	 * No-op
+	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
 		try {

@@ -83,8 +83,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 			for (Persistable persistable : persistables) {
 				scholorships.add((Scholorship)persistable);
 			}
-			
-			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
+			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -141,6 +140,9 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		deleteImpl(getDeleteBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), id);
 	}
 	
+	/**
+	 * No-op
+	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException{
 		// TODO Auto-generated method stub

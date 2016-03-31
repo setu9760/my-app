@@ -24,6 +24,7 @@ public class DataBaseConstants {
 	public static final String IS_FULLTIME = "isFulltime";
 	public static final String SUBJ_ID = "subj_id";
 
+	public static final String AMOUNT = "amount";
 	public static final String TYPE = "type";
 	public static final String DATETIME = "datetime";
 	public static final String STUDENT_ID = "student_id";

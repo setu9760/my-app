@@ -3,28 +3,28 @@ package spring.desai.common.model.pojo;
 public class Tutor extends Person {
 
 	private static final long serialVersionUID = 7912941565632566952L;
-	private Subject subject;
+	private String subj_id;
 	private boolean isFulltime;
 
 	public Tutor() {
 		this("", "", null);
 	}
 
-	public Tutor(String f_name, String l_name, Subject subject) {
-		this(f_name, l_name, subject, "", true);
+	public Tutor(String f_name, String l_name, String subj_id) {
+		this(f_name, l_name, subj_id, "", true);
 	}
 
-	public Tutor(String f_name, String l_name, Subject subject, String address, boolean isFulltime) {
+	public Tutor(String f_name, String l_name, String subj_id, String address, boolean isFulltime) {
 		super(f_name, l_name, address);
-		this.subject = subject;
+		this.subj_id = subj_id;
 	}
 
-	public Subject getSubject() {
-		return subject;
+	public String getSubj_id() {
+		return subj_id;
 	}
-
-	public void setSubject(Subject subject) {
-		this.subject = subject;
+	
+	public void setSubj_id(String subj_id) {
+		this.subj_id = subj_id;
 	}
 
 	public boolean isFulltime() {
@@ -36,30 +36,11 @@ public class Tutor extends Person {
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Tutor [id= ");
-		builder.append(id);
-		builder.append(", f_name= ");
-		builder.append(f_name);
-		builder.append(", l_name= ");
-		builder.append(l_name);
-		builder.append(", address= ");
-		builder.append(address);
-		builder.append(", subject= ");
-		builder.append(subject);
-		builder.append(", isFulltime= ");
-		builder.append(isFulltime);
-		builder.append("]");
-		return builder.toString();
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (isFulltime ? 1231 : 1237);
-		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+		result = prime * result + ((subj_id == null) ? 0 : subj_id.hashCode());
 		return result;
 	}
 
@@ -74,12 +55,30 @@ public class Tutor extends Person {
 		Tutor other = (Tutor) obj;
 		if (isFulltime != other.isFulltime)
 			return false;
-		if (subject == null) {
-			if (other.subject != null)
+		if (subj_id == null) {
+			if (other.subj_id != null)
 				return false;
-		} else if (!subject.equals(other.subject))
+		} else if (!subj_id.equals(other.subj_id))
 			return false;
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Tutor [subj_id=");
+		builder.append(subj_id);
+		builder.append(", isFulltime=");
+		builder.append(isFulltime);
+		builder.append(", id=");
+		builder.append(id);
+		builder.append(", f_name=");
+		builder.append(f_name);
+		builder.append(", l_name=");
+		builder.append(l_name);
+		builder.append(", address=");
+		builder.append(address);
+		builder.append("]");
+		return builder.toString();
+	}
 }

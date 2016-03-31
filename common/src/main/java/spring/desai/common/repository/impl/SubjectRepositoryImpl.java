@@ -76,7 +76,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 			for (Persistable persistable : persistables) {
 				subjs.add((Subject)persistable);
 			}
-			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
+			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -166,6 +166,9 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 		deleteImpl(getDeleteBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.NAME), name);
 	}
 	
+	/**
+	 * No-op
+	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
 		try {

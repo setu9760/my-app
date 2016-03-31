@@ -1,8 +1,13 @@
 package spring.desai.common.repository.impl;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.PaymentType;
@@ -27,9 +32,28 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
-	public void saveAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+	public void saveAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
 		try {
-			
+			final List<Payment> payments = new ArrayList<>(persistables.size());
+			for (Persistable persistable : persistables) {
+				payments.add((Payment) persistable);
+			}
+			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					Payment p = payments.get(i);
+					ps.setString(1, p.getId());
+					ps.setDouble(2, p.getAmount());
+					ps.setString(3, p.getPaymentType().toString());
+					ps.setString(4, p.getStud_id());
+				}
+				
+				@Override
+				public int getBatchSize() {
+					return persistables.size();
+				}
+			});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -46,9 +70,28 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
-	public void updateAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+	public void updateAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
 		try {
-			
+			final List<Payment> payments = new ArrayList<>(persistables.size());
+			for (Persistable persistable : persistables) {
+				payments.add((Payment) persistable);
+			}
+			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					Payment p = payments.get(i);
+					ps.setDouble(1, p.getAmount());
+					ps.setString(2, p.getPaymentType().toString());
+					ps.setString(3, p.getStud_id());
+					ps.setString(4, p.getId());
+				}
+				
+				@Override
+				public int getBatchSize() {
+					return persistables.size();
+				}
+			});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -86,6 +129,9 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 		deleteImpl(getDeleteBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), id);
 	}
 	
+	/**
+	 * No-op
+	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
 		try {
