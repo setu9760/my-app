@@ -185,7 +185,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO subject NAMES (id, name, cost_code, isMandatory) VALUE (?, ?, ?, ?)";
+		return "INSERT INTO subject (id, name, cost_code, isMandatory) VALUE (?, ?, ?, ?)";
 	}
 
 	@Override

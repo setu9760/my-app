@@ -13,7 +13,8 @@ public class Student extends Person {
 	private Collection<Scholorship> scholorships;
 
 	public Student() {
-		this("", "", 18, "");
+//		this("F_NAME_DUMMY", "L_DUMMY_DUMMY", 18, "ADD");
+		this("", "", 25);
 	}
 
 	public Student(String f_name, String l_name, int age) {
@@ -26,6 +27,7 @@ public class Student extends Person {
 		subjects = new HashSet<Subject>();
 		payments = new HashSet<Payment>();
 		scholorships = new HashSet<Scholorship>();
+//		generateGuid();
 	}
 
 	public int getAge() {
@@ -134,9 +136,9 @@ public class Student extends Person {
 	}
 
 //	@Override
-//	public void generateGuid() {
-//		if (getId() == null || getId().isEmpty()) {
-//			setId(id);
-//		}
-//	}
+	public void generateGuid() {
+		if (getId() == null || getId().isEmpty()) {
+			setId(f_name.replace("_", "").substring(0, 3) + l_name.replace("_", "").substring(0, 3));
+		}
+	}
 }

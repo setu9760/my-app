@@ -33,11 +33,12 @@ INSERT INTO payment (id, amount, type, stud_id) VALUES('payment3', 600, 'CHEQUE'
 INSERT INTO payment (id, amount, type, stud_id) VALUES('payment4', 900, 'CASH', 'studentid1');
 INSERT INTO payment (id, amount, type, stud_id) VALUES('payment5', 400, 'CHEQUE', 'studentid5');
 
-
+-- Insert scholorships
 INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('schlrid1', 'STATE_PART', 500, 100, 'studentid1');
 INSERT INTO scholorship (id, type, total_amount, paid_amount, isFullyPaid, stud_id) VALUES ('schlrid2', 'MGMT_PART', 100, 100, 'true', 'studentid1');
 INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('schlrid3', 'MGMT_PART', 300, 100, 'studentid2');
 INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('schlrid4', 'MGMT_PART', 200, 100, 'studentid4');
+
 -- Insert into subj_stud_link
 INSERT INTO subj_stud_link VALUES ('subject1', 'studentid1');
 INSERT INTO subj_stud_link VALUES ('subject2', 'studentid1');

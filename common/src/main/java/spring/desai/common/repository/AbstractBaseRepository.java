@@ -198,6 +198,7 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		}
 	}
 	
+	protected abstract void checkNotNullAndCastable(Persistable persistable);
 	protected abstract String getInsertSql();
 	protected abstract String getUpdateSql();
 }

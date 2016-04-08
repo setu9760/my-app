@@ -22,6 +22,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 
 	@Override
 	public void save(Persistable persistable) throws RepositoryDataAccessException {
+		checkNotNullAndCastable(persistable);
 		Student student = (Student) persistable;
 		try {
 			getJdbcTemplate().update(getInsertSql(), new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() });
@@ -176,6 +177,15 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 		return updateSql;
 	}
 	
-	private static final String insertSql = "INSERT INTO student NAMES (id, f_name, l_name, age, address) VALUES (?, ?, ?, ?, ?)";
+	private static final String insertSql = "INSERT INTO student (id, f_name, l_name, age, address) VALUES (?, ?, ?, ?, ?)";
 	private static final String  updateSql = "UPDATE student set f_name = ?, l_name = ?, age = ?, address = ? where id = ?";
+	
+	@Override
+	protected void checkNotNullAndCastable(Persistable persistable) {
+		if (persistable == null) {
+			throw new IllegalArgumentException("Null is not a valid argument to the repository." );
+		} if (!(persistable instanceof Student)) {
+			throw new IllegalArgumentException("Illegal argument passed to the repository: " + persistable.getClass());
+		}
+	}
 }
