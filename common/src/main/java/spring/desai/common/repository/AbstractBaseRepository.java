@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.model.pojo.Payment;
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Scholorship;
@@ -52,6 +53,10 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 	@Autowired
 	@Qualifier("scholorshipRowMapper")
 	private RowMapper<Scholorship> scholorshipRowMapper;
+	
+	@Autowired
+	@Qualifier("costRowMapper")
+	private RowMapper<Cost> costRowMapper;
 
 	public RowMapper<Student> getStudentRowMapper() {
 		return studentRowMapper;
@@ -71,6 +76,10 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 	
 	public RowMapper<Scholorship> getScholorshipRowMapper() {
 		return scholorshipRowMapper;
+	}
+	
+	public RowMapper<Cost> getCostRowMapper() {
+		return costRowMapper;
 	}
 
 	public static Logger getLogger() {
