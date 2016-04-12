@@ -2,21 +2,12 @@ package spring.desai.common.repository;
 
 import java.util.Collection;
 
-import org.springframework.dao.DataAccessException;
-
 import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
-public interface TutorRepository extends BasePersistableRepository {
+public interface TutorRepository extends BasePersistableRepository<Tutor> {
 
-	Tutor findById(String id) throws DataAccessException;
-
-	Collection<Tutor> findbyName(String name) throws DataAccessException;
-
-	void deleteByName(String name) throws DataAccessException;
+	void deleteByName(String name) throws RepositoryDataAccessException;
 	
-	int countAll() throws DataAccessException;
-	
-	Collection<Tutor> getAll() throws DataAccessException;
-
-	Collection<Tutor> getTutorsForSubject(String subj_id) throws DataAccessException;
+	Collection<Tutor> getTutorsForSubject(String subj_id) throws RepositoryDataAccessException;
 }

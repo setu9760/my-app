@@ -14,17 +14,16 @@ import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.AbstractBaseRepository;
-import spring.desai.common.repository.RepositoryDataAccessException;
 import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.DataBaseConstants;
 
 @Repository("scholorshipRepository")
 public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements ScholorshipRepository{
 
 	@Override
-	public void save(Persistable persistable) throws RepositoryDataAccessException  {
+	public void save(Scholorship scholorship) throws RepositoryDataAccessException  {
 		try {
-			Scholorship scholorship = (Scholorship) persistable;
 			getJdbcTemplate().update(getInsertSql(), new Object[] {scholorship.getId(), scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
 					scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments()});
 		} catch (DataAccessException e) {
@@ -32,12 +31,9 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		}		
 	}
 	
-	public void saveAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+	public void saveAll(final Collection<Scholorship> persistables) throws RepositoryDataAccessException {
 		try {
-			final List<Scholorship> scholorships = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				scholorships.add((Scholorship)persistable);
-			}
+			final List<Scholorship> scholorships = new ArrayList<>(persistables);
 			
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
 				
@@ -66,9 +62,8 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	}
 
 	@Override
-	public void update(Persistable persistable) throws RepositoryDataAccessException {
+	public void update(Scholorship scholorship) throws RepositoryDataAccessException {
 		try {
-			Scholorship scholorship = (Scholorship) persistable;
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
 					scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments(), scholorship.getId()});
 		} catch (DataAccessException e) {
@@ -77,12 +72,9 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	}
 	
 	@Override
-	public void updateAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+	public void updateAll(final Collection<Scholorship> persistables) throws RepositoryDataAccessException{
 		try {
-			final List<Scholorship> scholorships = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				scholorships.add((Scholorship)persistable);
-			}
+			final List<Scholorship> scholorships = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -117,6 +109,15 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 			throw new RepositoryDataAccessException(e);
 		}
 	}
+	
+	/**
+	 * No-op
+	 */
+	@Override
+	public Collection<Scholorship> findByName(String name) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
@@ -133,6 +134,11 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
+	}
+	
+	@Override
+	public Collection<Scholorship> getAll() throws RepositoryDataAccessException {
+		return (Collection<Scholorship>) getAllImpl(getSelectAllSql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME), Scholorship.class);
 	}
 
 	@Override

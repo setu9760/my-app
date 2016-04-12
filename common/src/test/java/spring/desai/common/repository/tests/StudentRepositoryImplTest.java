@@ -2,12 +2,6 @@ package spring.desai.common.repository.tests;
 
 import static org.junit.Assert.fail;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +15,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.repository.RepositoryDataAccessException;
 import spring.desai.common.repository.StudentRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,17 +40,9 @@ public class StudentRepositoryImplTest {
 	public void testNullSave() {
 		studentRepository.save(null);
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testInvalidSave() {
-		studentRepository.save(new Subject());
-	}
-	
+
 	@Test
 	public void testSave() {
-		studentRepository.save(new Student());
-		studentRepository.save(new Student());
-		studentRepository.save(new Student());
 		studentRepository.save(new Student());
 		System.out.println(studentRepository.getAll());
 	}

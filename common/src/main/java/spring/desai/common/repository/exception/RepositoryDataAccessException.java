@@ -1,4 +1,4 @@
-package spring.desai.common.repository;
+package spring.desai.common.repository.exception;
 
 import org.springframework.dao.DataAccessException;
 

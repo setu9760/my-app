@@ -20,6 +20,7 @@ import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 
@@ -198,7 +199,11 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		}
 	}
 	
-	protected abstract void checkNotNullAndCastable(Persistable persistable);
+	protected void checkNotNull(Persistable persistable){
+		if (persistable == null) {
+			throw new IllegalArgumentException("Null Argument passed.");
+		}
+	}
 	protected abstract String getInsertSql();
 	protected abstract String getUpdateSql();
 }

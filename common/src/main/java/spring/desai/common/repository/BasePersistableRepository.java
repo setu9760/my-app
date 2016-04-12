@@ -3,20 +3,27 @@ package spring.desai.common.repository;
 import java.util.Collection;
 
 import spring.desai.common.model.pojo.Persistable;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
-public interface BasePersistableRepository {
+public interface BasePersistableRepository <T extends Persistable>{
 
-	void save(Persistable persistable);
+	void save(T persistable) throws RepositoryDataAccessException;
 
-	void saveAll(Collection<? extends Persistable> persistables);
+	void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException;
 	
-	void update(Persistable persistable);
+	void update(T persistable) throws RepositoryDataAccessException;
 	
-	void updateAll(Collection<? extends Persistable> persistables);
+	void updateAll(final Collection<T> persistables) throws RepositoryDataAccessException;
 	
-	void deleteById(String id);
+	Collection<T> getAll() throws RepositoryDataAccessException;
 	
-	void deleteAll();
+	T findById(String id) throws RepositoryDataAccessException;
 	
-	int countAll();
+	Collection<T> findByName(String name) throws RepositoryDataAccessException;
+	
+	void deleteById(String id) throws RepositoryDataAccessException;
+	
+	void deleteAll() throws RepositoryDataAccessException;
+	
+	int countAll() throws RepositoryDataAccessException;
 }

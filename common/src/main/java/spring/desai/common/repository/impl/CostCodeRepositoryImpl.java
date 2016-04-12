@@ -14,15 +14,14 @@ import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.CostCodeRepository;
-import spring.desai.common.repository.RepositoryDataAccessException;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.DataBaseConstants;
 
 public class CostCodeRepositoryImpl extends AbstractBaseRepository implements CostCodeRepository {
 
 	@Override
-	public void save(Persistable persistable) throws RepositoryDataAccessException {
+	public void save(Cost cost) throws RepositoryDataAccessException {
 		try {
-			Cost cost = (Cost) persistable;
 			getJdbcTemplate().update(getInsertSql(), new Object[] {cost.getCostCode(), cost.getAmount()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -30,12 +29,9 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public void saveAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+	public void saveAll(final Collection<Cost> persistables) throws RepositoryDataAccessException {
 		try {
-			final List<Cost> costs = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				costs.add((Cost)persistable);
-			}
+			final List<Cost> costs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -56,9 +52,8 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public void update(Persistable persistable) throws RepositoryDataAccessException {
+	public void update(Cost cost) throws RepositoryDataAccessException {
 		try {
-			Cost cost = (Cost) persistable;
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {cost.getAmount(), cost.getCostCode()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -66,12 +61,9 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public void updateAll(Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+	public void updateAll(Collection<Cost> persistables) throws RepositoryDataAccessException {
 		try {
-			final List<Cost> costs = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				costs.add((Cost)persistable);
-			}
+			final List<Cost> costs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -89,6 +81,24 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
+	}
+	
+	/**
+	 * No-op
+	 */
+	@Override
+	public Cost findById(String id) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * No-op
+	 */
+	@Override
+	public Collection<Cost> findByName(String name) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -127,4 +137,8 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 		return "UPDATE COST SET amount = ? WHERE cost_code = ?";
 	}
 
+	@Override
+	public Collection<Cost> getAll() throws RepositoryDataAccessException {
+		return (Collection<Cost>) getAllImpl(getSelectAllSql(DataBaseConstants.COST_ABLE_NAME), Cost.class);
+	}
 }

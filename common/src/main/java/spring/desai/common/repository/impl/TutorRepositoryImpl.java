@@ -10,19 +10,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Tutor;
 import spring.desai.common.repository.AbstractBaseRepository;
-import spring.desai.common.repository.RepositoryDataAccessException;
 import spring.desai.common.repository.TutorRepository;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.DataBaseConstants;
 
 @Repository(value="tutorRepository")
 public class TutorRepositoryImpl extends AbstractBaseRepository implements TutorRepository {
 
 	@Override
-	public void save(Persistable persistable) {
-		Tutor tutor = (Tutor) persistable;
+	public void save(Tutor tutor) {
 		try {
 			getJdbcTemplate().update(getInsertSql(), new Object[] { tutor.getId(), tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubj_id()} );
 		} catch (DataAccessException e) {
@@ -31,12 +29,9 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 	
 	@Override
-	public void saveAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+	public void saveAll(final Collection<Tutor> persistables) throws RepositoryDataAccessException {
 		try {
-			final List<Tutor> tutors = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				tutors.add((Tutor)persistable);
-			}
+			final List<Tutor> tutors = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -61,8 +56,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 
 	@Override
-	public void update(Persistable persistable) {
-		Tutor tutor = (Tutor) persistable;
+	public void update(Tutor tutor) {
 		try {
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubj_id(), tutor.getId()});
 		} catch (DataAccessException e) {
@@ -71,12 +65,9 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 	
 	@Override
-	public void updateAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException {
+	public void updateAll(final Collection<Tutor> persistables) throws RepositoryDataAccessException {
 		try {
-			final List<Tutor> tutors = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				tutors.add((Tutor)persistable);
-			}
+			final List<Tutor> tutors = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -110,7 +101,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 
 	@Override
-	public Collection<Tutor> findbyName(String f_name) throws RepositoryDataAccessException {
+	public Collection<Tutor> findByName(String f_name) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.F_NAME), new Object[] { f_name }, getTutorRowMapper());
 		} catch (DataAccessException e) {

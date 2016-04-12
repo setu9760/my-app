@@ -14,16 +14,15 @@ import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.AbstractBaseRepository;
-import spring.desai.common.repository.RepositoryDataAccessException;
 import spring.desai.common.repository.SubjectRepository;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.DataBaseConstants;
 
 @Repository(value="subjectRepository")
 public class SubjectRepositoryImpl extends AbstractBaseRepository implements SubjectRepository {
 	
 	@Override
-	public void save(Persistable persistable) throws RepositoryDataAccessException {
-		Subject subject = (Subject) persistable;
+	public void save(Subject subject) throws RepositoryDataAccessException {
 		try {
 			getJdbcTemplate().update(getInsertSql(), new Object[] {subject.getId(), subject.getName(), subject.getCost_code(), subject.isMandatory()});
 		} catch (DataAccessException e) {
@@ -32,12 +31,9 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	}
 	
 	@Override
-	public void saveAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+	public void saveAll(final Collection<Subject> persistables) throws RepositoryDataAccessException{
 		try {
-			final List<Subject> subjs = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				subjs.add((Subject)persistable);
-			}
+			final List<Subject> subjs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -60,8 +56,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	}
 
 	@Override
-	public void update(Persistable persistable) {
-		Subject subject = (Subject) persistable;
+	public void update(Subject subject) {
 		try {
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {subject.getName(), subject.getCost_code(), subject.isMandatory(), subject.getId()});
 		} catch (DataAccessException e) {
@@ -70,12 +65,9 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	}
 	
 	@Override
-	public void updateAll(final Collection<? extends Persistable> persistables) throws RepositoryDataAccessException{
+	public void updateAll(final Collection<Subject> persistables) throws RepositoryDataAccessException{
 		try {
-			final List<Subject> subjs = new ArrayList<>(persistables.size());
-			for (Persistable persistable : persistables) {
-				subjs.add((Subject)persistable);
-			}
+			final List<Subject> subjs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
 				@Override
@@ -113,11 +105,11 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 			throw new RepositoryDataAccessException(e);
 		}
 	}
-
+	
 	@Override
-	public Subject findByName(String name) throws RepositoryDataAccessException {
+	public Collection<Subject> findByName(String name) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.NAME), new Object[] { name }, getSubjectRowMapper()).get(0);
+			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.NAME), new Object[] { name }, getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
