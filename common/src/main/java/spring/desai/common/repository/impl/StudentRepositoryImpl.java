@@ -9,9 +9,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
-import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.StudentRepository;
@@ -24,6 +22,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public void save(Student student) {
 		try {
+			checkNotNull(student);
 			getJdbcTemplate().update(getInsertSql(), new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() });
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -172,13 +171,5 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	
 	private static final String insertSql = "INSERT INTO student (id, f_name, l_name, age, address) VALUES (?, ?, ?, ?, ?)";
 	private static final String  updateSql = "UPDATE student set f_name = ?, l_name = ?, age = ?, address = ? where id = ?";
-	
-	@Override
-	protected void checkNotNull(Persistable persistable) {
-		if (persistable == null) {
-			throw new IllegalArgumentException("Null is not a valid argument to the repository." );
-		} if (!(persistable instanceof Student)) {
-			throw new IllegalArgumentException("Illegal argument passed to the repository: " + persistable.getClass());
-		}
-	}
+
 }
