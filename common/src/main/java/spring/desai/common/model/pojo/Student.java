@@ -3,19 +3,17 @@ package spring.desai.common.model.pojo;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Student extends Person {
 
+	private static final AtomicInteger ai = new AtomicInteger();
+	
 	private static final long serialVersionUID = 3674239599895293427L;
 	private int age;
 	private Collection<Subject> subjects;
 	private Collection<Payment> payments;
 	private Collection<Scholorship> scholorships;
-
-	public Student() {
-//		this("F_NAME_DUMMY", "L_DUMMY_DUMMY", 18, "ADD");
-		this("", "", 25);
-	}
 
 	public Student(String f_name, String l_name, int age) {
 		this(f_name, l_name, age, "");
@@ -27,7 +25,7 @@ public class Student extends Person {
 		subjects = new HashSet<Subject>();
 		payments = new HashSet<Payment>();
 		scholorships = new HashSet<Scholorship>();
-//		generateGuid();
+		generateGuid();
 	}
 
 	public int getAge() {
@@ -138,7 +136,9 @@ public class Student extends Person {
 //	@Override
 	public void generateGuid() {
 		if (getId() == null || getId().isEmpty()) {
-			setId(f_name.replace("_", "").substring(0, 3) + l_name.replace("_", "").substring(0, 3));
+			String f = f_name.replace("_", "").substring(0, 2);
+			String l = l_name.replace("_", "").substring(0, 2);
+			setId(f + age + l + String.format("###", ai.getAndIncrement()));
 		}
 	}
 }
