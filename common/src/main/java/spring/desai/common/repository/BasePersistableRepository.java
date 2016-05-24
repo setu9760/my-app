@@ -15,6 +15,7 @@ public interface BasePersistableRepository <T extends Persistable>{
 	
 	void updateAll(final Collection<T> persistables) throws RepositoryDataAccessException;
 	
+	@Deprecated
 	Collection<T> getAll() throws RepositoryDataAccessException;
 	
 	T findById(String id) throws RepositoryDataAccessException;

@@ -104,7 +104,8 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public Scholorship findById(String id) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getScholorshipRowMapper()).get(0);
+			List<Scholorship> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getScholorshipRowMapper());
+			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

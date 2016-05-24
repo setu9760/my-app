@@ -91,7 +91,8 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public Payment findById(String id) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getPaymentRowMapper()).get(0);
+			List<Payment> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getPaymentRowMapper());
+			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

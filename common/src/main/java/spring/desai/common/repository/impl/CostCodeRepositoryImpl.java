@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
-import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;

@@ -92,7 +92,8 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public Subject findById(String id) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getSubjectRowMapper()).get(0);
+			List<Subject> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getSubjectRowMapper());
+			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

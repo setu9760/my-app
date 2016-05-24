@@ -94,7 +94,8 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	@Override
 	public Tutor findById(String id) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getTutorRowMapper()).get(0);
+			List<Tutor> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getTutorRowMapper());
+			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
