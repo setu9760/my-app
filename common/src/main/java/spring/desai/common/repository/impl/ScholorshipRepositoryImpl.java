@@ -23,6 +23,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public void save(Scholorship scholorship) throws RepositoryDataAccessException  {
 		try {
+			checkPersitableValidity(scholorship);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {scholorship.getId(), scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
 					scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments()});
 		} catch (DataAccessException e) {
@@ -39,6 +40,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Scholorship sch = scholorships.get(i);
+					checkPersitableValidity(sch);
 					ps.setString(1, sch.getId());
 					ps.setString(2, sch.getExternal_ref());
 					ps.setString(3, sch.getType().toString());
@@ -63,6 +65,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public void update(Scholorship scholorship) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(scholorship);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
 					scholorship.getPaid_amount(), scholorship.isFullyPaid(), scholorship.isPostPay(), scholorship.getStud_id(), scholorship.getAdditional_comments(), scholorship.getId()});
 		} catch (DataAccessException e) {
@@ -79,6 +82,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Scholorship sch = scholorships.get(i);
+					checkPersitableValidity(sch);
 					ps.setString(1, sch.getExternal_ref());
 					ps.setString(2, sch.getType().toString());
 					ps.setDouble(3, sch.getTotal_amount());

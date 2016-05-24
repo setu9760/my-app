@@ -6,10 +6,13 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
+import org.hamcrest.core.StringStartsWith;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +30,9 @@ import spring.desai.common.repository.StudentRepository;
 @ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
 public class StudentRepositoryImplTest {
 
+	@Rule
+	public ExpectedException expectedExeception = ExpectedException.none();
+	
 	@Autowired
 	ApplicationContext context;
 	
@@ -41,9 +47,13 @@ public class StudentRepositoryImplTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullSave() {
+		expectedExeception.expect(IllegalArgumentException.class);
+		expectedExeception.expectMessage("Null arguments passed");
 		studentRepository.save(null);
+		
+//		studentRepository.save(new Student("", "", 234));
 	}
 
 	@Test

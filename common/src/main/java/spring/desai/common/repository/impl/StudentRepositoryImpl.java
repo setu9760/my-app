@@ -22,7 +22,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public void save(Student student) {
 		try {
-			checkNotNull(student);
+			checkPersitableValidity(student);
 			getJdbcTemplate().update(getInsertSql(), new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() });
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -38,6 +38,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Student s = students.get(i);
+					checkPersitableValidity(s);
 					ps.setString(1, s.getId());
 					ps.setString(2, s.getF_name());
 					ps.setString(3, s.getL_name());
@@ -58,6 +59,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public void update(Student student) {
 		try {
+			checkPersitableValidity(student);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] { student.getF_name(), student.getL_name(), student.getAge(), student.getAddress(), student.getId() });
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -74,6 +76,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Student s = studs.get(i);
+					checkPersitableValidity(s);
 					ps.setString(1, s.getF_name());
 					ps.setString(2, s.getL_name());
 					ps.setInt(3, s.getAge());

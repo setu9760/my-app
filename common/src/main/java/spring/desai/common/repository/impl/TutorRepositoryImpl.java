@@ -22,6 +22,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	@Override
 	public void save(Tutor tutor) {
 		try {
+			checkPersitableValidity(tutor);
 			getJdbcTemplate().update(getInsertSql(), new Object[] { tutor.getId(), tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubj_id()} );
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -37,6 +38,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Tutor t = tutors.get(i);
+					checkPersitableValidity(t);
 					ps.setString(1, t.getId());
 					ps.setString(2, t.getF_name());
 					ps.setString(3, t.getL_name());
@@ -58,6 +60,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	@Override
 	public void update(Tutor tutor) {
 		try {
+			checkPersitableValidity(tutor);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubj_id(), tutor.getId()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -73,6 +76,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Tutor t = tutors.get(i);
+					checkPersitableValidity(t);
 					ps.setString(1, t.getF_name());
 					ps.setString(2, t.getL_name());
 					ps.setString(3, t.getAddress());

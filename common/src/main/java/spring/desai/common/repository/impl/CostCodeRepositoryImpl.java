@@ -23,6 +23,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	@Override
 	public void save(Cost cost) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(cost);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {cost.getCostCode(), cost.getAmount()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -38,6 +39,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Cost c = costs.get(i);
+					checkPersitableValidity(c);
 					ps.setString(1, c.getCostCode());
 					ps.setDouble(2, c.getAmount());
 				}
@@ -55,6 +57,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	@Override
 	public void update(Cost cost) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(cost);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {cost.getAmount(), cost.getCostCode()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -70,6 +73,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Cost c = costs.get(i);
+					checkPersitableValidity(c);
 					ps.setDouble(1, c.getAmount());
 					ps.setString(2, c.getCostCode());
 				}

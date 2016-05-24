@@ -23,6 +23,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public void save(Subject subject) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(subject);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {subject.getId(), subject.getName(), subject.getCost_code(), subject.isMandatory()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -38,6 +39,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Subject s = subjs.get(i);
+					checkPersitableValidity(s);
 					ps.setString(1, s.getId());
 					ps.setString(2, s.getName());
 					ps.setString(3, s.getCost_code().toString());
@@ -57,6 +59,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public void update(Subject subject) {
 		try {
+			checkPersitableValidity(subject);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {subject.getName(), subject.getCost_code(), subject.isMandatory(), subject.getId()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -72,6 +75,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Subject s = subjs.get(i);
+					checkPersitableValidity(s);
 					ps.setString(1, s.getName());
 					ps.setString(2, s.getCost_code().toString());
 					ps.setString(3, String.valueOf(s.isMandatory()));

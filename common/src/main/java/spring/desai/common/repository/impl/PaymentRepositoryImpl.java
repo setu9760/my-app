@@ -23,6 +23,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public void save(Payment payment) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(payment);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {payment.getId(), payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -38,6 +39,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Payment p = payments.get(i);
+					checkPersitableValidity(p);
 					ps.setString(1, p.getId());
 					ps.setDouble(2, p.getAmount());
 					ps.setString(3, p.getPaymentType().toString());
@@ -57,6 +59,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public void update(Payment payment) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(payment);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id(), payment.getId()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -72,6 +75,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Payment p = payments.get(i);
+					checkPersitableValidity(p);
 					ps.setDouble(1, p.getAmount());
 					ps.setString(2, p.getPaymentType().toString());
 					ps.setString(3, p.getStud_id());

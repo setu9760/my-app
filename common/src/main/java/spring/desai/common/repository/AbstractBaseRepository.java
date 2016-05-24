@@ -30,10 +30,10 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 
 	@Autowired
 	@Qualifier(value = "transactionManager")
-	protected PlatformTransactionManager platformTransactionManager;
+	private PlatformTransactionManager platformTransactionManager;
 
 	@Autowired
-	protected DataSource dataSource;
+	private DataSource dataSource;
 
 	@Autowired
 	@Qualifier("studentRowMapper")
@@ -215,11 +215,15 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		}
 	}
 	
-	protected void checkNotNull(Persistable persistable){
-		if (persistable == null) {
-			throw new IllegalArgumentException("Null Argument passed.");
+	protected void checkPersitableValidity(Persistable persistable){
+		if (null == persistable) {
+			throw new IllegalArgumentException("Null arguments passed");
+		}
+		if (null == persistable.getId() || persistable.getId().isEmpty()) {
+			throw new IllegalArgumentException("Cannot persist data without id being present.");
 		}
 	}
+		
 	protected abstract String getInsertSql();
 	protected abstract String getUpdateSql();
 }
