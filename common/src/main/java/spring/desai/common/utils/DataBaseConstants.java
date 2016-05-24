@@ -39,4 +39,8 @@ public class DataBaseConstants {
 	public static final String STUD_ID = "stud_id";
 	public static final String SCHLRSHP_ID = "schlrshp_id";
 
+	public static final String NEXT_KEY_TABLE = "";
+	public static final String NEXT_LETTER_SEQUENCE = "next_letter_sequence";
+	public static final String NEXT_NUM = "next_num";
+	
 }

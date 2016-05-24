@@ -13,11 +13,8 @@ public class TutorRowMapper implements RowMapper<Tutor> {
 	@Override
 	public Tutor mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 		Tutor tutor = null;
-		tutor = new Tutor();
-		tutor.setId(resultSet.getString(DataBaseConstants.ID));
-		tutor.setF_name(DataBaseConstants.F_NAME);
-		tutor.setL_name(DataBaseConstants.L_NAME);
-		tutor.setSubj_id(DataBaseConstants.SUBJ_ID);
+		tutor = new Tutor(resultSet.getString(DataBaseConstants.ID), resultSet.getString(DataBaseConstants.F_NAME), resultSet.getString(DataBaseConstants.L_NAME), 
+				resultSet.getString(DataBaseConstants.SUBJ_ID), resultSet.getString(DataBaseConstants.ADDRESS) ,resultSet.getBoolean(DataBaseConstants.IS_FULLTIME));
 		return tutor;
 	}
 

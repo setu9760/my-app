@@ -10,10 +10,10 @@ public abstract class Person implements Persistable {
 	protected String address;
 
 	public Person(String f_name, String l_name, String address) {
-		this("", f_name, l_name, address);
+		this(null, f_name, l_name, address);
 	}
 
-	private Person(String id, String f_name, String l_name, String address) {
+	protected Person(String id, String f_name, String l_name, String address) {
 		this.id = id;
 		this.f_name = f_name;
 		this.l_name = l_name;

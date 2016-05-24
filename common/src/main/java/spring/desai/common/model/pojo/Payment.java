@@ -10,17 +10,23 @@ public class Payment implements Persistable {
 	private String id;
 	private double amount;
 	private PaymentType paymentType;
-	private DateTime paymentDateTime;
 	private String stud_id;
-
-	public Payment() {
-		this("", 1.0, null);
-	}
+	private DateTime paymentDateTime;
 
 	public Payment(String id, double amount, PaymentType paymentType) {
+		this(id, amount, paymentType, null, DateTime.now());
+	}
+	
+	public Payment(double amount, PaymentType paymentType, String stud_id, DateTime paymentDateTime) {
+		this(null, amount, paymentType, stud_id, paymentDateTime);
+	}
+	
+	public Payment(String id, double amount, PaymentType paymentType, String stud_id, DateTime paymentDateTime) {
 		this.id = id;
 		this.amount = amount;
 		this.paymentType = paymentType;
+		this.stud_id = stud_id;
+		this.paymentDateTime = paymentDateTime;
 	}
 
 	public String getId() {

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import spring.desai.common.guid.GuidGeneratorException;
 import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.utils.GuidGeneratorException;
 
 @Controller
 @RequestMapping("/subject")

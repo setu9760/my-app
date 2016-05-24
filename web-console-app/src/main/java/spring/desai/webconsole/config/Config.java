@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import spring.desai.common.guid.GuidGenerator;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.impl.StudentRepositoryImpl;
 import spring.desai.common.service.AdminService;
 import spring.desai.common.service.ReadOnlyService;
-import spring.desai.common.utils.GuidGenerator;
 
 @EnableWebMvc
 @Configuration

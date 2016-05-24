@@ -3,12 +3,9 @@ package spring.desai.common.model.pojo;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Student extends Person {
 
-	private static final AtomicInteger ai = new AtomicInteger();
-	
 	private static final long serialVersionUID = 3674239599895293427L;
 	private int age;
 	private Collection<Subject> subjects;
@@ -16,16 +13,19 @@ public class Student extends Person {
 	private Collection<Scholorship> scholorships;
 
 	public Student(String f_name, String l_name, int age) {
-		this(f_name, l_name, age, "");
+		this(f_name, l_name, age, null);
 	}
 
 	public Student(String f_name, String l_name, int age, String address) {
-		super(f_name, l_name, address);
+		this(null, f_name, l_name, age, address);
+	}
+	
+	public Student(String id, String f_name, String l_name, int age, String address) {
+		super(id, f_name, l_name, address);
 		this.age = age;
 		subjects = new HashSet<Subject>();
 		payments = new HashSet<Payment>();
 		scholorships = new HashSet<Scholorship>();
-		generateGuid();
 	}
 
 	public int getAge() {
@@ -131,14 +131,5 @@ public class Student extends Person {
 		} else if (!subjects.equals(other.subjects))
 			return false;
 		return true;
-	}
-
-//	@Override
-	public void generateGuid() {
-		if (getId() == null || getId().isEmpty()) {
-			String f = f_name.replace("_", "").substring(0, 2);
-			String l = l_name.replace("_", "").substring(0, 2);
-			setId(f + age + l + String.format("###", ai.getAndIncrement()));
-		}
 	}
 }

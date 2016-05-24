@@ -6,17 +6,18 @@ public class Tutor extends Person {
 	private String subj_id;
 	private boolean isFulltime;
 
-	public Tutor() {
-		this("", "", null);
-	}
-
 	public Tutor(String f_name, String l_name, String subj_id) {
 		this(f_name, l_name, subj_id, "", true);
 	}
 
 	public Tutor(String f_name, String l_name, String subj_id, String address, boolean isFulltime) {
-		super(f_name, l_name, address);
+		this(null, f_name, l_name, subj_id, address, isFulltime);
+	}
+	
+	public Tutor(String id, String f_name, String l_name, String subj_id, String address, boolean isFulltime) {
+		super(id, f_name, l_name, address);
 		this.subj_id = subj_id;
+		this.isFulltime = isFulltime;
 	}
 
 	public String getSubj_id() {

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import spring.desai.common.guid.GuidGeneratorException;
 import spring.desai.common.model.pojo.Tutor;
-import spring.desai.common.utils.GuidGeneratorException;
 
 @Controller
 @RequestMapping("/tutor")

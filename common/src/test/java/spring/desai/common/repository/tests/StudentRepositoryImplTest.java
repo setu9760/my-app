@@ -2,13 +2,12 @@ package spring.desai.common.repository.tests;
 
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import junit.framework.Assert;
-import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.StudentRepository;
 
@@ -64,13 +61,34 @@ public class StudentRepositoryImplTest {
 		}
 
 	@Test
-	public void testSaveAll() {
-		List<Student> studs = new ArrayList<>();
-		for (int i = 0; i < 5; i++) {
-			Student s = new Student("ABCDE" + i, "ABCDE" + i, 20 + i, "Address");
-			studs.add(s);
+	public void testSaveAll() throws Exception {
+
+//		System.out.println(UUID.randomUUID().toString());
+//		System.out.println(UUID.randomUUID().toString());
+//		System.out.println(UUID.randomUUID().toString());	
+		final int count = 5;
+		final CountDownLatch awaitlatch = new CountDownLatch(count);
+		final CountDownLatch cdl = new CountDownLatch(1);
+		for (int i = 0; i < count; i++) {
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						cdl.await();
+						System.out.println(/*Thread.currentThread().getName() + " - " + */UUID.randomUUID().getMostSignificantBits()/*toString()*/);
+						awaitlatch.countDown();
+					} catch (Exception e) {
+ 						e.printStackTrace();
+					}
+					
+					
+				}
+			}, "Thread-"+i).start();
 		}
 		
+		cdl.countDown();
+		awaitlatch.await();
 	}
 
 	@Test

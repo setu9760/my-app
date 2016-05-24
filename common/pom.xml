@@ -11,6 +11,11 @@
 	</parent>
 	<dependencies>
 		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.3.175</version>
@@ -21,13 +26,25 @@
 
 	<build>
 		<finalName>common</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
 			<resource>
-				<directory>src/main/java</directory>
+				<directory>src/main/resources</directory>
 				<includes>
-					<include>**/*.xml</include>
+					<include>**/*.*</include>
 				</includes>
 			</resource>
 		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.sql</include>
+					<include>**/*/*</include>
+				</includes>
+			</testResource>
+		</testResources>
 	</build>
 </project>

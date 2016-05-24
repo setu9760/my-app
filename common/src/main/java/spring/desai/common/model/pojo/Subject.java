@@ -2,7 +2,7 @@ package spring.desai.common.model.pojo;
 
 import spring.desai.common.model.enums.CostCode;
 
-public class Subject implements Persistable, GuidGenerator {
+public class Subject implements Persistable {
 
 	private static final long serialVersionUID = -4367164667167006540L;
 	private String id;
@@ -10,19 +10,15 @@ public class Subject implements Persistable, GuidGenerator {
 	private CostCode cost_code;
 	private boolean isMandatory;
 
-	public Subject() {
-		this("", CostCode.BASIC);
-	}
-
-	public Subject(String id) {
-		this(id, "", null, true);
-	}
-
 	public Subject(String name, CostCode costCode) {
-		this("", name, costCode, true);
+		this(null, name, costCode, true);
 	}
 
-	private Subject(String id, String name, CostCode costCode, boolean isMandatory) {
+	public Subject(String name, CostCode costCode, boolean isMandatory) {
+		this(null, name, costCode, isMandatory);
+	}
+	
+	public Subject(String id, String name, CostCode costCode, boolean isMandatory) {
 		this.id = id;
 		this.name = name;
 		this.cost_code = costCode;
@@ -30,9 +26,6 @@ public class Subject implements Persistable, GuidGenerator {
 	}
 
 	public String getId() {
-		if (id == null || id.isEmpty()) {
-			generateGuid();
-		}
 		return id;
 	}
 
@@ -115,23 +108,4 @@ public class Subject implements Persistable, GuidGenerator {
 		builder.append("]");
 		return builder.toString();
 	}
-
-	@Override
-	public void generateGuid() {
-		if (id == null || id.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(name.substring(0, 3));
-			sb.append(Integer.toHexString(hashCode()));
-			setId(sb.substring(0, 9).toUpperCase());
-		}
-	}
-	
-	public static void main(String[] args) {
-		Subject s = new Subject("Science", CostCode.BASIC);
-		s.setMandatory(true);
-//		s.generateGuid();
-		
-		System.out.println(s.getId());
-	}
-
 }
