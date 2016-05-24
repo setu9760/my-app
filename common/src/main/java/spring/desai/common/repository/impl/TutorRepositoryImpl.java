@@ -139,8 +139,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		
+		deleteAllImpl(DataBaseConstants.TUTOR_TABLE_NAME);
 	}
 
 	@Override

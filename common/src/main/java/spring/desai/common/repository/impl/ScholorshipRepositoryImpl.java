@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.ScholorshipType;
-import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.ScholorshipRepository;
@@ -111,22 +110,18 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		}
 	}
 	
-	/**
-	 * No-op
-	 */
 	@Override
 	public Collection<Scholorship> findByName(String name) throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.TYPE), new Object[] { name }, getScholorshipRowMapper());
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 
 	@Override
 	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.TYPE), new Object[] { type.toString() }, getScholorshipRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return findByName(type.toString());
 	}
 	
 	public Collection<Scholorship> findByStudentId(String stud_id) throws RepositoryDataAccessException{
@@ -147,13 +142,9 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		deleteImpl(getDeleteBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), id);
 	}
 	
-	/**
-	 * No-op
-	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException{
-		// TODO Auto-generated method stub
-		
+		deleteAllImpl(DataBaseConstants.SCHOLORSHIP_TABLE_NAME);
 	}
 	
 	@Override

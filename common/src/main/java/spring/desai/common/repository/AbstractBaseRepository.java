@@ -139,6 +139,12 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		return sb.toString();
 	}
 	
+	private final String truncateTableSql(String tableName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("TRUNCATE TABLE ").append(tableName);
+		return sb.toString();
+	}
+	
 	protected final String getUpdateSqlForFields(String tableName, String... fields){
 		if (fields == null || fields.length == 0) {
 			return getUpdateSql();
@@ -158,7 +164,15 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		return sb.toString();
 	}
 	
-	protected final Collection<? extends Persistable> getAllImpl(String sql, Class<? extends Persistable> classType){
+	protected final void deleteAllImpl(String tableName) throws RepositoryDataAccessException {
+		try {
+			getJdbcTemplate().update(truncateTableSql(tableName));
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	protected final Collection<? extends Persistable> getAllImpl(String sql, Class<? extends Persistable> classType) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(sql, getRowMapperForClass(classType));
 		} catch (DataAccessException e) {
@@ -166,7 +180,7 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		}
 	}
 	
-	protected final void deleteImpl(String sql, String fieldValue) throws RepositoryDataAccessException{
+	protected final void deleteImpl(String sql, String fieldValue) throws RepositoryDataAccessException {
 		try {
 			getJdbcTemplate().update(sql, new Object[] {fieldValue}); 
 		} catch (DataAccessException e) {
@@ -174,7 +188,7 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		}
 	}
 	
-	protected final int countAllImpl(String sql) throws RepositoryDataAccessException{
+	protected final int countAllImpl(String sql) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().queryForObject(sql, Integer.class);
 		} catch (DataAccessException e) {
@@ -194,6 +208,8 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 			return getPaymentRowMapper();
 		} else if (classType.getName().contains("Scholorship")){
 			return getScholorshipRowMapper();
+		} else if (classType.getName().contains("Cost")){ 
+			return getCostRowMapper();
 		} else {
 			throw new IllegalArgumentException("Rowmapper for classtype " + classType.getName() + " is unsupported.");
 		}

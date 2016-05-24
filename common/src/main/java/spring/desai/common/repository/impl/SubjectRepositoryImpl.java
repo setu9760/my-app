@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.CostCode;
-import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.SubjectRepository;
@@ -164,11 +163,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		try {
-			// TODO
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		deleteAllImpl(DataBaseConstants.STUDENT_SCHOLORSHIP_LINK_TABLE_NAME);
 	}
 
 	@Override

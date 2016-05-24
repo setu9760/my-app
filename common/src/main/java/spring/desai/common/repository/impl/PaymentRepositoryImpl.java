@@ -98,13 +98,9 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 		}
 	}
 	
-	/**
-	 * No-op 
-	 */
 	@Override
 	public Collection<Payment> findByName(String name) throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("findByBame operation is Unsupported with PaymentRepository");
 	}
 
 	@Override
@@ -139,16 +135,9 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 		deleteImpl(getDeleteBySql(DataBaseConstants.PAYMENT_TABLE_NAME, DataBaseConstants.ID), id);
 	}
 	
-	/**
-	 * No-op
-	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		try {
-			// TODO
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		deleteAllImpl(DataBaseConstants.PAYMENT_TABLE_NAME);
 	}
 
 	@Override

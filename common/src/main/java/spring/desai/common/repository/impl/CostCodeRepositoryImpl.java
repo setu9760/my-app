@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
@@ -16,6 +17,7 @@ import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.DataBaseConstants;
 
+@Repository("costCodeRepository")
 public class CostCodeRepositoryImpl extends AbstractBaseRepository implements CostCodeRepository {
 
 	@Override
@@ -81,32 +83,24 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 			throw new RepositoryDataAccessException(e);
 		}
 	}
-	
-	/**
-	 * No-op
-	 */
+
 	@Override
 	public Cost findById(String id) throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.COST_ABLE_NAME, DataBaseConstants.COST_CODE),  new Object[] { id }, getCostRowMapper()).get(0);
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 
-	/**
-	 * No-op
-	 */
 	@Override
 	public Collection<Cost> findByName(String name) throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("findByName is not supported for CostCodeRepository");
 	}
 
 	@Override
 	public Cost findByCode(CostCode costCode) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.COST_ABLE_NAME, DataBaseConstants.COST_CODE),  new Object[] {costCode.toString()}, getCostRowMapper()).get(0);
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return findById(costCode.toString());
 	}
 	
 	@Override
@@ -115,10 +109,8 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	/**
-	 * No-op
-	 */
 	public void deleteAll() throws RepositoryDataAccessException {
+		deleteAllImpl(DataBaseConstants.COST_ABLE_NAME);
 	}
 
 	@Override
