@@ -21,6 +21,7 @@ import spring.desai.common.model.pojo.Student;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.model.pojo.Tutor;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.utils.I18N;
 
 public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 
@@ -33,6 +34,7 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 	private PlatformTransactionManager platformTransactionManager;
 
 	@Autowired
+	@Qualifier("dataSource")
 	private DataSource dataSource;
 
 	@Autowired
@@ -104,7 +106,7 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 	
 	protected final String getFindBySql(String tableName, String fieldName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(fieldName).append(" = ?");
+		sb.append("SELECT * FROM ").append(tableName).append(" WHERE").append(" LOWER (").append(fieldName).append(") LIKE LOWER (?)");
 		return sb.toString();
 	}
 	
@@ -217,11 +219,26 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 	
 	protected void checkPersitableValidity(Persistable persistable){
 		if (null == persistable) {
-			throw new IllegalArgumentException("Null arguments passed");
+			throw new IllegalArgumentException(I18N.getString("error.null.object"));
 		}
 		if (null == persistable.getId() || persistable.getId().isEmpty()) {
-			throw new IllegalArgumentException("Cannot persist data without id being present.");
+			throw new IllegalArgumentException(I18N.getString("error.null.id"));
 		}
+	}
+	
+	protected void checkPersitableValidity(Collection<? extends Persistable> coll){
+		if (null == coll || coll.isEmpty()) {
+			throw new IllegalArgumentException(I18N.getString("error.null.object"));
+		}
+		for (Persistable persistable : coll) {
+			if (null == persistable.getId() || persistable.getId().isEmpty()) {
+				throw new IllegalArgumentException(I18N.getString("error.null.id"));
+			}
+		}
+	}
+	
+	protected void throwUnsupportedOperationException(String operation){
+		throw new UnsupportedOperationException(operation + " currently not supported.");
 	}
 		
 	protected abstract String getInsertSql();

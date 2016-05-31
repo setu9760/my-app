@@ -14,7 +14,7 @@ import spring.desai.common.model.pojo.Tutor;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.DataBaseConstants;
+import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="tutorRepository")
 public class TutorRepositoryImpl extends AbstractBaseRepository implements TutorRepository {
@@ -98,7 +98,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	@Override
 	public Tutor findById(String id) throws RepositoryDataAccessException {
 		try {
-			List<Tutor> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getTutorRowMapper());
+			List<Tutor> l = getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, ID), new Object[] { id }, getTutorRowMapper());
 			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -108,7 +108,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	@Override
 	public Collection<Tutor> findByName(String f_name) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.F_NAME), new Object[] { f_name }, getTutorRowMapper());
+			return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, F_NAME), new Object[] { f_name }, getTutorRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -116,13 +116,13 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	
 	@Override
 	public Collection<Tutor> getAll() throws DataAccessException {
-		return (Collection<Tutor>) getAllImpl(getSelectAllSql(DataBaseConstants.TUTOR_TABLE_NAME), Tutor.class);
+		return (Collection<Tutor>) getAllImpl(getSelectAllSql(TUTOR_TABLE_NAME), Tutor.class);
 	}
 	
 	@Override
 	public Collection<Tutor> getTutorsForSubject(String subj_id) throws DataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.SUBJ_ID), new Object[] { subj_id }, getTutorRowMapper());
+			return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, SUBJ_ID), new Object[] { subj_id }, getTutorRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -130,12 +130,12 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.ID), id);
+		deleteImpl(getDeleteBySql(TUTOR_TABLE_NAME, ID), id);
 	}
 
 	@Override
 	public void deleteByName(String f_name) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.TUTOR_TABLE_NAME, DataBaseConstants.F_NAME), f_name);
+		deleteImpl(getDeleteBySql(TUTOR_TABLE_NAME, F_NAME), f_name);
 	}
 	
 	/**
@@ -143,12 +143,12 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(DataBaseConstants.TUTOR_TABLE_NAME);
+		deleteAllImpl(TUTOR_TABLE_NAME);
 	}
 
 	@Override
 	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(DataBaseConstants.TUTOR_TABLE_NAME));
+		return countAllImpl(getCountAllSql(TUTOR_TABLE_NAME));
 	}
 	
 	@Override

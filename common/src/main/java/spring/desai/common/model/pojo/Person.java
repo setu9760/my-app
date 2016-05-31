@@ -24,7 +24,7 @@ public abstract class Person implements Persistable {
 		return id;
 	}
 
-	public void setId(String id) {
+	protected final void setId(String id) {
 		this.id = id;
 	}
 

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.text.ChangedCharSetException;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
@@ -14,7 +16,7 @@ import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.DataBaseConstants;
+import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="studentRepository")
 public class StudentRepositoryImpl extends AbstractBaseRepository implements StudentRepository {
@@ -32,6 +34,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public void saveAll(final Collection<Student> persistables) throws RepositoryDataAccessException{
 		try {
+			checkPersitableValidity(persistables);
 			final List<Student> students = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
 				
@@ -70,6 +73,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public void updateAll(final Collection<Student> persistables) throws RepositoryDataAccessException {
 		try {
+			checkPersitableValidity(persistables);
 			final List<Student> studs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
 				
@@ -97,7 +101,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public Student findById(String id) throws RepositoryDataAccessException {
 		try {
-			List<Student> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.STUDENT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getStudentRowMapper());
+			List<Student> l = getJdbcTemplate().query(getFindBySql(STUDENT_TABLE_NAME, ID), new Object[] { id }, getStudentRowMapper());
 			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -107,7 +111,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	@Override
 	public Collection<Student> findByName(String name) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.STUDENT_TABLE_NAME, DataBaseConstants.F_NAME), new Object [] { name },  getStudentRowMapper());
+			return getJdbcTemplate().query(getFindBySql(STUDENT_TABLE_NAME, F_NAME), new Object [] { "%"+name+"%" },  getStudentRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -115,17 +119,18 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	
 	@Override
 	public Collection<Student> getAll() throws RepositoryDataAccessException {
-		return (Collection<Student>) getAllImpl(getSelectAllSql(DataBaseConstants.STUDENT_TABLE_NAME), Student.class);
+		throwUnsupportedOperationException("getAll()");
+		return (Collection<Student>) getAllImpl(getSelectAllSql(STUDENT_TABLE_NAME), Student.class);
 	}
 	
 	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {
 		try {
-			List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(DataBaseConstants.SUBJECT_STUDENT_LINK_TABLE_NAME, DataBaseConstants.SUBJ_ID, DataBaseConstants.STUD_ID), new Object[] { subj_id }, String.class);
+			List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
 			if (stud_ids == null || stud_ids.isEmpty()) {
 				return null;
 			}
-			return getJdbcTemplate().query(getFindBySqlWhereIn(DataBaseConstants.STUDENT_TABLE_NAME, DataBaseConstants.ID, stud_ids.size()), stud_ids.toArray(), getStudentRowMapper());
+			return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getStudentRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -133,23 +138,24 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.STUDENT_TABLE_NAME, DataBaseConstants.ID), id);
+		deleteImpl(getDeleteBySql(STUDENT_TABLE_NAME, ID), id);
 	}
 
 	@Override
 	public void deleteByName(String f_name) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.STUDENT_TABLE_NAME, DataBaseConstants.F_NAME), f_name);
+		deleteImpl(getDeleteBySql(STUDENT_TABLE_NAME, F_NAME), f_name);
 	}
 	
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(DataBaseConstants.STUDENT_TABLE_NAME);
+		throwUnsupportedOperationException("deleteAll()");
+		deleteAllImpl(STUDENT_TABLE_NAME);
 	}
 
 	@Override
 	public int countAll() throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().queryForObject(getCountAllSql(DataBaseConstants.STUDENT_TABLE_NAME), Integer.class);
+			return getJdbcTemplate().queryForObject(getCountAllSql(STUDENT_TABLE_NAME), Integer.class);
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

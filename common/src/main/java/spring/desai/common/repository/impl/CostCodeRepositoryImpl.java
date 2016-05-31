@@ -10,12 +10,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
+
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.DataBaseConstants;
+import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository("costCodeRepository")
 public class CostCodeRepositoryImpl extends AbstractBaseRepository implements CostCodeRepository {
@@ -91,7 +92,8 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	@Override
 	public Cost findById(String id) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.COST_ABLE_NAME, DataBaseConstants.COST_CODE),  new Object[] { id }, getCostRowMapper()).get(0);
+			List<Cost> l = getJdbcTemplate().query(getFindBySql(COST_ABLE_NAME, COST_CODE),  new Object[] { id }, getCostRowMapper());
+			return (l !=null && l.isEmpty()) ? l.get(0) : null; 
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -109,17 +111,17 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.COST_ABLE_NAME, DataBaseConstants.COST_CODE), id);
+		deleteImpl(getDeleteBySql(COST_ABLE_NAME, COST_CODE), id);
 	}
 
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(DataBaseConstants.COST_ABLE_NAME);
+		deleteAllImpl(COST_ABLE_NAME);
 	}
 
 	@Override
 	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(DataBaseConstants.COST_ABLE_NAME));
+		return countAllImpl(getCountAllSql(COST_ABLE_NAME));
 	}
 
 	@Override
@@ -134,6 +136,6 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 
 	@Override
 	public Collection<Cost> getAll() throws RepositoryDataAccessException {
-		return (Collection<Cost>) getAllImpl(getSelectAllSql(DataBaseConstants.COST_ABLE_NAME), Cost.class);
+		return (Collection<Cost>) getAllImpl(getSelectAllSql(COST_ABLE_NAME), Cost.class);
 	}
 }

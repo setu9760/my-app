@@ -15,7 +15,7 @@ import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.DataBaseConstants;
+import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository("scholorshipRepository")
 public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements ScholorshipRepository{
@@ -107,7 +107,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public Scholorship findById(String id) throws RepositoryDataAccessException {
 		try {
-			List<Scholorship> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getScholorshipRowMapper());
+			List<Scholorship> l = getJdbcTemplate().query(getFindBySql(SCHOLORSHIP_TABLE_NAME, ID), new Object[] { id }, getScholorshipRowMapper());
 			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -117,7 +117,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public Collection<Scholorship> findByName(String name) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.TYPE), new Object[] { name }, getScholorshipRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SCHOLORSHIP_TABLE_NAME, TYPE), new Object[] { name }, getScholorshipRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -130,7 +130,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	
 	public Collection<Scholorship> findByStudentId(String stud_id) throws RepositoryDataAccessException{
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.STUD_ID), new Object[] { stud_id }, getScholorshipRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SCHOLORSHIP_TABLE_NAME, STUD_ID), new Object[] { stud_id }, getScholorshipRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -138,22 +138,22 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	
 	@Override
 	public Collection<Scholorship> getAll() throws RepositoryDataAccessException {
-		return (Collection<Scholorship>) getAllImpl(getSelectAllSql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME), Scholorship.class);
+		return (Collection<Scholorship>) getAllImpl(getSelectAllSql(SCHOLORSHIP_TABLE_NAME), Scholorship.class);
 	}
 
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME, DataBaseConstants.ID), id);
+		deleteImpl(getDeleteBySql(SCHOLORSHIP_TABLE_NAME, ID), id);
 	}
 	
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException{
-		deleteAllImpl(DataBaseConstants.SCHOLORSHIP_TABLE_NAME);
+		deleteAllImpl(SCHOLORSHIP_TABLE_NAME);
 	}
 	
 	@Override
 	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(DataBaseConstants.SCHOLORSHIP_TABLE_NAME));
+		return countAllImpl(getCountAllSql(SCHOLORSHIP_TABLE_NAME));
 	}
 
 	@Override

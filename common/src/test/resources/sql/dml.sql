@@ -3,7 +3,7 @@ INSERT INTO student VALUES('studentid1','f_name1','l_name1',21,'address1');
 INSERT INTO student VALUES('studentid2','f_name2','l_name2',21,'address2');
 INSERT INTO student VALUES('studentid3','f_name3','l_name3',21,'address3');
 INSERT INTO student VALUES('studentid4','f_name4','l_name4',21,'address4');
-INSERT INTO student VALUES('studentid5','f_name5','l_name5',21,'address5');
+INSERT INTO student VALUES('studentid5','f_name4','l_name5',21,'address5');
 
 -- Insert to cost 
 INSERT INTO cost VALUES('cost_code1',1000);

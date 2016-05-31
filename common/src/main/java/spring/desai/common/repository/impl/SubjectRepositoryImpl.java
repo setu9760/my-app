@@ -15,7 +15,7 @@ import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.DataBaseConstants;
+import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="subjectRepository")
 public class SubjectRepositoryImpl extends AbstractBaseRepository implements SubjectRepository {
@@ -95,7 +95,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public Subject findById(String id) throws RepositoryDataAccessException {
 		try {
-			List<Subject> l = getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.ID), new Object[] { id }, getSubjectRowMapper());
+			List<Subject> l = getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, ID), new Object[] { id }, getSubjectRowMapper());
 			return (l != null && !l.isEmpty()) ? l.get(0) : null;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
@@ -104,7 +104,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	
 	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySqlWhereIn(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.ID, ids.length), ids, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -113,7 +113,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public Collection<Subject> findByName(String name) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.NAME), new Object[] { name }, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, NAME), new Object[] { name }, getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -122,7 +122,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public Collection<Subject> findByCostCode(CostCode costCode) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.COST_CODE), new Object[] { costCode.toString() }, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { costCode.toString() }, getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -131,7 +131,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public Collection<Subject> findByMandatory(boolean isMandatory) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.IS_MANDATORY), new Object[] { isMandatory }, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, IS_MANDATORY), new Object[] { isMandatory }, getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -140,8 +140,8 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	@Override
 	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws DataAccessException {
 		try {
-			List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(DataBaseConstants.SUBJECT_STUDENT_LINK_TABLE_NAME, DataBaseConstants.STUD_ID, DataBaseConstants.SUBJ_ID), new Object[] { stud_id}, String.class);
-			return getJdbcTemplate().query(getFindBySqlWhereIn(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.ID, subjIds.size()), subjIds.toArray(), getSubjectRowMapper());
+			List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
+			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -149,17 +149,17 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	
 	@Override
 	public Collection<Subject> getAll() throws RepositoryDataAccessException {
-		return (Collection<Subject>) getAllImpl(getSelectAllSql(DataBaseConstants.SUBJECT_TABLE_NAME), Subject.class);
+		return (Collection<Subject>) getAllImpl(getSelectAllSql(SUBJECT_TABLE_NAME), Subject.class);
 	}
 
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.ID), id);
+		deleteImpl(getDeleteBySql(SUBJECT_TABLE_NAME, ID), id);
 	}
 
 	@Override
 	public void deleteByName(String name) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(DataBaseConstants.SUBJECT_TABLE_NAME, DataBaseConstants.NAME), name);
+		deleteImpl(getDeleteBySql(SUBJECT_TABLE_NAME, NAME), name);
 	}
 	
 	/**
@@ -167,12 +167,12 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	 */
 	@Override
 	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(DataBaseConstants.STUDENT_SCHOLORSHIP_LINK_TABLE_NAME);
+		deleteAllImpl(STUDENT_SCHOLORSHIP_LINK_TABLE_NAME);
 	}
 
 	@Override
 	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(DataBaseConstants.SUBJECT_TABLE_NAME));
+		return countAllImpl(getCountAllSql(SUBJECT_TABLE_NAME));
 	}
 
 	@Override
