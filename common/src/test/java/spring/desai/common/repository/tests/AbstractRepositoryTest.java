@@ -13,19 +13,23 @@ import java.util.Collection;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.StringUtils;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.repository.BasePersistableRepository;
-import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.utils.I18N;
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
+@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
 public class AbstractRepositoryTest {
 
-	protected void doNullSaveTest(BasePersistableRepository<? extends Persistable> repo){
+	protected void doNullSaveTest(BasePersistableRepository<?> repo){
 		try {
 			repo.save(null);
 			fail("Should have thrown IllegalArgumentException while saving");
@@ -34,7 +38,16 @@ public class AbstractRepositoryTest {
 		}
 	}
 	
-	protected void doNullUpdateTest(BasePersistableRepository<? extends Persistable> repo){
+	protected void doANullSaveTest(BasePersistableRepository<?> repo){
+		try {
+			repo.save(null);
+			fail("Should have thrown IllegalArgumentException while saving");
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), is(equalTo(I18N.getNoArgString("error.null.object"))));
+		}
+	}
+	
+	protected void doNullUpdateTest(BasePersistableRepository<?> repo){
 		try {
 			repo.update(null);
 			fail("Should have thrown IllegalArgumentException while updating");
@@ -43,7 +56,7 @@ public class AbstractRepositoryTest {
 		}
 	}
 	
-	protected void testPersistableFindById(BasePersistableRepository<?> repo, String id){
+	protected void doPersistableFindByIdTest(BasePersistableRepository<?> repo, String id){
 		Persistable p = null;
 		p = repo.findById(null);
 		assertThat(p, is(nullValue()));
@@ -59,7 +72,7 @@ public class AbstractRepositoryTest {
 		assertThat(p.getId(), is(equalTo(id)));
 	}
 	
-	protected void testPersistableFindByName(BasePersistableRepository<?> repo, String name, int nameRecordsCount, int totalCount){
+	protected void doPersistableFindByNameTest(BasePersistableRepository<?> repo, String name, int nameRecordsCount, int totalCount){
 		Collection<?> c = null;
 		c = repo.findByName(null);
 		assertThat(c, is(not(nullValue())));
@@ -87,19 +100,53 @@ public class AbstractRepositoryTest {
 	}
 	
 
-	protected void testPersistableGetAll(BasePersistableRepository<?> repo, int totalCount) {
+	protected void doPersistableGetAllTest(BasePersistableRepository<?> repo, int totalCount) {
 		Collection<?> c = repo.getAll();
 		assertThat(c, is(not(nullValue())));
 		assertThat(c, hasSize(totalCount));
 	}
 	
-	protected void testPersistableDeleteAll(BasePersistableRepository<?> repo) {
+	protected void doPersistableDeleteAllTest(BasePersistableRepository<?> repo) {
 		repo.deleteAll();
 	}
 	
-	protected void testPersistableCountAll(BasePersistableRepository<?> repo, int expectedCount) {
+	protected void doPersistableCountAllTest(BasePersistableRepository<?> repo, int expectedCount) {
 		int actualCount = repo.countAll();
 		assertThat(actualCount, is(equalTo(expectedCount)));
+	}
+	
+	protected void doPersistableDeleteByIdTest(BasePersistableRepository<? extends Persistable> repo, String id){
+		int origCount = repo.countAll();
+		repo.deleteById(null);
+		int updatedCount = repo.countAll();
+		assertThat(updatedCount, is(equalTo(origCount)));
+		
+		repo.deleteById("");
+		updatedCount = repo.countAll();
+		assertThat(updatedCount, is(equalTo(origCount)));
+		
+		repo.deleteById(id);
+		Persistable p = repo.findById(id);
+		assertThat(p, is(nullValue()));
+		updatedCount = repo.countAll();
+		assertThat(updatedCount, is(equalTo(origCount-1)));
+		
+	}
+	
+	protected void doPersistableDeleteByNameTest(BasePersistableRepository<? extends Persistable> repo, String name){
+		int origCount = repo.countAll();
+		repo.deleteByName(null);
+		int updatedCount = repo.countAll();
+		assertThat(updatedCount, is(equalTo(origCount)));
+		
+		repo.deleteByName("");
+		updatedCount = repo.countAll();
+		assertThat(updatedCount, is(equalTo(origCount)));
+		
+		repo.deleteByName(name);
+		updatedCount = repo.countAll();
+		assertThat(updatedCount, is(equalTo(origCount-1)));
+		
 	}
 	
 }

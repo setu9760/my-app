@@ -24,6 +24,8 @@ public interface BasePersistableRepository <T extends Persistable>{
 	
 	void deleteById(String id) throws RepositoryDataAccessException;
 	
+	void deleteByName(String name) throws RepositoryDataAccessException;
+	
 	void deleteAll() throws RepositoryDataAccessException;
 	
 	int countAll() throws RepositoryDataAccessException;

@@ -16,6 +16,8 @@ import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.utils.Unsupported;
+
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="studentRepository")
@@ -118,8 +120,9 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	}
 	
 	@Override
+	@Unsupported
 	public Collection<Student> getAll() throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("getAll()");
+		throwUnsupportedOperationException("getAll()", this.getClass().getName());
 		return (Collection<Student>) getAllImpl(getSelectAllSql(STUDENT_TABLE_NAME), Student.class);
 	}
 	
@@ -128,7 +131,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 		try {
 			List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
 			if (stud_ids == null || stud_ids.isEmpty()) {
-				return null;
+				return new ArrayList<>();
 			}
 			return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getStudentRowMapper());
 		} catch (DataAccessException e) {
@@ -142,13 +145,16 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	}
 
 	@Override
+	@Unsupported
 	public void deleteByName(String f_name) throws RepositoryDataAccessException {
+		throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
 		deleteImpl(getDeleteBySql(STUDENT_TABLE_NAME, F_NAME), f_name);
 	}
 	
 	@Override
+	@Unsupported
 	public void deleteAll() throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteAll()");
+		throwUnsupportedOperationException("deleteAll(name)", this.getClass().getName());
 		deleteAllImpl(STUDENT_TABLE_NAME);
 	}
 

@@ -15,6 +15,8 @@ import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.utils.Unsupported;
+
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository("scholorshipRepository")
@@ -144,6 +146,12 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
 		deleteImpl(getDeleteBySql(SCHOLORSHIP_TABLE_NAME, ID), id);
+	}
+	
+	@Override
+	@Unsupported
+	public void deleteByName(String name) throws RepositoryDataAccessException {
+		throwUnsupportedOperationException("deleteByName(name)", this.getClass().getName());
 	}
 	
 	@Override

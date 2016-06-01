@@ -15,6 +15,8 @@ import spring.desai.common.model.pojo.Payment;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.utils.Unsupported;
+
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="paymentRepository")
@@ -103,8 +105,10 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
+	@Unsupported
 	public Collection<Payment> findByName(String name) throws RepositoryDataAccessException {
-		throw new UnsupportedOperationException("findByBame operation is Unsupported with PaymentRepository");
+		throwUnsupportedOperationException("findByName(name)", this.getClass().getName());
+		return null;
 	}
 
 	@Override
@@ -137,6 +141,12 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
 		deleteImpl(getDeleteBySql(PAYMENT_TABLE_NAME, ID), id);
+	}
+	
+	@Override
+	@Unsupported
+	public void deleteByName(String name) throws RepositoryDataAccessException {
+		throwUnsupportedOperationException("deleteByName(name)", this.getClass().getName());
 	}
 	
 	@Override

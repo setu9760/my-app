@@ -237,8 +237,8 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		}
 	}
 	
-	protected void throwUnsupportedOperationException(String operation){
-		throw new UnsupportedOperationException(operation + " currently not supported.");
+	protected void throwUnsupportedOperationException(String operation, String forClass){
+		throw new UnsupportedOperationException(I18N.getString("error.unsupported.op", new Object[] {operation, forClass}));
 	}
 		
 	protected abstract String getInsertSql();

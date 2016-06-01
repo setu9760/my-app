@@ -16,6 +16,9 @@ import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.utils.I18N;
+import spring.desai.common.utils.Unsupported;
+
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository("costCodeRepository")
@@ -100,8 +103,10 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
+	@Unsupported
 	public Collection<Cost> findByName(String name) throws RepositoryDataAccessException {
-		throw new UnsupportedOperationException("findByName is not supported for CostCodeRepository");
+		throwUnsupportedOperationException("findByName(name)", this.getClass().getName());
+		return null;
 	}
 
 	@Override
@@ -112,6 +117,12 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	@Override
 	public void deleteById(String id) throws RepositoryDataAccessException {
 		deleteImpl(getDeleteBySql(COST_ABLE_NAME, COST_CODE), id);
+	}
+	
+	@Override
+	@Unsupported
+	public void deleteByName(String name) throws RepositoryDataAccessException {
+		throwUnsupportedOperationException("deleteByName(name)", this.getClass().getName());
 	}
 
 	@Override

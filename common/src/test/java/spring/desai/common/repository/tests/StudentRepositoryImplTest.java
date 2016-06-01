@@ -1,10 +1,12 @@
 package spring.desai.common.repository.tests;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -17,25 +19,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.StudentRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;	
 import spring.desai.common.utils.I18N;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
-@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 
@@ -227,42 +220,58 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 
 	@Test
 	public void testFindById() {
-		testPersistableFindById(studentRepository, "studentid1");
+		doPersistableFindByIdTest(studentRepository, "studentid1");
 	}
 	
 	@Test
 	public void testFindbyName() {
-		testPersistableFindByName(studentRepository, "f_name4", 2, 5);
+		doPersistableFindByNameTest(studentRepository, "f_name4", 2, 5);
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		testPersistableGetAll(studentRepository, 5);
+		doPersistableGetAllTest(studentRepository, 5);
 	}
 
 	@Test
 	public void testGetStudentsForSubjectId() {
-		fail("Not yet implemented");
+		Collection<Student> c = null;
+		c = studentRepository.getStudentsForSubjectId(null);
+		assertThat(c, is(not(nullValue())));
+		assertThat(c, hasSize(0));
+		
+		c = studentRepository.getStudentsForSubjectId("");
+		assertThat(c, is(not(nullValue())));
+		assertThat(c, hasSize(0));
+		
+		c = studentRepository.getStudentsForSubjectId("NON_EXISTING_SUBJ_ID");
+		assertThat(c, is(not(nullValue())));
+		assertThat(c, hasSize(0));
+		
+		c = studentRepository.getStudentsForSubjectId("subject1");
+		assertThat(c, is(not(nullValue())));
+		assertThat(c, hasSize(4));
 	}
 
 	@Test
 	public void testDeleteById() {
-		fail("Not yet implemented");
+		studentRepository.save(new Student("ID_TO_DELETE", "NAME", "NAME", 25, ""));
+		doPersistableDeleteByIdTest(studentRepository, "ID_TO_DELETE");
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteByName() {
-		fail("Not yet implemented");
+		doPersistableDeleteByNameTest(studentRepository, "NAME_TO_DELETE");
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteAll() {
-		testPersistableDeleteAll(studentRepository);
+		doPersistableDeleteAllTest(studentRepository);
 	}
 
 	@Test
 	public void testCountAll() {
-		testPersistableCountAll(studentRepository, 5);
+		doPersistableCountAllTest(studentRepository, 5);
 	}
 
 }

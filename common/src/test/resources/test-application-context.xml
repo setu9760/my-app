@@ -44,12 +44,5 @@
 	<bean id="scholorshipRowMapper" class="spring.desai.common.rowmappers.ScholorshipRowMapper"/>
 	
 	<bean id="costRowMapper" class="spring.desai.common.rowmappers.CostRowMapper" />
-	<!-- bean id="studentRepository" class="spring.desai.common.repository.impl.StudentRepositoryImpl" />
-	
-	<bean id="subjectRepository" class="spring.desai.common.repository.impl.SubjectRepositoryImpl" />
-	
-	<bean id="tutorRepository" class="spring.desai.common.repository.impl.TutorRepositoryImpl" />
-	
-	<bean class="spring.desai.common.service.impl.ReadOnlyServiceImpl" /-->
 
 </beans>
