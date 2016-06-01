@@ -6,25 +6,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.text.ChangedCharSetException;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.Unsupported;
 
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="studentRepository")
-public class StudentRepositoryImpl extends AbstractBaseRepository implements StudentRepository {
+public class StudentRepositoryImpl extends AbstractBaseRepository<Student> implements StudentRepository {
 
 	@Override
-	public void save(Student student) {
+	public void saveImpl(Student student) {
 		try {
 			checkPersitableValidity(student);
 			getJdbcTemplate().update(getInsertSql(), new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() });
@@ -34,7 +32,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	}
 
 	@Override
-	public void saveAll(final Collection<Student> persistables) throws RepositoryDataAccessException{
+	public void saveAllImpl(final Collection<Student> persistables) throws RepositoryDataAccessException{
 		try {
 			checkPersitableValidity(persistables);
 			final List<Student> students = new ArrayList<>(persistables);
@@ -62,7 +60,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	}
 	
 	@Override
-	public void update(Student student) {
+	public void updateImpl(Student student) {
 		try {
 			checkPersitableValidity(student);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] { student.getF_name(), student.getL_name(), student.getAge(), student.getAddress(), student.getId() });
@@ -73,7 +71,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	
 	
 	@Override
-	public void updateAll(final Collection<Student> persistables) throws RepositoryDataAccessException {
+	public void updateAllImpl(final Collection<Student> persistables) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(persistables);
 			final List<Student> studs = new ArrayList<>(persistables);
@@ -101,32 +99,6 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	}
 	
 	@Override
-	public Student findById(String id) throws RepositoryDataAccessException {
-		try {
-			List<Student> l = getJdbcTemplate().query(getFindBySql(STUDENT_TABLE_NAME, ID), new Object[] { id }, getStudentRowMapper());
-			return (l != null && !l.isEmpty()) ? l.get(0) : null;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public Collection<Student> findByName(String name) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(STUDENT_TABLE_NAME, F_NAME), new Object [] { "%"+name+"%" },  getStudentRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	@Unsupported
-	public Collection<Student> getAll() throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("getAll()", this.getClass().getName());
-		return (Collection<Student>) getAllImpl(getSelectAllSql(STUDENT_TABLE_NAME), Student.class);
-	}
-	
-	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {
 		try {
 			List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
@@ -140,33 +112,9 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	}
 
 	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(STUDENT_TABLE_NAME, ID), id);
+	protected RowMapper<Student> getRowMapper() {
+		return getStudentRowMapper();
 	}
-
-	@Override
-	@Unsupported
-	public void deleteByName(String f_name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
-		deleteImpl(getDeleteBySql(STUDENT_TABLE_NAME, F_NAME), f_name);
-	}
-	
-	@Override
-	@Unsupported
-	public void deleteAll() throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteAll(name)", this.getClass().getName());
-		deleteAllImpl(STUDENT_TABLE_NAME);
-	}
-
-	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().queryForObject(getCountAllSql(STUDENT_TABLE_NAME), Integer.class);
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
 
 	@Override
 	protected String getInsertSql() {
@@ -180,5 +128,19 @@ public class StudentRepositoryImpl extends AbstractBaseRepository implements Stu
 	
 	private static final String insertSql = "INSERT INTO student (id, f_name, l_name, age, address) VALUES (?, ?, ?, ?, ?)";
 	private static final String  updateSql = "UPDATE student set f_name = ?, l_name = ?, age = ?, address = ? where id = ?";
+	
+	@Override
+	protected String getTableName() {
+		return STUDENT_TABLE_NAME;
+	}
 
+	@Override
+	protected String getNameField() {
+		return F_NAME;
+	}
+
+//	@Override
+//	protected Object[] getInsertParams(Student student) {
+//		return new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() };
+//	}
 }

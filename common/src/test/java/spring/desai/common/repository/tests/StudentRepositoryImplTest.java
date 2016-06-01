@@ -248,7 +248,7 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 		assertThat(c, is(not(nullValue())));
 		assertThat(c, hasSize(0));
 		
-		c = studentRepository.getStudentsForSubjectId("subject1");
+		c = studentRepository.getStudentsForSubjectId("subjectid1");
 		assertThat(c, is(not(nullValue())));
 		assertThat(c, hasSize(4));
 	}

@@ -1,6 +1,9 @@
 package spring.desai.common.repository;
 
+import static spring.desai.common.utils.DataBaseConstants.ID;
+
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -23,7 +26,7 @@ import spring.desai.common.model.pojo.Tutor;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
-public abstract class AbstractBaseRepository extends JdbcDaoSupport {
+public abstract class AbstractBaseRepository<T extends Persistable> extends JdbcDaoSupport implements BasePersistableRepository<T> {
 
 	private static final Logger logger = Logger.getLogger(AbstractBaseRepository.class);
 
@@ -243,4 +246,86 @@ public abstract class AbstractBaseRepository extends JdbcDaoSupport {
 		
 	protected abstract String getInsertSql();
 	protected abstract String getUpdateSql();
+	protected abstract RowMapper<T> getRowMapper();
+	protected abstract String getTableName();
+//	protected abstract Object[] getInsertParams(T persistable);
+	
+	protected String getIdField(){
+		return ID;
+	}
+	protected abstract String getNameField();
+	
+	public void save(T persistable) throws RepositoryDataAccessException {
+//		getJdbcTemplate().update(getInsertSql(), getInsertParams(persistable));
+		saveImpl(persistable);
+	}
+	
+	public void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException {
+		// TODO : Check the size of collection and break down call to saveAllImpl in smaller chunks to avoid large batch inserts.
+		saveAll(persistables);
+	}
+	
+	public void update(T persistable) throws RepositoryDataAccessException {
+		updateImpl(persistable);
+	}
+	
+	public void updateAll(final Collection<T> persistables) throws RepositoryDataAccessException {
+		// TODO : Check the size of collection and break down call to saveAllImpl in smaller chunks to avoid large batch inserts.
+		updateAllImpl(persistables);
+	}
+	
+	protected abstract void saveImpl(T persistable) throws RepositoryDataAccessException;
+	protected abstract void saveAllImpl(final Collection<T> persistables) throws RepositoryDataAccessException;
+	protected abstract void updateImpl(T persistable) throws RepositoryDataAccessException;
+	protected abstract void updateAllImpl(final Collection<T> persistables) throws RepositoryDataAccessException;
+	
+	@Deprecated
+	public Collection<T> getAll() throws RepositoryDataAccessException{
+		return getJdbcTemplate().query(getSelectAllSql(getTableName()), getRowMapper());
+	}
+
+	public T findById(String id) throws RepositoryDataAccessException{
+		try{
+			List<T> l = getJdbcTemplate().query(getFindBySql(getTableName(), getIdField()), new Object[] { id }, getRowMapper());
+			return (l != null && !l.isEmpty()) ? l.get(0) : null;
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	public Collection<T> findByName(String name) throws RepositoryDataAccessException{
+		try{
+			return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { name }, getRowMapper());
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	public void deleteById(String id) throws RepositoryDataAccessException{
+		try {
+			getJdbcTemplate().update(getDeleteBySql(getTableName(), getIdField()), new Object[]{ id });
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	public void deleteByName(String name) throws RepositoryDataAccessException{
+		try {
+			getJdbcTemplate().update(getDeleteBySql(getTableName(), getNameField()), new Object[] { name });
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	public void deleteAll() throws RepositoryDataAccessException{
+		throwUnsupportedOperationException("deleteAll()", this.getClass().getName());
+	}
+	
+	public int countAll() throws RepositoryDataAccessException {
+		try {
+			return getJdbcTemplate().queryForObject(getCountAllSql(getTableName()), Integer.class);
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
 }

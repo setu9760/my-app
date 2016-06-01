@@ -20,6 +20,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.pojo.Persistable;
+import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.utils.I18N;
 

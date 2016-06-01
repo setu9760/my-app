@@ -1,5 +1,9 @@
 package spring.desai.common.repository.impl;
 
+import static spring.desai.common.utils.DataBaseConstants.PAYMENT_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.TYPE;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,6 +12,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.PaymentType;
@@ -15,15 +20,12 @@ import spring.desai.common.model.pojo.Payment;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.Unsupported;
-
-import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="paymentRepository")
-public class PaymentRepositoryImpl extends AbstractBaseRepository implements PaymentRepository {
+public class PaymentRepositoryImpl extends AbstractBaseRepository<Payment> implements PaymentRepository {
 
 	@Override
-	public void save(Payment payment) throws RepositoryDataAccessException {
+	public void saveImpl(Payment payment) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(payment);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {payment.getId(), payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id()});
@@ -33,7 +35,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
-	public void saveAll(final Collection<Payment> persistables) throws RepositoryDataAccessException{
+	public void saveAllImpl(final Collection<Payment> persistables) throws RepositoryDataAccessException{
 		try {
 			final List<Payment> payments = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
@@ -59,7 +61,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 
 	@Override
-	public void update(Payment payment) throws RepositoryDataAccessException {
+	public void updateImpl(Payment payment) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(payment);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {payment.getAmount(), payment.getPaymentType().toString(), payment.getStud_id(), payment.getId()});
@@ -69,7 +71,7 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
-	public void updateAll(final Collection<Payment> persistables) throws RepositoryDataAccessException{
+	public void updateAllImpl(final Collection<Payment> persistables) throws RepositoryDataAccessException{
 		try {
 			final List<Payment> payments = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
@@ -95,23 +97,6 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
-	public Payment findById(String id) throws RepositoryDataAccessException {
-		try {
-			List<Payment> l = getJdbcTemplate().query(getFindBySql(PAYMENT_TABLE_NAME, ID), new Object[] { id }, getPaymentRowMapper());
-			return (l != null && !l.isEmpty()) ? l.get(0) : null;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	@Unsupported
-	public Collection<Payment> findByName(String name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("findByName(name)", this.getClass().getName());
-		return null;
-	}
-
-	@Override
 	public Collection<Payment> findbyStudentId(String stud_id) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(PAYMENT_TABLE_NAME, STUD_ID), new Object[] { stud_id }, getPaymentRowMapper());
@@ -130,36 +115,10 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	}
 	
 	@Override
-	public Collection<Payment> getAll() throws RepositoryDataAccessException {
-		try {
-			return (Collection<Payment>) getAllImpl(getCountAllSql(PAYMENT_TABLE_NAME), Payment.class);
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+	protected RowMapper<Payment> getRowMapper() {
+		return getPaymentRowMapper();
 	}
 	
-	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(PAYMENT_TABLE_NAME, ID), id);
-	}
-	
-	@Override
-	@Unsupported
-	public void deleteByName(String name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteByName(name)", this.getClass().getName());
-	}
-	
-	@Override
-	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(PAYMENT_TABLE_NAME);
-	}
-
-	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(PAYMENT_TABLE_NAME));
-	}
-
-
 	@Override
 	protected String getInsertSql() {
 		return "INSERT INTO payment (id, amount, type, stud_id) VALUES (?, ?, ?, ?)";
@@ -168,5 +127,15 @@ public class PaymentRepositoryImpl extends AbstractBaseRepository implements Pay
 	@Override
 	protected String getUpdateSql() {
 		return "UPDATE payment SET amount = ?, type = ?, stud_id = ? WHERE id = ?";
+	}
+
+	@Override
+	protected String getTableName() {
+		return PAYMENT_TABLE_NAME;
+	}
+
+	@Override
+	protected String getNameField() {
+		return null;
 	}
 }

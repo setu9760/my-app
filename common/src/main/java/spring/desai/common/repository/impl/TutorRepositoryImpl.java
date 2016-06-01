@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.pojo.Tutor;
@@ -17,10 +18,10 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="tutorRepository")
-public class TutorRepositoryImpl extends AbstractBaseRepository implements TutorRepository {
+public class TutorRepositoryImpl extends AbstractBaseRepository<Tutor> implements TutorRepository {
 
 	@Override
-	public void save(Tutor tutor) {
+	public void saveImpl(Tutor tutor) {
 		try {
 			checkPersitableValidity(tutor);
 			getJdbcTemplate().update(getInsertSql(), new Object[] { tutor.getId(), tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubj_id()} );
@@ -30,7 +31,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 	
 	@Override
-	public void saveAll(final Collection<Tutor> persistables) throws RepositoryDataAccessException {
+	public void saveAllImpl(final Collection<Tutor> persistables) throws RepositoryDataAccessException {
 		try {
 			final List<Tutor> tutors = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
@@ -58,7 +59,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 
 	@Override
-	public void update(Tutor tutor) {
+	public void updateImpl(Tutor tutor) {
 		try {
 			checkPersitableValidity(tutor);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {tutor.getF_name(), tutor.getL_name(), tutor.getAddress(), tutor.isFulltime(), tutor.getSubj_id(), tutor.getId()});
@@ -68,7 +69,7 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 	
 	@Override
-	public void updateAll(final Collection<Tutor> persistables) throws RepositoryDataAccessException {
+	public void updateAllImpl(final Collection<Tutor> persistables) throws RepositoryDataAccessException {
 		try {
 			final List<Tutor> tutors = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
@@ -96,30 +97,6 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 	
 	@Override
-	public Tutor findById(String id) throws RepositoryDataAccessException {
-		try {
-			List<Tutor> l = getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, ID), new Object[] { id }, getTutorRowMapper());
-			return (l != null && !l.isEmpty()) ? l.get(0) : null;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public Collection<Tutor> findByName(String f_name) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, F_NAME), new Object[] { f_name }, getTutorRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	public Collection<Tutor> getAll() throws DataAccessException {
-		return (Collection<Tutor>) getAllImpl(getSelectAllSql(TUTOR_TABLE_NAME), Tutor.class);
-	}
-	
-	@Override
 	public Collection<Tutor> getTutorsForSubject(String subj_id) throws DataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, SUBJ_ID), new Object[] { subj_id }, getTutorRowMapper());
@@ -129,26 +106,18 @@ public class TutorRepositoryImpl extends AbstractBaseRepository implements Tutor
 	}
 
 	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(TUTOR_TABLE_NAME, ID), id);
-	}
-
-	@Override
-	public void deleteByName(String f_name) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(TUTOR_TABLE_NAME, F_NAME), f_name);
+	protected RowMapper<Tutor> getRowMapper() {
+		return getTutorRowMapper();
 	}
 	
-	/**
-	 * No-op
-	 */
 	@Override
-	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(TUTOR_TABLE_NAME);
+	protected String getNameField() {
+		return F_NAME;
 	}
-
+	
 	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(TUTOR_TABLE_NAME));
+	protected String getTableName() {
+		return TUTOR_TABLE_NAME;
 	}
 	
 	@Override

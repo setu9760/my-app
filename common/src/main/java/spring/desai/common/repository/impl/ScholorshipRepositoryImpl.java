@@ -1,5 +1,9 @@
 package spring.desai.common.repository.impl;
 
+import static spring.desai.common.utils.DataBaseConstants.SCHOLORSHIP_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.TYPE;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,6 +12,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.ScholorshipType;
@@ -15,15 +20,12 @@ import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.Unsupported;
-
-import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository("scholorshipRepository")
-public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements ScholorshipRepository{
+public class ScholorshipRepositoryImpl extends AbstractBaseRepository<Scholorship> implements ScholorshipRepository{
 
 	@Override
-	public void save(Scholorship scholorship) throws RepositoryDataAccessException  {
+	public void saveImpl(Scholorship scholorship) throws RepositoryDataAccessException  {
 		try {
 			checkPersitableValidity(scholorship);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {scholorship.getId(), scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
@@ -33,7 +35,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 		}		
 	}
 	
-	public void saveAll(final Collection<Scholorship> persistables) throws RepositoryDataAccessException {
+	public void saveAllImpl(final Collection<Scholorship> persistables) throws RepositoryDataAccessException {
 		try {
 			final List<Scholorship> scholorships = new ArrayList<>(persistables);
 			
@@ -65,7 +67,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	}
 
 	@Override
-	public void update(Scholorship scholorship) throws RepositoryDataAccessException {
+	public void updateImpl(Scholorship scholorship) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(scholorship);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {scholorship.getExternal_ref(), scholorship.getType().toString(), scholorship.getTotal_amount(), 
@@ -76,7 +78,7 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	}
 	
 	@Override
-	public void updateAll(final Collection<Scholorship> persistables) throws RepositoryDataAccessException{
+	public void updateAllImpl(final Collection<Scholorship> persistables) throws RepositoryDataAccessException{
 		try {
 			final List<Scholorship> scholorships = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
@@ -107,25 +109,6 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	}
 
 	@Override
-	public Scholorship findById(String id) throws RepositoryDataAccessException {
-		try {
-			List<Scholorship> l = getJdbcTemplate().query(getFindBySql(SCHOLORSHIP_TABLE_NAME, ID), new Object[] { id }, getScholorshipRowMapper());
-			return (l != null && !l.isEmpty()) ? l.get(0) : null;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	public Collection<Scholorship> findByName(String name) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(SCHOLORSHIP_TABLE_NAME, TYPE), new Object[] { name }, getScholorshipRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
 	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
 		return findByName(type.toString());
 	}
@@ -139,31 +122,20 @@ public class ScholorshipRepositoryImpl extends AbstractBaseRepository implements
 	}
 	
 	@Override
-	public Collection<Scholorship> getAll() throws RepositoryDataAccessException {
-		return (Collection<Scholorship>) getAllImpl(getSelectAllSql(SCHOLORSHIP_TABLE_NAME), Scholorship.class);
+	protected RowMapper<Scholorship> getRowMapper() {
+		return getScholorshipRowMapper();
 	}
 
 	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(SCHOLORSHIP_TABLE_NAME, ID), id);
+	protected String getTableName() {
+		return SCHOLORSHIP_TABLE_NAME;
 	}
 	
 	@Override
-	@Unsupported
-	public void deleteByName(String name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteByName(name)", this.getClass().getName());
+	protected String getNameField() {
+		return TYPE;
 	}
 	
-	@Override
-	public void deleteAll() throws RepositoryDataAccessException{
-		deleteAllImpl(SCHOLORSHIP_TABLE_NAME);
-	}
-	
-	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(SCHOLORSHIP_TABLE_NAME));
-	}
-
 	@Override
 	protected String getInsertSql() {
 		return "INSERT INTO scholorship (id, external_ref, type, total_amount, paid_amount, isFullyPaid, isPostPay, stud_id, additional_comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

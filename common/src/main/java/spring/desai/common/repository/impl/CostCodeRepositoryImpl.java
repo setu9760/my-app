@@ -1,5 +1,8 @@
 package spring.desai.common.repository.impl;
 
+import static spring.desai.common.utils.DataBaseConstants.COST_ABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,24 +11,20 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.I18N;
-import spring.desai.common.utils.Unsupported;
-
-import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository("costCodeRepository")
-public class CostCodeRepositoryImpl extends AbstractBaseRepository implements CostCodeRepository {
+public class CostCodeRepositoryImpl extends AbstractBaseRepository<Cost> implements CostCodeRepository {
 
 	@Override
-	public void save(Cost cost) throws RepositoryDataAccessException {
+	public void saveImpl(Cost cost) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(cost);
 			getJdbcTemplate().update(getInsertSql(), new Object[] {cost.getCostCode(), cost.getAmount()});
@@ -35,7 +34,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public void saveAll(final Collection<Cost> persistables) throws RepositoryDataAccessException {
+	public void saveAllImpl(final Collection<Cost> persistables) throws RepositoryDataAccessException {
 		try {
 			final List<Cost> costs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
@@ -59,7 +58,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public void update(Cost cost) throws RepositoryDataAccessException {
+	public void updateImpl(Cost cost) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(cost);
 			getJdbcTemplate().update(getUpdateSql(), new Object[] {cost.getAmount(), cost.getCostCode()});
@@ -69,7 +68,7 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public void updateAll(Collection<Cost> persistables) throws RepositoryDataAccessException {
+	public void updateAllImpl(Collection<Cost> persistables) throws RepositoryDataAccessException {
 		try {
 			final List<Cost> costs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
@@ -93,48 +92,15 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public Cost findById(String id) throws RepositoryDataAccessException {
-		try {
-			List<Cost> l = getJdbcTemplate().query(getFindBySql(COST_ABLE_NAME, COST_CODE),  new Object[] { id }, getCostRowMapper());
-			return (l !=null && l.isEmpty()) ? l.get(0) : null; 
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	@Unsupported
-	public Collection<Cost> findByName(String name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("findByName(name)", this.getClass().getName());
-		return null;
-	}
-
-	@Override
 	public Cost findByCode(CostCode costCode) throws RepositoryDataAccessException {
 		return findById(costCode.toString());
 	}
 	
 	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(COST_ABLE_NAME, COST_CODE), id);
+	protected RowMapper<Cost> getRowMapper() {
+		return getCostRowMapper();
 	}
 	
-	@Override
-	@Unsupported
-	public void deleteByName(String name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteByName(name)", this.getClass().getName());
-	}
-
-	@Override
-	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(COST_ABLE_NAME);
-	}
-
-	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(COST_ABLE_NAME));
-	}
-
 	@Override
 	protected String getInsertSql() {
 		return "INSERT INTO cost VALUES (?, ?)";
@@ -146,7 +112,17 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository implements Co
 	}
 
 	@Override
-	public Collection<Cost> getAll() throws RepositoryDataAccessException {
-		return (Collection<Cost>) getAllImpl(getSelectAllSql(COST_ABLE_NAME), Cost.class);
+	protected String getTableName() {
+		return COST_ABLE_NAME;
+	}
+	
+	@Override
+	protected String getIdField() {
+		return COST_CODE;
+	}
+	
+	@Override
+	protected String getNameField() {
+		return null;
 	}
 }

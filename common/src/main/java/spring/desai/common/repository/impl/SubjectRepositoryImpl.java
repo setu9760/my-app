@@ -1,5 +1,14 @@
 package spring.desai.common.repository.impl;
 
+import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.IS_MANDATORY;
+import static spring.desai.common.utils.DataBaseConstants.NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.SUBJECT_STUDENT_LINK_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJECT_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJ_ID;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,6 +17,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.CostCode;
@@ -15,23 +25,22 @@ import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="subjectRepository")
-public class SubjectRepositoryImpl extends AbstractBaseRepository implements SubjectRepository {
+public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> implements SubjectRepository {
 	
 	@Override
-	public void save(Subject subject) throws RepositoryDataAccessException {
+	public void saveImpl(Subject subject) throws RepositoryDataAccessException {
 		try {
 			checkPersitableValidity(subject);
-			getJdbcTemplate().update(getInsertSql(), new Object[] {subject.getId(), subject.getName(), subject.getCost_code(), subject.isMandatory()});
+			getJdbcTemplate().update(getInsertSql(), new Object[] {subject.getId(), subject.getName(), subject.getCost_code().toString(), subject.isMandatory()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
 	}
 	
 	@Override
-	public void saveAll(final Collection<Subject> persistables) throws RepositoryDataAccessException{
+	public void saveAllImpl(final Collection<Subject> persistables) throws RepositoryDataAccessException{
 		try {
 			final List<Subject> subjs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
@@ -57,17 +66,17 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	}
 
 	@Override
-	public void update(Subject subject) {
+	public void updateImpl(Subject subject) {
 		try {
 			checkPersitableValidity(subject);
-			getJdbcTemplate().update(getUpdateSql(), new Object[] {subject.getName(), subject.getCost_code(), subject.isMandatory(), subject.getId()});
+			getJdbcTemplate().update(getUpdateSql(), new Object[] {subject.getName(), subject.getCost_code().toString(), subject.isMandatory(), subject.getId()});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
 	}
 	
 	@Override
-	public void updateAll(final Collection<Subject> persistables) throws RepositoryDataAccessException{
+	public void updateAllImpl(final Collection<Subject> persistables) throws RepositoryDataAccessException{
 		try {
 			final List<Subject> subjs = new ArrayList<>(persistables);
 			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
@@ -92,16 +101,6 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 		}
 	}
 	
-	@Override
-	public Subject findById(String id) throws RepositoryDataAccessException {
-		try {
-			List<Subject> l = getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, ID), new Object[] { id }, getSubjectRowMapper());
-			return (l != null && !l.isEmpty()) ? l.get(0) : null;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
 	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getSubjectRowMapper());
@@ -111,18 +110,9 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	}
 	
 	@Override
-	public Collection<Subject> findByName(String name) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, NAME), new Object[] { name }, getSubjectRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
 	public Collection<Subject> findByCostCode(CostCode costCode) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { costCode.toString() }, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { String.valueOf(costCode) }, getSubjectRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -148,41 +138,33 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository implements Sub
 	}
 	
 	@Override
-	public Collection<Subject> getAll() throws RepositoryDataAccessException {
-		return (Collection<Subject>) getAllImpl(getSelectAllSql(SUBJECT_TABLE_NAME), Subject.class);
-	}
-
-	@Override
-	public void deleteById(String id) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(SUBJECT_TABLE_NAME, ID), id);
-	}
-
-	@Override
-	public void deleteByName(String name) throws RepositoryDataAccessException {
-		deleteImpl(getDeleteBySql(SUBJECT_TABLE_NAME, NAME), name);
+	protected RowMapper<Subject> getRowMapper() {
+		return getSubjectRowMapper();
 	}
 	
-	/**
-	 * No-op
-	 */
-	@Override
-	public void deleteAll() throws RepositoryDataAccessException {
-		deleteAllImpl(STUDENT_SCHOLORSHIP_LINK_TABLE_NAME);
-	}
-
-	@Override
-	public int countAll() throws RepositoryDataAccessException {
-		return countAllImpl(getCountAllSql(SUBJECT_TABLE_NAME));
-	}
-
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO subject (id, name, cost_code, isMandatory) VALUE (?, ?, ?, ?)";
+		return "INSERT INTO subject (id, name, cost_code, isMandatory) VALUES (?, ?, ?, ?)";
 	}
 
 	@Override
 	protected String getUpdateSql() {
 		return "UPDATE subject set name = ?, cost_code = ?, isMandatory = ? WHERE id = ?";
+	}
+
+	@Override
+	protected String getTableName() {
+		return SUBJECT_TABLE_NAME;
+	}
+
+	@Override
+	protected String getIdField() {
+		return ID;
+	}
+
+	@Override
+	protected String getNameField() {
+		return NAME;
 	}
 
 }
