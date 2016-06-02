@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -42,51 +44,27 @@ public abstract class AbstractBaseRepository<T extends Persistable> extends Jdbc
 
 	@Autowired
 	@Qualifier("studentRowMapper")
-	private RowMapper<Student> studentRowMapper;
+	protected RowMapper<Student> studentRowMapper;
 
 	@Autowired
 	@Qualifier("subjectRowMapper")
-	private RowMapper<Subject> subjectRowMapper;
+	protected RowMapper<Subject> subjectRowMapper;
 
 	@Autowired
 	@Qualifier("tutorRowMapper")
-	private RowMapper<Tutor> tutorRowMapper;
+	protected RowMapper<Tutor> tutorRowMapper;
 	
 	@Autowired
 	@Qualifier("paymentRowMapper")
-	private RowMapper<Payment> paymentRowMapper;
+	protected RowMapper<Payment> paymentRowMapper;
 	
 	@Autowired
 	@Qualifier("scholorshipRowMapper")
-	private RowMapper<Scholorship> scholorshipRowMapper;
+	protected RowMapper<Scholorship> scholorshipRowMapper;
 	
 	@Autowired
 	@Qualifier("costRowMapper")
-	private RowMapper<Cost> costRowMapper;
-
-	public RowMapper<Student> getStudentRowMapper() {
-		return studentRowMapper;
-	}
-
-	public RowMapper<Subject> getSubjectRowMapper() {
-		return subjectRowMapper;
-	}
-
-	public RowMapper<Tutor> getTutorRowMapper() {
-		return tutorRowMapper;
-	}
-	
-	public RowMapper<Payment> getPaymentRowMapper() {
-		return paymentRowMapper;
-	}
-	
-	public RowMapper<Scholorship> getScholorshipRowMapper() {
-		return scholorshipRowMapper;
-	}
-	
-	public RowMapper<Cost> getCostRowMapper() {
-		return costRowMapper;
-	}
+	protected RowMapper<Cost> costRowMapper;
 
 	public static Logger getLogger() {
 		return logger;
@@ -169,58 +147,7 @@ public abstract class AbstractBaseRepository<T extends Persistable> extends Jdbc
 		return sb.toString();
 	}
 	
-	protected final void deleteAllImpl(String tableName) throws RepositoryDataAccessException {
-		try {
-			getJdbcTemplate().update(truncateTableSql(tableName));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	protected final Collection<? extends Persistable> getAllImpl(String sql, Class<? extends Persistable> classType) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(sql, getRowMapperForClass(classType));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	protected final void deleteImpl(String sql, String fieldValue) throws RepositoryDataAccessException {
-		try {
-			getJdbcTemplate().update(sql, new Object[] {fieldValue}); 
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	protected final int countAllImpl(String sql) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().queryForObject(sql, Integer.class);
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	private RowMapper<? extends Persistable> getRowMapperForClass(Class<?> classType) {
-
-		if (classType.getName().contains("Student")) {
-			return getStudentRowMapper();
-		} else if (classType.getName().contains("Subject")){
-			return getSubjectRowMapper();
-		} else if (classType.getName().contains("Tutor")){
-			return getTutorRowMapper();
-		} else if (classType.getName().contains("Payment")){
-			return getPaymentRowMapper();
-		} else if (classType.getName().contains("Scholorship")){
-			return getScholorshipRowMapper();
-		} else if (classType.getName().contains("Cost")){ 
-			return getCostRowMapper();
-		} else {
-			throw new IllegalArgumentException("Rowmapper for classtype " + classType.getName() + " is unsupported.");
-		}
-	}
-	
-	protected void checkPersitableValidity(Persistable persistable){
+	private void checkPersitableValidity(T persistable){
 		if (null == persistable) {
 			throw new IllegalArgumentException(I18N.getString("error.null.object"));
 		}
@@ -229,7 +156,7 @@ public abstract class AbstractBaseRepository<T extends Persistable> extends Jdbc
 		}
 	}
 	
-	protected void checkPersitableValidity(Collection<? extends Persistable> coll){
+	private void checkPersitableValidity(Collection<T> coll){
 		if (null == coll || coll.isEmpty()) {
 			throw new IllegalArgumentException(I18N.getString("error.null.object"));
 		}
@@ -248,39 +175,58 @@ public abstract class AbstractBaseRepository<T extends Persistable> extends Jdbc
 	protected abstract String getUpdateSql();
 	protected abstract RowMapper<T> getRowMapper();
 	protected abstract String getTableName();
-//	protected abstract Object[] getInsertParams(T persistable);
+	protected abstract PreparedStatementSetter getInsertPreparedStatementSetter(final T persistable);
+	protected abstract PreparedStatementSetter getUpdatePreparedStatementSetter(final T persistable);
+	protected abstract BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(final Collection<T> persistable);
+	protected abstract BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(final Collection<T> persistable);
 	
 	protected String getIdField(){
 		return ID;
 	}
 	protected abstract String getNameField();
 	
-	public void save(T persistable) throws RepositoryDataAccessException {
-//		getJdbcTemplate().update(getInsertSql(), getInsertParams(persistable));
-		saveImpl(persistable);
+	public void save(final T persistable) throws RepositoryDataAccessException {
+		checkPersitableValidity(persistable);
+		try {
+			getJdbcTemplate().update(getInsertSql(), getInsertPreparedStatementSetter(persistable));
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 	
+
 	public void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException {
+		checkPersitableValidity(persistables);
 		// TODO : Check the size of collection and break down call to saveAllImpl in smaller chunks to avoid large batch inserts.
-		saveAll(persistables);
+		try {
+			getJdbcTemplate().batchUpdate(getInsertSql(), getInsertBatchPreparedStatementSetter(persistables));
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 	
 	public void update(T persistable) throws RepositoryDataAccessException {
-		updateImpl(persistable);
+		checkPersitableValidity(persistable);
+		try {
+			getJdbcTemplate().update(getUpdateSql(), getUpdatePreparedStatementSetter(persistable));
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 	
 	public void updateAll(final Collection<T> persistables) throws RepositoryDataAccessException {
+		checkPersitableValidity(persistables);
 		// TODO : Check the size of collection and break down call to saveAllImpl in smaller chunks to avoid large batch inserts.
-		updateAllImpl(persistables);
+		try {
+			getJdbcTemplate().batchUpdate(getUpdateSql(), getUpdateBatchPreparedStatementSetter(persistables));
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
-	
-	protected abstract void saveImpl(T persistable) throws RepositoryDataAccessException;
-	protected abstract void saveAllImpl(final Collection<T> persistables) throws RepositoryDataAccessException;
-	protected abstract void updateImpl(T persistable) throws RepositoryDataAccessException;
-	protected abstract void updateAllImpl(final Collection<T> persistables) throws RepositoryDataAccessException;
 	
 	@Deprecated
 	public Collection<T> getAll() throws RepositoryDataAccessException{
+		throwUnsupportedOperationException("getAll()", this.getClass().getName());
 		return getJdbcTemplate().query(getSelectAllSql(getTableName()), getRowMapper());
 	}
 
@@ -295,7 +241,7 @@ public abstract class AbstractBaseRepository<T extends Persistable> extends Jdbc
 	
 	public Collection<T> findByName(String name) throws RepositoryDataAccessException{
 		try{
-			return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { name }, getRowMapper());
+			return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { "%" + name + "%" }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -310,6 +256,7 @@ public abstract class AbstractBaseRepository<T extends Persistable> extends Jdbc
 	}
 	
 	public void deleteByName(String name) throws RepositoryDataAccessException{
+		throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
 		try {
 			getJdbcTemplate().update(getDeleteBySql(getTableName(), getNameField()), new Object[] { name });
 		} catch (DataAccessException e) {

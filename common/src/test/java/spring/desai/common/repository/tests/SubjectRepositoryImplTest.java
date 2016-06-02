@@ -94,7 +94,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doPersistableGetAllTest(subjectRepository, 5);
 	}

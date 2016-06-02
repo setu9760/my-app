@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -24,81 +25,13 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 public class CostCodeRepositoryImpl extends AbstractBaseRepository<Cost> implements CostCodeRepository {
 
 	@Override
-	public void saveImpl(Cost cost) throws RepositoryDataAccessException {
-		try {
-			checkPersitableValidity(cost);
-			getJdbcTemplate().update(getInsertSql(), new Object[] {cost.getCostCode(), cost.getAmount()});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public void saveAllImpl(final Collection<Cost> persistables) throws RepositoryDataAccessException {
-		try {
-			final List<Cost> costs = new ArrayList<>(persistables);
-			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					Cost c = costs.get(i);
-					checkPersitableValidity(c);
-					ps.setString(1, c.getCostCode());
-					ps.setDouble(2, c.getAmount());
-				}
-				
-				@Override
-				public int getBatchSize() {
-					return costs.size();
-				}
-			});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public void updateImpl(Cost cost) throws RepositoryDataAccessException {
-		try {
-			checkPersitableValidity(cost);
-			getJdbcTemplate().update(getUpdateSql(), new Object[] {cost.getAmount(), cost.getCostCode()});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public void updateAllImpl(Collection<Cost> persistables) throws RepositoryDataAccessException {
-		try {
-			final List<Cost> costs = new ArrayList<>(persistables);
-			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					Cost c = costs.get(i);
-					checkPersitableValidity(c);
-					ps.setDouble(1, c.getAmount());
-					ps.setString(2, c.getCostCode());
-				}
-				
-				@Override
-				public int getBatchSize() {
-					return costs.size();
-				}
-			});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
 	public Cost findByCode(CostCode costCode) throws RepositoryDataAccessException {
 		return findById(costCode.toString());
 	}
 	
 	@Override
 	protected RowMapper<Cost> getRowMapper() {
-		return getCostRowMapper();
+		return costRowMapper;
 	}
 	
 	@Override
@@ -124,5 +57,67 @@ public class CostCodeRepositoryImpl extends AbstractBaseRepository<Cost> impleme
 	@Override
 	protected String getNameField() {
 		return null;
+	}
+	
+	@Override
+	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Cost c) {
+		return new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, c.getId());
+				ps.setDouble(2, c.getAmount());
+			}
+		};
+	}
+	
+	@Override
+	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Cost c) {
+		return new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setDouble(1, c.getAmount());
+				ps.setString(2, c.getId());
+			}
+		};
+	}
+	
+	@Override
+	protected BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(final Collection<Cost> persistable) {
+		final List<Cost> l = new ArrayList<>(persistable);
+		return new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Cost c = l.get(i);
+				ps.setString(1, c.getId());
+				ps.setDouble(2, c.getAmount());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return l.size();
+			}
+		};
+	}
+	
+	@Override
+	protected BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(final Collection<Cost> persistable) {
+		final List<Cost> l = new ArrayList<>(persistable);
+		return new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Cost c = l.get(i);
+				ps.setDouble(1, c.getAmount());
+				ps.setString(2, c.getId());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return l.size();
+			}
+		};
 	}
 }

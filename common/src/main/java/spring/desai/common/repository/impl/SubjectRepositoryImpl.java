@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -29,81 +30,9 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 @Repository(value="subjectRepository")
 public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> implements SubjectRepository {
 	
-	@Override
-	public void saveImpl(Subject subject) throws RepositoryDataAccessException {
-		try {
-			checkPersitableValidity(subject);
-			getJdbcTemplate().update(getInsertSql(), new Object[] {subject.getId(), subject.getName(), subject.getCost_code().toString(), subject.isMandatory()});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	public void saveAllImpl(final Collection<Subject> persistables) throws RepositoryDataAccessException{
-		try {
-			final List<Subject> subjs = new ArrayList<>(persistables);
-			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					Subject s = subjs.get(i);
-					checkPersitableValidity(s);
-					ps.setString(1, s.getId());
-					ps.setString(2, s.getName());
-					ps.setString(3, s.getCost_code().toString());
-					ps.setString(4, String.valueOf(s.isMandatory()));
-				}
-				
-				@Override
-				public int getBatchSize() {
-					return persistables.size();
-				}
-			});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public void updateImpl(Subject subject) {
-		try {
-			checkPersitableValidity(subject);
-			getJdbcTemplate().update(getUpdateSql(), new Object[] {subject.getName(), subject.getCost_code().toString(), subject.isMandatory(), subject.getId()});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
-	public void updateAllImpl(final Collection<Subject> persistables) throws RepositoryDataAccessException{
-		try {
-			final List<Subject> subjs = new ArrayList<>(persistables);
-			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					Subject s = subjs.get(i);
-					checkPersitableValidity(s);
-					ps.setString(1, s.getName());
-					ps.setString(2, s.getCost_code().toString());
-					ps.setString(3, String.valueOf(s.isMandatory()));
-					ps.setString(4, s.getId());
-				}
-				
-				@Override
-				public int getBatchSize() {
-					return persistables.size();
-				}
-			});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
 	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -112,7 +41,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> imple
 	@Override
 	public Collection<Subject> findByCostCode(CostCode costCode) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { String.valueOf(costCode) }, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { String.valueOf(costCode) }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -121,7 +50,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> imple
 	@Override
 	public Collection<Subject> findByMandatory(boolean isMandatory) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, IS_MANDATORY), new Object[] { isMandatory }, getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, IS_MANDATORY), new Object[] { isMandatory }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -131,7 +60,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> imple
 	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws DataAccessException {
 		try {
 			List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
-			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getSubjectRowMapper());
+			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -139,7 +68,7 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> imple
 	
 	@Override
 	protected RowMapper<Subject> getRowMapper() {
-		return getSubjectRowMapper();
+		return subjectRowMapper;
 	}
 	
 	@Override
@@ -165,6 +94,76 @@ public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> imple
 	@Override
 	protected String getNameField() {
 		return NAME;
+	}
+	
+	@Override
+	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Subject s) {
+		return new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, s.getId());
+				ps.setString(2, s.getName());
+				ps.setString(3, s.getCost_code().toString());
+				ps.setString(4, String.valueOf(s.isMandatory()));
+			}
+		};
+	}
+	
+	@Override
+	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Subject s) {
+		return new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, s.getName());
+				ps.setString(2, s.getCost_code().toString());
+				ps.setString(3, String.valueOf(s.isMandatory()));
+				ps.setString(4, s.getId());
+			}
+		};
+	}
+	
+	@Override
+	protected BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(final Collection<Subject> persistable) {
+		final List<Subject> l = new ArrayList<>(persistable);
+		return new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Subject s = l.get(i);
+				ps.setString(1, s.getName());
+				ps.setString(2, s.getCost_code().toString());
+				ps.setString(3, String.valueOf(s.isMandatory()));
+				ps.setString(4, s.getId());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return l.size();
+			}
+		};
+	}
+	
+	@Override
+	protected BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(final Collection<Subject> persistable) {
+		final List<Subject> l = new ArrayList<>(persistable);
+		return new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Subject s = l.get(i);
+				ps.setString(1, s.getCost_code().toString());
+				ps.setString(2, String.valueOf(s.isMandatory()));
+				ps.setString(3, s.getId());
+				ps.setString(4, s.getName());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return l.size();
+			}
+		};
 	}
 
 }

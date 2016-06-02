@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -22,90 +23,13 @@ import static spring.desai.common.utils.DataBaseConstants.*;
 public class StudentRepositoryImpl extends AbstractBaseRepository<Student> implements StudentRepository {
 
 	@Override
-	public void saveImpl(Student student) {
-		try {
-			checkPersitableValidity(student);
-			getJdbcTemplate().update(getInsertSql(), new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-
-	@Override
-	public void saveAllImpl(final Collection<Student> persistables) throws RepositoryDataAccessException{
-		try {
-			checkPersitableValidity(persistables);
-			final List<Student> students = new ArrayList<>(persistables);
-			getJdbcTemplate().batchUpdate(getInsertSql(), new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					Student s = students.get(i);
-					checkPersitableValidity(s);
-					ps.setString(1, s.getId());
-					ps.setString(2, s.getF_name());
-					ps.setString(3, s.getL_name());
-					ps.setInt(4, s.getAge());
-					ps.setString(5, s.getAddress());
-				}
-				
-				@Override
-				public int getBatchSize() {
-					return persistables.size();
-				}
-			});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}		
-	}
-	
-	@Override
-	public void updateImpl(Student student) {
-		try {
-			checkPersitableValidity(student);
-			getJdbcTemplate().update(getUpdateSql(), new Object[] { student.getF_name(), student.getL_name(), student.getAge(), student.getAddress(), student.getId() });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	
-	@Override
-	public void updateAllImpl(final Collection<Student> persistables) throws RepositoryDataAccessException {
-		try {
-			checkPersitableValidity(persistables);
-			final List<Student> studs = new ArrayList<>(persistables);
-			getJdbcTemplate().batchUpdate(getUpdateSql(), new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					Student s = studs.get(i);
-					checkPersitableValidity(s);
-					ps.setString(1, s.getF_name());
-					ps.setString(2, s.getL_name());
-					ps.setInt(3, s.getAge());
-					ps.setString(4, s.getAddress());
-					ps.setString(5, s.getId());
-				}
-				
-				@Override
-				public int getBatchSize() {
-					return persistables.size();
-				}
-			});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
-	}
-	
-	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {
 		try {
 			List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
 			if (stud_ids == null || stud_ids.isEmpty()) {
 				return new ArrayList<>();
 			}
-			return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getStudentRowMapper());
+			return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -113,7 +37,7 @@ public class StudentRepositoryImpl extends AbstractBaseRepository<Student> imple
 
 	@Override
 	protected RowMapper<Student> getRowMapper() {
-		return getStudentRowMapper();
+		return studentRowMapper;
 	}
 
 	@Override
@@ -139,8 +63,77 @@ public class StudentRepositoryImpl extends AbstractBaseRepository<Student> imple
 		return F_NAME;
 	}
 
-//	@Override
-//	protected Object[] getInsertParams(Student student) {
-//		return new Object[] { student.getId(), student.getF_name(), student.getL_name(), student.getAge(), student.getAddress() };
-//	}
+	@Override
+	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Student s) {
+		return new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, s.getId());
+				ps.setString(2, s.getF_name());
+				ps.setString(3, s.getL_name());
+				ps.setInt(4, s.getAge());
+				ps.setString(5, s.getAddress());
+			}
+		};
+	}
+	
+	@Override
+	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Student s) {
+		return new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, s.getF_name());
+				ps.setString(2, s.getL_name());
+				ps.setInt(3, s.getAge());
+				ps.setString(4, s.getAddress());
+				ps.setString(5, s.getId());
+			}
+		};
+	}
+	
+	@Override
+	protected BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(final Collection<Student> persistable) {
+		final ArrayList<Student> l = new ArrayList<>(persistable);
+		return new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Student s = l.get(i);
+				ps.setString(1, s.getId());
+				ps.setString(2, s.getF_name());
+				ps.setString(3, s.getL_name());
+				ps.setInt(4, s.getAge());
+				ps.setString(5, s.getAddress());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return l.size();
+			}
+		};
+	}
+	
+	@Override
+	protected BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(final Collection<Student> persistable) {
+		final ArrayList<Student> l = new ArrayList<>(persistable);
+		return new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Student s = l.get(i);
+				ps.setString(1, s.getF_name());
+				ps.setString(2, s.getL_name());
+				ps.setInt(3, s.getAge());
+				ps.setString(4, s.getAddress());
+				ps.setString(5, s.getId());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return l.size();
+			}
+		};
+	}
 }
