@@ -1,4 +1,4 @@
-package spring.desai.common.repository.impl;
+package spring.desai.common.repository.impl.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -19,6 +20,7 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 import static spring.desai.common.utils.DataBaseConstants.*;
 
+@Profile(value = { "jdbc" })
 @Repository(value="studentRepository")
 public class StudentRepositoryImpl extends AbstractBaseRepository<Student> implements StudentRepository {
 

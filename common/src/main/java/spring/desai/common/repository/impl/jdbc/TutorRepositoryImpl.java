@@ -1,4 +1,4 @@
-package spring.desai.common.repository.impl;
+package spring.desai.common.repository.impl.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

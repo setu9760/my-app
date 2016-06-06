@@ -13,6 +13,7 @@ import java.util.Collection;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,6 +28,7 @@ import spring.desai.common.utils.I18N;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 @ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
+@ActiveProfiles(profiles = { "jdbc" })
 public class AbstractRepositoryTest {
 
 	protected void doNullSaveTest(BasePersistableRepository<?> repo){

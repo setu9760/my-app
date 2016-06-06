@@ -9,7 +9,19 @@
 		<artifactId>my-app</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
+	<properties>
+		<!-- Hibernate / JPA -->
+		<hibernate.version>4.3.6.Final</hibernate.version>
+
+		<!-- Bean validation -->
+		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
+
+		<!-- Database access -->
+		<ehcache.version>2.6.9</ehcache.version>
+	</properties>
+
 	<dependencies>
+		<!-- HIBERNATE -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

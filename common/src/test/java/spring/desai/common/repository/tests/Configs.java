@@ -15,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import spring.desai.common.repository.StudentRepository;
-import spring.desai.common.repository.impl.StudentRepositoryImpl;
+import spring.desai.common.repository.impl.jdbc.StudentRepositoryImpl;
 
 //@Configuration
 public class Configs {

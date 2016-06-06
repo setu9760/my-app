@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import spring.desai.common.guid.GuidGenerator;
 import spring.desai.common.repository.StudentRepository;
-import spring.desai.common.repository.impl.StudentRepositoryImpl;
+import spring.desai.common.repository.impl.jdbc.StudentRepositoryImpl;
 import spring.desai.common.service.AdminService;
 import spring.desai.common.service.ReadOnlyService;
 

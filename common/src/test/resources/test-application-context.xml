@@ -1,48 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:jms="http://www.springframework.org/schema/jms"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-		<property name="driverClass" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MVCC=TRUE;DATABASE_TO_UPPER=FALSE" />
-		<property name="username" value="sa" />
-		<property name="password" value="" />
-	</bean>
-	
-	<tx:annotation-driven/>
-	<context:annotation-config />
-	<context:component-scan base-package="spring.desai.common.service, spring.desai.common.repository"/>
+	<context:component-scan	base-package="spring.desai.common.service, spring.desai.common.repository" />
 
-	<jdbc:initialize-database>
-		<jdbc:script location="classpath:sql/drop-ddl.sql" />
-		<jdbc:script location="classpath:sql/ddl.sql" />
-		<jdbc:script location="classpath:sql/dml.sql" />
-	</jdbc:initialize-database>
+	<beans>
+		<bean id="dataSource"
+			class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="org.h2.Driver" />
+			<property name="url"
+				value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MVCC=TRUE;DATABASE_TO_UPPER=FALSE" />
+			<property name="username" value="sa" />
+			<property name="password" value="" />
+		</bean>
 
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	<bean id="studentRowMapper" class="spring.desai.common.rowmappers.StudentRowMapper"/>
-	
-	<bean id="tutorRowMapper" class="spring.desai.common.rowmappers.TutorRowMapper"/>
-	
-	<bean id="subjectRowMapper" class="spring.desai.common.rowmappers.SubjectRowMapper"/>
-	
-	<bean id="paymentRowMapper" class="spring.desai.common.rowmappers.PaymentRowMapper"/>
-	
-	<bean id="scholorshipRowMapper" class="spring.desai.common.rowmappers.ScholorshipRowMapper"/>
-	
-	<bean id="costRowMapper" class="spring.desai.common.rowmappers.CostRowMapper" />
+		<tx:annotation-driven />
+		<context:annotation-config />
+
+		<jdbc:initialize-database>
+			<jdbc:script location="classpath:sql/drop-ddl.sql" />
+			<jdbc:script location="classpath:sql/ddl.sql" />
+			<jdbc:script location="classpath:sql/dml.sql" />
+		</jdbc:initialize-database>
+		
+		<context:component-scan	base-package="spring.desai.common.service, spring.desai.common.repository.impl.jdbc" />
+	</beans>
+
+
+	<beans profile="jdbc">
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource" />
+		</bean>
+
+		<bean id="studentRowMapper" class="spring.desai.common.rowmappers.StudentRowMapper" />
+
+		<bean id="tutorRowMapper" class="spring.desai.common.rowmappers.TutorRowMapper" />
+
+		<bean id="subjectRowMapper" class="spring.desai.common.rowmappers.SubjectRowMapper" />
+
+		<bean id="paymentRowMapper" class="spring.desai.common.rowmappers.PaymentRowMapper" />
+
+		<bean id="scholorshipRowMapper" class="spring.desai.common.rowmappers.ScholorshipRowMapper" />
+
+		<bean id="costRowMapper" class="spring.desai.common.rowmappers.CostRowMapper" />
+	</beans>
+
+	<beans profile="jpa">
+		<!-- JPA EntityManagerFactory -->
+		<bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="jpaVendorAdapter">
+				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+					<property name="database" value="H2" />
+				</bean>
+			</property>
+			<!-- gDickens: BOTH Persistence Unit and Packages to Scan are NOT compatible, 
+				persistenceUnit will win -->
+			<property name="persistenceUnitName" value="petclinic" />
+			<property name="packagesToScan" value="spring.desai.common" />
+		</bean>
+		
+		 <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+              <property name="entityManagerFactory" ref="entityManagerFactory" />
+        </bean>
+
+        <!--
+            Post-processor to perform exception translation on @Repository classes (from native
+            exceptions such as JPA PersistenceExceptions to Spring's DataAccessException hierarchy).
+        -->
+        <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+        
+        <context:component-scan	base-package="spring.desai.common.service, spring.desai.common.repository.impl.jpa" />
+	</beans>
 
 </beans>

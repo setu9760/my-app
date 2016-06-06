@@ -1,4 +1,4 @@
-package spring.desai.common.repository.impl;
+package spring.desai.common.repository.impl.jdbc;
 
 import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
 import static spring.desai.common.utils.DataBaseConstants.ID;

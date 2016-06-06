@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.SubjectRepository;
+import spring.desai.common.utils.I18N;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
@@ -42,7 +43,14 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 
 	@Test
 	public void testSave() {
-		fail("Not yet implemented");
+		doNullSaveTest(subjectRepository);
+		Subject orig = new Subject("TEST_NAME", CostCode.BASIC, true);
+		try {
+			subjectRepository.save(orig);
+			fail("Should have failed with IllegalArgumentException.");
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
+		}
 	}
 
 	@Test
