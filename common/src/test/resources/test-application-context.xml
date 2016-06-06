@@ -35,6 +35,11 @@
 
 
 	<beans profile="jdbc">
+		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+			<constructor-arg name="dataSource" ref="dataSource" />
+			<constructor-arg name="lazyInit" value="false" />
+		</bean>
+	
 		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 			<property name="dataSource" ref="dataSource" />
 		</bean>

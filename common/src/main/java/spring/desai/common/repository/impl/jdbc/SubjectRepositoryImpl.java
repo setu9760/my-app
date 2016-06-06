@@ -23,12 +23,11 @@ import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 @Repository(value="subjectRepository")
-public class SubjectRepositoryImpl extends AbstractBaseRepository<Subject> implements SubjectRepository {
+public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implements SubjectRepository {
 	
 	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
 		try {

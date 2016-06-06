@@ -13,13 +13,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.pojo.Tutor;
-import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="tutorRepository")
-public class TutorRepositoryImpl extends AbstractBaseRepository<Tutor> implements TutorRepository {
+public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements TutorRepository {
 
 	@Override
 	public Collection<Tutor> getTutorsForSubject(String subj_id) throws DataAccessException {

@@ -18,12 +18,11 @@ import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.model.pojo.Scholorship;
-import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 @Repository("scholorshipRepository")
-public class ScholorshipRepositoryImpl extends AbstractBaseRepository<Scholorship> implements ScholorshipRepository{
+public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> implements ScholorshipRepository{
 
 	@Override
 	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {

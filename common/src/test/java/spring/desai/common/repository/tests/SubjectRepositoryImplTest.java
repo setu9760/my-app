@@ -21,10 +21,12 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.SubjectRepository;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -50,6 +52,25 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 			fail("Should have failed with IllegalArgumentException.");
 		} catch (IllegalArgumentException e) {
 			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
+		}
+		try {
+			orig = new Subject("", null, CostCode.BASIC, true);
+			subjectRepository.save(orig);
+			fail("Should have thrown DataAccessException while saving null to non-null column");
+		} catch (Exception e) {
+			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+		}
+		orig = new Subject("ABC-123", "ABCD", CostCode.BASIC, true);
+		subjectRepository.save(orig);
+		Subject retrieved = subjectRepository.findById("ABC-123");
+		assertThat(retrieved, is(not(nullValue())));
+		assertThat(retrieved, is(equalTo(orig)));
+		
+		try {
+			subjectRepository.save(orig);
+			fail("Should have thrown Exception while trying to save duplicate data.");
+		} catch (RepositoryDataAccessException e) {
+			assertThat(e.contains(DuplicateKeyException.class), is(true));
 		}
 	}
 

@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.pojo.Student;
-import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
@@ -22,7 +21,7 @@ import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Profile(value = { "jdbc" })
 @Repository(value="studentRepository")
-public class StudentRepositoryImpl extends AbstractBaseRepository<Student> implements StudentRepository {
+public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implements StudentRepository {
 
 	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {

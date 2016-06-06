@@ -16,12 +16,11 @@ import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
-import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 @Repository("costCodeRepository")
-public class CostCodeRepositoryImpl extends AbstractBaseRepository<Cost> implements CostCodeRepository {
+public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements CostCodeRepository {
 
 	@Override
 	public Cost findByCode(CostCode costCode) throws RepositoryDataAccessException {

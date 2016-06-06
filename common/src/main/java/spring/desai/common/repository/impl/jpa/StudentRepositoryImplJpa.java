@@ -39,12 +39,6 @@ public class StudentRepositoryImplJpa extends BaseJpaRepository<Student> impleme
 	}
 
 	@Override
-	protected RowMapper<Student> getRowMapper() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected String getNameField() {
 		return F_NAME;
 	}
@@ -55,22 +49,14 @@ public class StudentRepositoryImplJpa extends BaseJpaRepository<Student> impleme
 	}
 
 	@Override
-	protected PreparedStatementSetter getInsertPreparedStatementSetter(Student persistable) {
-		return null;
+	public void saveAll(Collection<Student> persistables) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	protected PreparedStatementSetter getUpdatePreparedStatementSetter(Student persistable) {
-		return null;
-	}
-
-	@Override
-	protected BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(Collection<Student> persistable) {
-		return null;
-	}
-
-	@Override
-	protected BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(Collection<Student> persistable) {
-		return null;
+	public void updateAll(Collection<Student> persistables) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -18,12 +18,11 @@ import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.pojo.Payment;
-import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 @Repository(value="paymentRepository")
-public class PaymentRepositoryImpl extends AbstractBaseRepository<Payment> implements PaymentRepository {
+public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implements PaymentRepository {
 
 	@Override
 	public Collection<Payment> findbyStudentId(String stud_id) throws RepositoryDataAccessException {
