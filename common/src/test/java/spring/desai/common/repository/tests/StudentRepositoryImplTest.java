@@ -30,7 +30,7 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class StudentRepositoryImplTest extends AbstractRepositoryTest {
+public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 
 	@Autowired
 	ApplicationContext context;
@@ -49,28 +49,18 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 	@Test
 	public void testSave() {
 
-		doNullSaveTest(studentRepository);
-		Student orig = new Student("ABCDE", "ABCDE", 20, "Address");
-		try {
-			studentRepository.save(orig);
-			fail("Should have thrown IllegalArgumentException while saving null ID field");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
-		}
+		Student orig = null;
 		
-		try {
-			orig = new Student("ABCDS-ID-0123", null, null, 20, "Address");
-			studentRepository.save(orig);
-			fail("Should have thrown DataAccessException while saving null to non-null column");
-		} catch (Exception e) {
-			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
-		}
+		doNullSaveTest(studentRepository);
+		
+		orig = new Student("ABCDE", "ABCDE", 20, "Address");
+		doNullIdSaveTest(studentRepository, new Student("", "", 12, ""));
+		
+		orig = new Student("ABCDS-ID-0123", null, null, 20, "Address");
+		doNullFieldSaveTest(studentRepository, orig);
 		
 		orig = new Student("ABCDS-ID-0123", "ABCDE", "ABCDE", 20, "Address");
-		studentRepository.save(orig);
-		Student retrieved = studentRepository.findById(orig.getId());
-		assertThat(retrieved, is(notNullValue()));
-		assertThat(retrieved, is(equalTo(orig)));
+		doSaveTest(studentRepository, orig);
 
 		try {
 			studentRepository.save(orig);
@@ -83,34 +73,19 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 	@Test
 	public void testSaveAll() throws Exception {
 		
-		try {
-			studentRepository.saveAll(null);
-			fail("Should have thrown IleegalArgumentException while saving null.");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
-		}
-		List<Student> l = new ArrayList<>();
-		try {
-			studentRepository.saveAll(l);
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
-		}
+		doNullSaveAllTest(studentRepository, null);
 		
-		try {
-			l.add(new Student("ABCDE", "ABCDE", 25));
-			studentRepository.saveAll(l);
-			fail("Should have thrown IllegalArgumentException while saving null ID field");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
-		} finally {
-			l.clear();
-		}
+		List<Student> l = new ArrayList<>();
+		doNullSaveAllTest(studentRepository, l);
+		
+		l.add(new Student("ABCDE", "ABCDE", 25));
+		doNullIdSaveAllTest(studentRepository, l);
 		
 		try {
 			l.add(new Student("ID2", null, null, 25, null));
 			studentRepository.saveAll(l);
 			fail("Should have thrown IllegalArgumentException while saving null ID field");
-		} catch (RepositoryDataAccessException e) {
+		} catch (Exception e) {
 			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
 		} finally {
 			l.clear();
@@ -128,11 +103,10 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 		}
 		
 		int origCount = studentRepository.countAll();
-		List<Student> origStuds = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
-			origStuds.add(new Student("TEST-ALL-" + i, "f_name-" + i, "l_name-" + i, 25, "addr"));
+			l.add(new Student("TEST-ALL-" + i, "f_name-" + i, "l_name-" + i, 25, "addr"));
 		}
-		studentRepository.saveAll(origStuds);
+		studentRepository.saveAll(l);
 		int afterCount = studentRepository.countAll();
 		assertThat(afterCount, is(not(origCount)));
 		assertThat(afterCount, is(equalTo(origCount + 5)));
@@ -142,30 +116,18 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest {
 	public void testUpdate() {
 		doNullUpdateTest(studentRepository);
 		
-		try {
-			studentRepository.update(new Student("ABCDE", "ABCDE", 25));
-			fail("Should have thrown IleegalArgumentException while updating with null ID field");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
-		}
+		Student orig = new Student("ABCDE", "ABCDE", 25);
+		doNullIdUpdateTest(studentRepository, orig);
 		
-		Student original = studentRepository.findById("studentid1");
+		orig = studentRepository.findById("studentid1");
+		orig.setF_name(null);
+		orig.setL_name(null);
 		
-		try {
-			original.setF_name(null);
-			original.setL_name(null);
-			studentRepository.update(original);
-			fail("Should have thrown DataAccessException while saving null to non-null column.");
-		} catch (Exception e) {
-			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
-		}
+		doNullFieldUpdateTest(studentRepository, orig);
 		
-		original.setF_name("UPDATED_NAME");
-		original.setL_name("UPDATED_NAME");
-		studentRepository.update(original);
-		Student retrieved = studentRepository.findById("studentid1");
-		assertThat(retrieved, is(notNullValue()));
-		assertThat(retrieved, is(equalTo(original)));
+		orig.setF_name("UPDATED_NAME");
+		orig.setL_name("UPDATED_NAME");
+		doUpdateTest(studentRepository, orig);
 	}
 	
 	@Test

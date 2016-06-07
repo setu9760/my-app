@@ -13,7 +13,9 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -76,7 +78,59 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 
 	@Test
 	public void testSaveAll() {
-		fail("Not yet implemented");
+		try {
+			subjectRepository.saveAll(null);
+			fail("Should have failed with IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
+		}
+		List<Subject> l = new ArrayList<>();
+		
+		try {
+			subjectRepository.saveAll(l);
+			fail("Should have failed with IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
+		}
+		
+		try {
+			l.add(new Subject("ABCD", CostCode.BASIC));
+			subjectRepository.saveAll(l);
+			fail("Shouls have failed with IllegalArgumentException while saving null id");
+		} catch (RepositoryDataAccessException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
+		} finally {
+			l.clear();
+		}
+		
+		try {
+			l.add(new Subject("ID1", null, CostCode.BASIC, true));
+			subjectRepository.saveAll(l);
+			fail("Should have thrown IllegalArgumentException while saving null ID field");
+		} catch (Exception e) {
+			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+		} finally {
+			l.clear();
+		}
+		
+		try {
+			l.add(new Subject("ID1", "NAME1", CostCode.BASIC, true));
+			l.add(new Subject("ID1", "NAME2", CostCode.BASIC, true));
+			subjectRepository.saveAll(l);
+			fail("Should have thrown Exception while trying to save duplicate data.");
+		} catch (RepositoryDataAccessException e) {
+			assertThat(e.contains(DuplicateKeyException.class), is(true));
+		} finally {
+			l.clear();
+		}
+		
+		int origCount = subjectRepository.countAll();
+		for (int i = 0; i < 5; i++) {
+			l.add(new Subject("ID-"+i, "NAME", CostCode.BASIC, true));
+		}
+		subjectRepository.saveAll(l);
+		int afterCount = subjectRepository.countAll();
+		assertThat(afterCount, is(equalTo(origCount + 5)));
 	}
 
 	@Test

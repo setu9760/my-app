@@ -1,14 +1,15 @@
 package spring.desai.common.repository.tests;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
 import java.util.Collection;
 
 import org.junit.Ignore;
@@ -22,6 +23,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.repository.BasePersistableRepository;
+import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
 @Ignore
@@ -29,9 +31,9 @@ import spring.desai.common.utils.I18N;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 @ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
 @ActiveProfiles(profiles = { "jdbc" })
-public class AbstractRepositoryTest {
+public class AbstractRepositoryTest<T extends Persistable> {
 
-	protected void doNullSaveTest(BasePersistableRepository<?> repo){
+	protected void doNullSaveTest(BasePersistableRepository<T> repo){
 		try {
 			repo.save(null);
 			fail("Should have thrown IllegalArgumentException while saving");
@@ -40,26 +42,86 @@ public class AbstractRepositoryTest {
 		}
 	}
 	
-	protected void doANullSaveTest(BasePersistableRepository<?> repo){
+	protected void doNullIdSaveTest(BasePersistableRepository<T> repo, T persistable){
 		try {
-			repo.save(null);
-			fail("Should have thrown IllegalArgumentException while saving");
+			repo.save(persistable);
+			fail("Should have thrown IllegalArgumentException while saving null ID field");
 		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), is(equalTo(I18N.getNoArgString("error.null.object"))));
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
 		}
 	}
 	
-	protected void doNullUpdateTest(BasePersistableRepository<?> repo){
+	protected void doNullFieldSaveTest(BasePersistableRepository<T> repo, T persistable){
+		try {
+			repo.save(persistable);
+			fail("Should have thrown DataAccessException while saving null to non-null column");
+		} catch (Exception e) {
+			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+		}
+	}
+	
+	protected void doSaveTest(BasePersistableRepository<T> repo, T orig) {
+		repo.save(orig);
+		T retrieved = repo.findById(orig.getId());
+		assertThat(orig, is(not(nullValue())));
+		assertThat(orig, is(equalTo(retrieved)));
+	}
+	
+	protected void doNullUpdateTest(BasePersistableRepository<T> repo){
 		try {
 			repo.update(null);
-			fail("Should have thrown IllegalArgumentException while updating");
+			fail("Should have thrown IllegalArgumentException while updating with null");
 		} catch (IllegalArgumentException e) {
 			assertThat(e.getMessage(), is(equalTo(I18N.getNoArgString("error.null.object"))));
 		}
 	}
 	
-	protected void doPersistableFindByIdTest(BasePersistableRepository<?> repo, String id){
-		Persistable p = null;
+	protected void doNullIdUpdateTest(BasePersistableRepository<T> repo, T persistable){
+		try {
+			repo.update(persistable);
+			fail("Should have thrown IllegalArgumentException while saving null ID field");
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
+		}
+	}
+	
+	protected void doNullFieldUpdateTest(BasePersistableRepository<T> repo, T persistable){
+		try {
+			repo.update(persistable);
+			fail("Should have thrown DataAccessException while saving null to non-null column");
+		} catch (Exception e) {
+			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+		}
+	}
+	
+	protected void doUpdateTest(BasePersistableRepository<T> repo, T orig) {
+		repo.update(orig);
+		T retrieved = repo.findById(orig.getId());
+		assertThat(orig, is(not(nullValue())));
+		assertThat(orig, is(equalTo(retrieved)));
+	}
+	
+	protected void doNullSaveAllTest(BasePersistableRepository<T> repo, Collection<T> coll) {
+		try {
+			repo.saveAll(coll);
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
+		} 
+	}
+	
+	protected void doNullIdSaveAllTest(BasePersistableRepository<T> repo, Collection<T> coll){
+		try {
+			repo.saveAll(coll);
+			fail("Should have thrown IllegalArgumentException while saving null ID field");
+		} catch (IllegalArgumentException e) {
+			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
+		} finally {
+			coll.clear();
+		}
+	}
+	
+	protected void doPersistableFindByIdTest(BasePersistableRepository<T> repo, String id){
+		T p = null;
 		p = repo.findById(null);
 		assertThat(p, is(nullValue()));
 		
@@ -74,8 +136,8 @@ public class AbstractRepositoryTest {
 		assertThat(p.getId(), is(equalTo(id)));
 	}
 	
-	protected void doPersistableFindByNameTest(BasePersistableRepository<?> repo, String name, int nameRecordsCount, int totalCount){
-		Collection<?> c = null;
+	protected void doPersistableFindByNameTest(BasePersistableRepository<T> repo, String name, int nameRecordsCount, int totalCount){
+		Collection<T> c = null;
 		c = repo.findByName(null);
 		assertThat(c, is(not(nullValue())));
 		assertThat(c, is(empty()));
@@ -102,22 +164,22 @@ public class AbstractRepositoryTest {
 	}
 	
 
-	protected void doPersistableGetAllTest(BasePersistableRepository<?> repo, int totalCount) {
-		Collection<?> c = repo.getAll();
+	protected void doPersistableGetAllTest(BasePersistableRepository<T> repo, int totalCount) {
+		Collection<T> c = repo.getAll();
 		assertThat(c, is(not(nullValue())));
 		assertThat(c, hasSize(totalCount));
 	}
 	
-	protected void doPersistableDeleteAllTest(BasePersistableRepository<?> repo) {
+	protected void doPersistableDeleteAllTest(BasePersistableRepository<T> repo) {
 		repo.deleteAll();
 	}
 	
-	protected void doPersistableCountAllTest(BasePersistableRepository<?> repo, int expectedCount) {
+	protected void doPersistableCountAllTest(BasePersistableRepository<T> repo, int expectedCount) {
 		int actualCount = repo.countAll();
 		assertThat(actualCount, is(equalTo(expectedCount)));
 	}
 	
-	protected void doPersistableDeleteByIdTest(BasePersistableRepository<? extends Persistable> repo, String id){
+	protected void doPersistableDeleteByIdTest(BasePersistableRepository<T> repo, String id){
 		int origCount = repo.countAll();
 		repo.deleteById(null);
 		int updatedCount = repo.countAll();
@@ -128,14 +190,14 @@ public class AbstractRepositoryTest {
 		assertThat(updatedCount, is(equalTo(origCount)));
 		
 		repo.deleteById(id);
-		Persistable p = repo.findById(id);
+		T p = repo.findById(id);
 		assertThat(p, is(nullValue()));
 		updatedCount = repo.countAll();
 		assertThat(updatedCount, is(equalTo(origCount-1)));
 		
 	}
 	
-	protected void doPersistableDeleteByNameTest(BasePersistableRepository<? extends Persistable> repo, String name){
+	protected void doPersistableDeleteByNameTest(BasePersistableRepository<T> repo, String name){
 		int origCount = repo.countAll();
 		repo.deleteByName(null);
 		int updatedCount = repo.countAll();
