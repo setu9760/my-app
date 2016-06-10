@@ -3,6 +3,7 @@ package spring.desai.common.repository.impl.jdbc;
 import static spring.desai.common.utils.DataBaseConstants.PAYMENT_TABLE_NAME;
 import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
 import static spring.desai.common.utils.DataBaseConstants.TYPE;
+import static spring.desai.common.utils.DataBaseConstants.ID;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 	@Override
 	public Collection<Payment> findByType(PaymentType type) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(PAYMENT_TABLE_NAME, TYPE), new Object[]{ type.toString()}, getRowMapper());
+			return getJdbcTemplate().query(getFindBySql(PAYMENT_TABLE_NAME, TYPE), new Object[]{ String.valueOf(type) }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -49,12 +50,12 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 	
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO payment (id, amount, type, stud_id) VALUES (?, ?, ?, ?)";
+		return "INSERT INTO payment (id, amount, type, stud_id, additional_comments) VALUES (?, ?, ?, ?, ?)";
 	}
 
 	@Override
 	protected String getUpdateSql() {
-		return "UPDATE payment SET amount = ?, type = ?, stud_id = ? WHERE id = ?";
+		return "UPDATE payment SET amount = ?, type = ?, stud_id = ?, additional_comments =? WHERE id = ?";
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 
 	@Override
 	protected String getNameField() {
-		return null;
+		return ID;
 	}
 	
 	@Override
@@ -74,9 +75,10 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, p.getId());
-				ps.setDouble(2,p.getAmount());
-				ps.setString(3,p.getPaymentType().toString());
-				ps.setString(4,p.getStud_id());
+				ps.setDouble(2, p.getAmount());
+				ps.setString(3, String.valueOf(p.getPaymentType()));
+				ps.setString(4, p.getStud_id());
+				ps.setString(5, p.getComments());
 			}
 		};
 	}
@@ -87,10 +89,11 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setDouble(1,p.getAmount());
-				ps.setString(2,p.getPaymentType().toString());
-				ps.setString(3,p.getStud_id());
-				ps.setString(4, p.getId());
+				ps.setDouble(1, p.getAmount());
+				ps.setString(2, String.valueOf(p.getPaymentType()));
+				ps.setString(3, p.getStud_id());
+				ps.setString(4, p.getComments());
+				ps.setString(5, p.getId());
 			}
 		};
 	}
@@ -105,8 +108,9 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 					Payment p = l.get(i);
 					ps.setString(1, p.getId());
 					ps.setDouble(2, p.getAmount());
-					ps.setString(3, p.getPaymentType().toString());
+					ps.setString(3, String.valueOf(p.getPaymentType()));
 					ps.setString(4, p.getStud_id());
+					ps.setString(5, p.getComments());
 				}
 				
 				@Override
@@ -125,9 +129,10 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Payment p = l.get(i);
 					ps.setDouble(1, p.getAmount());
-					ps.setString(2, p.getPaymentType().toString());
+					ps.setString(2, String.valueOf(p.getPaymentType()));
 					ps.setString(3, p.getStud_id());
-					ps.setString(4, p.getId());
+					ps.setString(4, p.getComments());
+					ps.setString(5, p.getId());
 				}
 				
 				@Override

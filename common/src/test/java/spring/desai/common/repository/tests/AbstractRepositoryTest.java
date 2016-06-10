@@ -1,11 +1,11 @@
 package spring.desai.common.repository.tests;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
@@ -17,8 +17,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -26,7 +34,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.model.pojo.Persistable;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
@@ -45,6 +52,30 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 		return true;
 	}
 	
+	@Value("classpath:sql/drop-ddl.sql")
+	private Resource recreateDDL;
+	@Value("classpath:sql/ddl.sql")
+	private Resource ddl;
+	@Value("classpath:sql/dml.sql")
+	private Resource dml;
+	
+	@Autowired
+	private DataSource dataSource;
+	
+	@Value("doRefereshDbBetweenTests")
+	private String doRefereshDbBetweenTests;
+	
+	@Before
+	public void setUp() throws Exception {
+		if(Boolean.valueOf(doRefereshDbBetweenTests)){
+			System.out.println("Refreshing database with database populator");
+			ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+			populator.setContinueOnError(true);
+			populator.addScripts(recreateDDL, ddl, dml);
+			DatabasePopulatorUtils.execute(populator, dataSource);
+		}
+	}
+
 	protected void doSaveTest(T persistable){
 		try {
 			getRepo().save(null);
@@ -288,5 +319,19 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 			l.add(t);
 		}
 		return l;
+	}
+	
+	protected void assertNotNull(T t){
+		assertThat(t, is(not(nullValue())));
+	}
+	
+	protected void assertNotNull(Collection<T> c){
+		assertThat(c, is(not(nullValue())));
+		assertThat(c, is(empty()));
+	}
+	
+	protected void assertSize(Collection<T> c, int size){
+		assertThat(c, is(not(nullValue())));
+		assertThat(c.size(), is(equalTo(size)));
 	}
 }

@@ -7,7 +7,8 @@ public enum ScholorshipType {
 	STATE_PART("State paid - Part"),
 	NATIONAL_FULL("Natinal paid - Full"),
 	NATIONAL_PART("National paid - Part"),
-	OTHER("Other source (See externalRef)");
+	OTHER("Other source (See externalRef)"),
+	NULL("FOR NULL TEST");
 	
 	private final String description;
 	

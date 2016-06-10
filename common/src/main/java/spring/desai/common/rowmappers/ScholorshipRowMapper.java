@@ -13,7 +13,7 @@ public class ScholorshipRowMapper implements RowMapper<Scholorship> {
 
 	@Override
 	public Scholorship mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Scholorship scholorship = new Scholorship(rs.getString(ID), rs.getString(EXTERNAL_REF), ScholorshipType.valueOf(rs.getString(TYPE)), 
+		Scholorship scholorship = new Scholorship(rs.getString(ID), rs.getString(EXTERNAL_REF), ScholorshipType.valueOf(rs.getString(TYPE).toUpperCase()), 
 				rs.getDouble(TOTAL_AMOUNT), rs.getDouble(PAID_AMOUNT), Boolean.valueOf(rs.getString(IS_FULLY_PAID)), 
 				Boolean.valueOf(rs.getString(IS_FULLY_PAID)), rs.getString(ADDITIONAL_COMMENTS), rs.getString(STUD_ID));
 		return scholorship;

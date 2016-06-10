@@ -1,12 +1,10 @@
 package spring.desai.common.repository.tests;
 
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +30,7 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 	}
 
 	@After

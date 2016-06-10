@@ -12,21 +12,26 @@ public class Payment implements Persistable {
 	private PaymentType paymentType;
 	private String stud_id;
 	private DateTime paymentDateTime;
+	private String comments;
 
 	public Payment(String id, double amount, PaymentType paymentType) {
-		this(id, amount, paymentType, null, DateTime.now());
+		this(id, amount, paymentType, null);
 	}
 	
-	public Payment(double amount, PaymentType paymentType, String stud_id, DateTime paymentDateTime) {
-		this(null, amount, paymentType, stud_id, paymentDateTime);
+	public Payment(double amount, PaymentType paymentType, String stud_id) {
+		this(null, amount, paymentType, stud_id);
 	}
 	
-	public Payment(String id, double amount, PaymentType paymentType, String stud_id, DateTime paymentDateTime) {
+	public Payment(String id, double amount, PaymentType paymentType, String stud_id) {
+		this(id, amount, paymentType, stud_id, null);
+	}
+	
+	public Payment(String id, double amount, PaymentType paymentType, String stud_id, String comments) {
 		this.id = id;
 		this.amount = amount;
 		this.paymentType = paymentType;
 		this.stud_id = stud_id;
-		this.paymentDateTime = paymentDateTime;
+		this.comments = comments;
 	}
 
 	public String getId() {
@@ -68,6 +73,14 @@ public class Payment implements Persistable {
 	public void setStud_id(String stud_id) {
 		this.stud_id = stud_id;
 	}
+	
+	public String getComments() {
+		return comments;
+	}
+	
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
 
 	@Override
 	public int hashCode() {
@@ -99,11 +112,12 @@ public class Payment implements Persistable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (paymentDateTime == null) {
-			if (other.paymentDateTime != null)
-				return false;
-		} else if (!paymentDateTime.equals(other.paymentDateTime))
-			return false;
+		
+//		if (paymentDateTime == null) {
+//			if (other.paymentDateTime != null)
+//				return false;
+//		} else if (!paymentDateTime.equals(other.paymentDateTime))
+//			return false;
 		if (paymentType != other.paymentType)
 			return false;
 		if (stud_id == null) {

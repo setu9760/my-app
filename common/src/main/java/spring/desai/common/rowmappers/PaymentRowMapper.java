@@ -16,7 +16,8 @@ public class PaymentRowMapper implements RowMapper<Payment>{
 	@Override
 	public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Payment payment = new Payment(rs.getString(ID), rs.getDouble(AMOUNT), PaymentType.valueOf(rs.getString(TYPE)), 
-				rs.getString(STUD_ID), new DateTime(Timestamp.valueOf(rs.getString(DATETIME))));
+				rs.getString(STUD_ID), rs.getString(ADDITIONAL_COMMENTS));
+		payment.setPaymentDateTime(new DateTime(Timestamp.valueOf(rs.getString(DATETIME))));
 		return payment;
 	}
 

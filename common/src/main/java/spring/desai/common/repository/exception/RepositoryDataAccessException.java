@@ -15,6 +15,6 @@ public class RepositoryDataAccessException extends DataAccessException {
 	}
 	
 	public RepositoryDataAccessException(Throwable t){
-		super("Error occured while accessing/modifying fata into repository", t);
+		super("Error occured while accessing/modifying data into repository", t);
 	}
 }

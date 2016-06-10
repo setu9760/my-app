@@ -16,7 +16,7 @@ CREATE TABLE `scholorship` (
   `paid_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `isFullyPaid` varchar(6) NOT NULL DEFAULT 'false',
   `isPostPay` varchar(6) NOT NULL DEFAULT 'false',
-  `additional_comments` varchar(100) DEFAULT NULL,
+  `additional_comments` varchar(400) DEFAULT NULL,
   `stud_id` varchar(36) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `student_ids_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -54,6 +54,7 @@ CREATE TABLE `payment` (
   `type` varchar(45) NOT NULL,
   `stud_id` varchar(36) NOT NULL,
   `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `additional_comments` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `student_id_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
