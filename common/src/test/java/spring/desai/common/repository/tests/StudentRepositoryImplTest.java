@@ -1,15 +1,10 @@
 package spring.desai.common.repository.tests;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,178 +16,80 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.dao.DuplicateKeyException;
 
 import spring.desai.common.model.pojo.Student;
+import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.StudentRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;	
-import spring.desai.common.utils.I18N;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 
-	@Autowired
-	ApplicationContext context;
-
-	@Autowired
+	@Autowired()
 	StudentRepository studentRepository;
 
 	@Before
 	public void setUp() throws Exception {
+		
 	}
-
+	
 	@After
 	public void tearDown() throws Exception {
 	}
 
 	@Test
 	public void testSave() {
-
-		Student orig = null;
-		
-		doNullSaveTest(studentRepository);
-		
-		orig = new Student("ABCDE", "ABCDE", 20, "Address");
-		doNullIdSaveTest(studentRepository, new Student("", "", 12, ""));
-		
-		orig = new Student("ABCDS-ID-0123", null, null, 20, "Address");
-		doNullFieldSaveTest(studentRepository, orig);
-		
-		orig = new Student("ABCDS-ID-0123", "ABCDE", "ABCDE", 20, "Address");
-		doSaveTest(studentRepository, orig);
-
-		try {
-			studentRepository.save(orig);
-			fail("Should have thrown Exception while trying to save duplicate data.");
-		} catch (RepositoryDataAccessException e) {
-			assertThat(e.contains(DuplicateKeyException.class), is(true));
-		}
+		doSaveTest(new Student("ABCDS-ID-0123", "ABCDE", "ABCDE", 20, "Address"));
 	}
 
 	@Test
 	public void testSaveAll() throws Exception {
-		
-		doNullSaveAllTest(studentRepository, null);
-		
 		List<Student> l = new ArrayList<>();
-		doNullSaveAllTest(studentRepository, l);
-		
-		l.add(new Student("ABCDE", "ABCDE", 25));
-		doNullIdSaveAllTest(studentRepository, l);
-		
-		try {
-			l.add(new Student("ID2", null, null, 25, null));
-			studentRepository.saveAll(l);
-			fail("Should have thrown IllegalArgumentException while saving null ID field");
-		} catch (Exception e) {
-			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
-		} finally {
-			l.clear();
-		}
-		
-		try {
-			l.add(new Student("ABCDS-ID-0123", "ABCDE1", "ABCDE1", 20, "Address"));
-			l.add(new Student("ABCDS-ID-0123", "ABCDE2", "ABCDE2", 20, "Address"));
-			studentRepository.saveAll(l);
-			fail("Should have thrown Exception while trying to save duplicate data.");
-		} catch (RepositoryDataAccessException e) {
-			assertThat(e.contains(DuplicateKeyException.class), is(true));
-		} finally{
-			l.clear();
-		}
-		
-		int origCount = studentRepository.countAll();
 		for (int i = 0; i < 5; i++) {
 			l.add(new Student("TEST-ALL-" + i, "f_name-" + i, "l_name-" + i, 25, "addr"));
 		}
-		studentRepository.saveAll(l);
-		int afterCount = studentRepository.countAll();
-		assertThat(afterCount, is(not(origCount)));
-		assertThat(afterCount, is(equalTo(origCount + 5)));
+		doSaveAllTest(l);
+		
+//		l = new ArrayList<>();
+//		for (int i = 0; i < 501; i++) {
+//			l.add(new Student("TEST-BATCH-ALL-" + i, "f_name-" + i, "l_name-" + i, 25, "addr"));
+//		}
+//		studentRepository.saveAll(l);;
 	}
 
 	@Test
 	public void testUpdate() {
-		doNullUpdateTest(studentRepository);
-		
-		Student orig = new Student("ABCDE", "ABCDE", 25);
-		doNullIdUpdateTest(studentRepository, orig);
-		
-		orig = studentRepository.findById("studentid1");
-		orig.setF_name(null);
-		orig.setL_name(null);
-		
-		doNullFieldUpdateTest(studentRepository, orig);
-		
-		orig.setF_name("UPDATED_NAME");
-		orig.setL_name("UPDATED_NAME");
-		doUpdateTest(studentRepository, orig);
+		Student updatedPersistable = studentRepository.findById("studentid1");
+		updatedPersistable.setF_name("UPDATED_F_NAME");
+		updatedPersistable.setL_name("UPDATED_L_NAME");
+		doUpdateTest(updatedPersistable, "studentid1");
 	}
 	
 	@Test
 	public void testUpdateAll() {
 		
-		try {
-			studentRepository.updateAll(null);
-			fail("Should have failed with IllegalArgumentException.");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
-		}
+		Collection<Student> origStuds = studentRepository.findByName("f_name");
 		
-		List<Student> l = new ArrayList<>();
-		try {
-			studentRepository.updateAll(l);
-			fail("Should have failed with IllegalArgumentException.");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
+		Collection<Student> updateStuds = studentRepository.findByName("f_name");
+		for (Student student : updateStuds) {
+			student.setF_name("UPDATED_F_NAME");
+			student.setL_name("UPDATED_L_NAME");
 		}
-		
-		try {
-			l.add(new Student("F_NAME", "L_NAME", 25));
-			studentRepository.updateAll(l);
-			fail("Should have failed with IllegalArgumentException.");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
-		} finally{
-			l.clear();
-		}
-		
-		try {
-			l.add(new Student("studentid1", null, null, 25, ""));
-			studentRepository.updateAll(l);
-			fail("Should have failed with DataAccessException.");
-		} catch (Exception e) {
-			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
-		} finally{
-			l.clear();
-		}
-		
-//		Collection<Student> origStuds = studentRepository.getAll();
-//		for (Student student : origStuds) {
-//			student.setF_name("UPDATED_F_NAME");
-//			student.setL_name("UPDATED_L_NAME");
-//		}
-//		studentRepository.updateAll(origStuds);
-//		
-//		Collection<Student> updatedStuds = studentRepository.getAll();
-//		assertThat(updatedStuds.size(), is(equalTo(origStuds.size())));
-//		assertThat(updatedStuds, is(equalTo(origStuds)));
+		doUpdateAllTest(origStuds, updateStuds, "studentid");
 	}
-
+	
 	@Test
 	public void testFindById() {
-		doPersistableFindByIdTest(studentRepository, "studentid1");
+		doFindByIdTest("studentid1");
 	}
 	
 	@Test
 	public void testFindbyName() {
-		doPersistableFindByNameTest(studentRepository, "f_name4", 2, 5);
+		doFindByNameTest("f_name4", 2, 5);
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		doPersistableGetAllTest(studentRepository, 5);
+		doGetAllTest(5);
 	}
 
 	@Test
@@ -218,22 +115,32 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 	@Test
 	public void testDeleteById() {
 		studentRepository.save(new Student("ID_TO_DELETE", "NAME", "NAME", 25, ""));
-		doPersistableDeleteByIdTest(studentRepository, "ID_TO_DELETE");
+		doDeleteByIdTest("ID_TO_DELETE");
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteByName() {
-		doPersistableDeleteByNameTest(studentRepository, "NAME_TO_DELETE");
+		doDeleteByNameTest("NAME_TO_DELETE");
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteAll() {
-		doPersistableDeleteAllTest(studentRepository);
+		doDeleteAllTest();
 	}
 
 	@Test
 	public void testCountAll() {
-		doPersistableCountAllTest(studentRepository, 5);
+		doCountAllTest(5);
 	}
 
+	@Override
+	public Class<Student> getPersistableClazz() {
+		return Student.class;
+	}
+	
+	@Override
+	public BasePersistableRepository<Student> getRepo() {
+		return studentRepository;
+	}
+	
 }

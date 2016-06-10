@@ -1,17 +1,11 @@
 package spring.desai.common.repository.tests;
 
-import static org.junit.Assert.fail;
-
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,16 +17,14 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 
 import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Subject;
+import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.SubjectRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.utils.I18N;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
+public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 
 	@Autowired
 	SubjectRepository subjectRepository;
@@ -47,105 +39,40 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 
 	@Test
 	public void testSave() {
-		doNullSaveTest(subjectRepository);
-		Subject orig = new Subject("TEST_NAME", CostCode.BASIC, true);
-		try {
-			subjectRepository.save(orig);
-			fail("Should have failed with IllegalArgumentException.");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
-		}
-		try {
-			orig = new Subject("", null, CostCode.BASIC, true);
-			subjectRepository.save(orig);
-			fail("Should have thrown DataAccessException while saving null to non-null column");
-		} catch (Exception e) {
-			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
-		}
-		orig = new Subject("ABC-123", "ABCD", CostCode.BASIC, true);
-		subjectRepository.save(orig);
-		Subject retrieved = subjectRepository.findById("ABC-123");
-		assertThat(retrieved, is(not(nullValue())));
-		assertThat(retrieved, is(equalTo(orig)));
-		
-		try {
-			subjectRepository.save(orig);
-			fail("Should have thrown Exception while trying to save duplicate data.");
-		} catch (RepositoryDataAccessException e) {
-			assertThat(e.contains(DuplicateKeyException.class), is(true));
-		}
+		doSaveTest(new Subject("TEST-ID", "ABCD", CostCode.BASIC, true));
 	}
 
 	@Test
 	public void testSaveAll() {
-		try {
-			subjectRepository.saveAll(null);
-			fail("Should have failed with IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
-		}
 		List<Subject> l = new ArrayList<>();
-		
-		try {
-			subjectRepository.saveAll(l);
-			fail("Should have failed with IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.object")));
-		}
-		
-		try {
-			l.add(new Subject("ABCD", CostCode.BASIC));
-			subjectRepository.saveAll(l);
-			fail("Shouls have failed with IllegalArgumentException while saving null id");
-		} catch (RepositoryDataAccessException e) {
-			assertThat(e.getMessage(), startsWith(I18N.getNoArgString("error.null.id")));
-		} finally {
-			l.clear();
-		}
-		
-		try {
-			l.add(new Subject("ID1", null, CostCode.BASIC, true));
-			subjectRepository.saveAll(l);
-			fail("Should have thrown IllegalArgumentException while saving null ID field");
-		} catch (Exception e) {
-			assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
-		} finally {
-			l.clear();
-		}
-		
-		try {
-			l.add(new Subject("ID1", "NAME1", CostCode.BASIC, true));
-			l.add(new Subject("ID1", "NAME2", CostCode.BASIC, true));
-			subjectRepository.saveAll(l);
-			fail("Should have thrown Exception while trying to save duplicate data.");
-		} catch (RepositoryDataAccessException e) {
-			assertThat(e.contains(DuplicateKeyException.class), is(true));
-		} finally {
-			l.clear();
-		}
-		
-		int origCount = subjectRepository.countAll();
 		for (int i = 0; i < 5; i++) {
-			l.add(new Subject("ID-"+i, "NAME", CostCode.BASIC, true));
+			l.add(new Subject("ID-"+i, "NAME-"+i, CostCode.BASIC, true));
 		}
-		subjectRepository.saveAll(l);
-		int afterCount = subjectRepository.countAll();
-		assertThat(afterCount, is(equalTo(origCount + 5)));
+		doSaveAllTest(l);
 	}
 
 	@Test
 	public void testUpdate() {
-		fail("Not yet implemented");
+		Subject s = subjectRepository.findById("subjectid1");
+		s.setName("NAMNE-XYZ");
+		s.setCost_code(CostCode.RESEARCH);
+		doUpdateTest(s, "subjectid1");
 	}
 
 	@Test
 	public void testUpdateAll() {
-		fail("Not yet implemented");
+		Collection<Subject> origSubs = subjectRepository.findByName("name");
+		
+		Collection<Subject> updateSubs = subjectRepository.findByName("name");
+		for (Subject s : updateSubs) {
+			s.setName("UPDATED_NAME");
+		}
+		doUpdateAllTest(origSubs, updateSubs, "subjectid");
 	}
 
 	@Test
 	public void testFindById() {
-		doPersistableFindByIdTest(subjectRepository, "subjectid1");
+		doFindByIdTest("subjectid1");
 	}
 
 	@Test
@@ -154,7 +81,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 
 	@Test
 	public void testFindByName() {
-		doPersistableFindByNameTest(subjectRepository, "name1", 1, 5);
+		doFindByNameTest("name1", 1, 5);
 	}
 
 	@Test
@@ -169,38 +96,61 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest {
 
 	@Test
 	public void testFindByMandatory() {
-		fail("Not yet implemented");
+		Collection<Subject> c = subjectRepository.findByMandatory(true);
+		assertThat(c.size(), is(equalTo(3)));
+		
+		c = subjectRepository.findByMandatory(false);
+		assertThat(c.size(), is(equalTo(2)));
 	}
 
 	@Test
 	public void testGetSubjectsForStudentId() {
-		fail("Not yet implemented");
+		Collection<Subject> c = null;
+		c = subjectRepository.getSubjectsForStudentId(null);
+		assertThat(c, is(not(nullValue())));
+		assertThat(c.size(), is(equalTo(0)));
+		
+		c = subjectRepository.getSubjectsForStudentId("");
+		assertThat(c.size(), is(equalTo(0)));
+		
+		c = subjectRepository.getSubjectsForStudentId("studentid1");
+		assertThat(c.size(), is(equalTo(4)));
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		doPersistableGetAllTest(subjectRepository, 5);
+		doGetAllTest(5);
 	}
 
 	@Test
 	public void testDeleteById() {
 		subjectRepository.save(new Subject("ID_TO_DELETE", "D", CostCode.BASIC, true));
-		doPersistableDeleteByIdTest(subjectRepository, "ID_TO_DELETE");
+		doDeleteByIdTest("ID_TO_DELETE");
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteByName() {
-		doPersistableDeleteByNameTest(subjectRepository, "SOME_NAME");
+		doDeleteByNameTest("SOME_NAME");
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteAll() {
-		doPersistableDeleteAllTest(subjectRepository);
+		doDeleteAllTest();
 	}
 
 	@Test
 	public void testCountAll() {
-		doPersistableCountAllTest(subjectRepository, 5);;
+		doCountAllTest(5);;
+	}
+
+	@Override
+	public Class<Subject> getPersistableClazz() {
+		return Subject.class;
+	}
+
+	@Override
+	public BasePersistableRepository<Subject> getRepo() {
+		return subjectRepository;
 	}
 
 }

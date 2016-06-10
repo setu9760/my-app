@@ -24,7 +24,7 @@ public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements 
 
 	@Override
 	public Cost findByCode(CostCode costCode) throws RepositoryDataAccessException {
-		return findById(costCode.toString());
+		return findById(String.valueOf(costCode));
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements 
 	
 	@Override
 	protected String getNameField() {
-		return null;
+		return COST_CODE;
 	}
 	
 	@Override

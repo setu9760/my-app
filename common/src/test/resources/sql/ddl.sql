@@ -31,10 +31,10 @@ CREATE TABLE `cost` (
 CREATE TABLE `subject` (
   `id` varchar(36) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `cost_code` varchar(36) NOT NULL DEFAULT 'N/A',
+  `cost_code` varchar(36) NOT NULL,
   `isMandatory` varchar(6) NOT NULL DEFAULT 'false',
   PRIMARY KEY (`id`),
-  CONSTRAINT `cost_code_fk` FOREIGN KEY (`cost_code`) REFERENCES `cost` (`cost_code`) ON DELETE SET DEFAULT ON UPDATE NO ACTION
+  CONSTRAINT `cost_code_fk` FOREIGN KEY (`cost_code`) REFERENCES `cost` (`cost_code`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tutor` (

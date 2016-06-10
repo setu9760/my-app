@@ -11,6 +11,12 @@ INSERT INTO cost VALUES('RESEARCH',1200);
 INSERT INTO cost VALUES('PRACTICAL',1500);
 INSERT INTO cost VALUES('DISTANCE_LEARNING',800);
 
+INSERT INTO cost VALUES('UCC1',1100);
+INSERT INTO cost VALUES('UCC2',700);
+INSERT INTO cost VALUES('UCC3',2500);
+INSERT INTO cost VALUES('UCC4',2000);
+INSERT INTO cost VALUES('UCC5',100);
+
 -- Insert to subject
 INSERT INTO subject VALUES('subjectid1','name1','BASIC','true');
 INSERT INTO subject VALUES('subjectid2','name2','RESEARCH','false');
@@ -23,8 +29,8 @@ INSERT INTO tutor VALUES('tutorid1','f_name1','l_name1','address1', 'true', 'sub
 INSERT INTO tutor VALUES('tutorid2','f_name2','l_name2','address2', 'true', 'subjectid2');
 INSERT INTO tutor VALUES('tutorid3','f_name3','l_name3','address3', 'true', 'subjectid3');
 INSERT INTO tutor VALUES('tutorid4','f_name4','l_name4','address4', 'true', 'subjectid4');
-INSERT INTO tutor VALUES('tutorid5','f_name5','l_name5','address5', 'true', 'subjectid5');
-INSERT INTO tutor VALUES('tutorid6','f_name6','l_name6','address6', 'false', 'subjectid2');
+INSERT INTO tutor VALUES('tutorid5','f_name4','l_name5','address5', 'true', 'subjectid5');
+INSERT INTO tutor VALUES('tutorid6','f_name4','l_name6','address6', 'false', 'subjectid2');
 INSERT INTO tutor VALUES('tutorid7','f_name7','l_name7','address7', 'false', 'subjectid4');
 
 -- Insert to payment

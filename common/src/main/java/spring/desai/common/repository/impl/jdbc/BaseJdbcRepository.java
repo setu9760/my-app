@@ -1,7 +1,11 @@
 package spring.desai.common.repository.impl.jdbc;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +35,6 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	@Qualifier("transactionManager")
 	private PlatformTransactionManager platformTransactionManager;
 
-//	@Autowired
-//	@Qualifier("dataSource")
-//	private DataSource dataSource;
-	
 	@Autowired
 	@Qualifier("jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
@@ -87,13 +87,50 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 
 	public void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistables);
-		// TODO : Check the size of collection and break down call to saveAllImpl in smaller chunks to avoid large batch inserts.
-		try {
-			getJdbcTemplate().batchUpdate(getInsertSql(), getInsertBatchPreparedStatementSetter(persistables));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+//		List<Collection<T>> l = makeChunksFromCollections(persistables);
+//		logger.info("Performing saveAll for " + persistables.size() + " persistables in " + l.size() + " batches.");
+//		for (Collection<T> collection : l) {
+			try {
+				getJdbcTemplate().batchUpdate(getInsertSql(), getInsertBatchPreparedStatementSetter(persistables));
+			} catch (DataAccessException e) {
+				throw new RepositoryDataAccessException(e);
+			}
+//		}
 	}
+	
+//	private List<Collection<T>> makeChunksFromCollections(final Collection<T> persistables){
+//		int size = persistables.size();
+//		int numOfChunks;
+//		List<Collection<T>> result;
+//		if (size <= 50) {
+//			numOfChunks = 1;
+//			result = new ArrayList<>(numOfChunks);
+//			result.add(persistables);
+//			return result;
+//		} if (size > 50 && size <= 100) {
+//			numOfChunks = 2;
+//		} else if (size > 100 && size <= 250) {
+//			numOfChunks = 3;
+//		} else if (size > 250 && size <= 500) {
+//			numOfChunks = 4;
+//		} else if (size > 500 && size <= 1500) {
+//			numOfChunks = 5;
+//		} else {
+//			numOfChunks = 10;
+//		}
+//		Iterator<T> persistableIterator = persistables.iterator();
+//		result = new ArrayList<>(numOfChunks);
+//		int counter = 0;
+//		while (persistableIterator.hasNext()) {
+//			result.get(counter).add(persistableIterator.next());
+//			if (counter >= numOfChunks) {
+//				counter = 0;
+//				break;
+//			}
+//			counter++;
+//		}
+//		return result;
+//	}
 	
 	public void update(T persistable) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistable);
