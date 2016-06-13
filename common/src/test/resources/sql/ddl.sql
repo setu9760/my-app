@@ -1,3 +1,51 @@
+CREATE TABLE `users` (
+  `user_id` varchar(36) NOT NULL,
+  `f_name` varchar(45) NOT NULL,
+  `l_name` varchar(45) NOT NULL,
+  `age` int(11) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `failed_attempts` int(11) NOT NULL DEFAULT '0',
+  `account_locked` varchar(6) NOT NULL DEFAULT 'false',
+  `sign_on_status` varchar(36) NOT NULL DEFAULT 'LOGGED_OUT',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `usrr` ( 
+ `user_id` varchar(36) NOT NULL,
+ `password` varchar(100) NOT NULL,
+ `password_expired` varchar(6) NOT NULL DEFAULT 'false',
+ `previous_password` varchar(100) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  CONSTRAINT `user_id_fkk` FOREIGN KEY(`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `roles` (
+ `role` varchar(36) NOT NULL,
+ `role_full` varchar(36) NOT NULL,
+ `description` varchar(255) NOT NULL,
+ PRIMARY KEY(`role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_role`( 
+ `user_id` varchar(36) NOT NULL,
+ `role` varchar (36) NOT NULL,
+ PRIMARY KEY (`user_id`,`role`),
+ CONSTRAINT `user_id_fk` FOREIGN KEY(`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+ CONSTRAINT `role_fk` FOREIGN KEY (`role`) REFERENCES `roles` (`role`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_function` (
+ `function_code` int(5) NOT NULL auto_increment,
+ `description` varchar(255) NOT NULL,
+ PRIMARY KEY (`function_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_log` (
+ `user_id` varchar(36) NOT NULL,
+ `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
+ `user_function` int(5) NOT NULL,
+ CONSTRAINT `user_function_fk` FOREIGN KEY(`user_function`) REFERENCES `user_function` (`function_code`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `student` (
   `id` varchar(36) NOT NULL,

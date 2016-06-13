@@ -26,7 +26,7 @@ public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> i
 
 	@Override
 	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
-		return findByName(type.toString());
+		return findByName(String.valueOf(type));
 	}
 	
 	public Collection<Scholorship> findByStudentId(String stud_id) throws RepositoryDataAccessException{

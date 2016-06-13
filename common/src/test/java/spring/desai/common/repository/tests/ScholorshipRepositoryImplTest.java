@@ -2,6 +2,10 @@ package spring.desai.common.repository.tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -36,63 +40,88 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testSaveAll() {
-		fail("Not yet implemented");
+		List<Scholorship> l = new ArrayList<>();
+		for (int i = 1; i < 6; i++) {
+			l.add(new Scholorship("TEST-ID-" + i, "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid" + i));
+		}
+		doSaveAllTest(l);
 	}
 
 	@Test
 	public void testUpdate() {
-		fail("Not yet implemented");
+		Scholorship s = scholorshipRepository.findById("schlrid1");
+		s.setAdditional_comments("UPDATED ADDITIONAL COMMENTS");
+		s.setExternal_ref("UPDATED_REF1");
+		s.setPaid_amount(400d);
+		doUpdateTest(s, "schlrid1");
 	}
 
 	@Test
 	public void testUpdateAll() {
-		fail("Not yet implemented");
+		Collection<Scholorship> origColl = scholorshipRepository.findByName("MGMT_PART");
+		
+		Collection<Scholorship> ipdateColl = scholorshipRepository.findByName("MGMT_PART");
+		for (Scholorship s : ipdateColl) {
+			s.setAdditional_comments("UPDATED ADDITIONAL COMMENTS");
+			s.setExternal_ref("UPDATED_REF1");
+			s.setTotal_amount(400d);
+		}
+		doUpdateAllTest(origColl, ipdateColl, "schlrid");
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		fail("Not yet implemented");
+		doGetAllTest(4);
 	}
 
 	@Test
 	public void testFindById() {
-		fail("Not yet implemented");
+		doFindByIdTest("schlrid1");
 	}
 
 	@Test
 	public void testFindByName() {
-		fail("Not yet implemented");
+		doFindByNameTest("MGMT_PART", 3, 4);
 	}
 	
 	@Test
 	public void testFindByType() {
-		fail("Not yet implemented");
+		Collection<Scholorship> c = scholorshipRepository.findByType(null);
+		assertNotNull(c);
+		
+		c = scholorshipRepository.findByType(ScholorshipType.STATE_PART);
+		assertSize(c, 1);
 	}
 
 	@Test
 	public void testFindByStudentId() {
-		fail("Not yet implemented");
+		Collection<Scholorship> c = scholorshipRepository.findByStudentId(null);
+		assertNotNull(c);
+		
+		c = scholorshipRepository.findByStudentId("studentid1");
+		assertSize(c, 2);
 	}
 
 
 	@Test
 	public void testDeleteById() {
-		fail("Not yet implemented");
+		scholorshipRepository.save(new Scholorship("ID-TO-DELETE", "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid1"));
+		doDeleteByIdTest("ID-TO-DELETE");
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteByName() {
-		fail("Not yet implemented");
+		doDeleteByNameTest("MGMT_PART");
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteAll() {
-		fail("Not yet implemented");
+		doDeleteAllTest();
 	}
 
 	@Test
 	public void testCountAll() {
-		fail("Not yet implemented");
+		doCountAllTest(4);
 	}
 
 	@Override

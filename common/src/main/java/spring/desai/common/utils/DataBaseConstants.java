@@ -2,6 +2,14 @@ package spring.desai.common.utils;
 
 public class DataBaseConstants {
 
+	public static final String USER_TABLE_NAME = "users";
+	public static final String USER_ID = "user_id";
+	public static final String PASSWORD = "password";
+	public static final String FAILED_ATTEMPTS = "failed_attempts";
+	public static final String ACCOUNT_LOCKED = "account_locked";
+	public static final String PASSWORD_EXPIRED = "password_expired";
+	public static final String SIGN_ON_STATUS = "sign_on_status";
+	
 	public static final String STUDENT_TABLE_NAME = "student";
 	public static final String SUBJECT_TABLE_NAME = "subject";
 	public static final String TUTOR_TABLE_NAME = "tutor";
@@ -38,9 +46,5 @@ public class DataBaseConstants {
 
 	public static final String STUD_ID = "stud_id";
 	public static final String SCHLRSHP_ID = "schlrshp_id";
-
-	public static final String NEXT_KEY_TABLE = "";
-	public static final String NEXT_LETTER_SEQUENCE = "next_letter_sequence";
-	public static final String NEXT_NUM = "next_num";
 	
 }

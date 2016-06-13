@@ -25,6 +25,7 @@
 
 	<modules>
 		<module>common</module>
+		<module>common-security</module>
 		<module>desktop-app</module>
 		<module>web-console-app</module>
 	</modules>

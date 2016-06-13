@@ -1,11 +1,7 @@
 package spring.desai.common.repository.impl.jdbc;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +20,7 @@ import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.model.pojo.Tutor;
 import spring.desai.common.repository.AbstractBaseRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.rowmappers.UserRowMapper;
 
 public abstract class BaseJdbcRepository<T extends Persistable> extends AbstractBaseRepository<T> {
 
@@ -62,6 +59,9 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	@Autowired
 	@Qualifier("scholorshipRowMapper")
 	protected RowMapper<Scholorship> scholorshipRowMapper;
+	
+	@Autowired
+	protected UserRowMapper userRowMapper;
 	
 	@Autowired
 	@Qualifier("costRowMapper")

@@ -9,9 +9,9 @@ public abstract class Person implements Persistable {
 	protected String l_name;
 	protected String address;
 
-	public Person(String f_name, String l_name, String address) {
-		this(null, f_name, l_name, address);
-	}
+//	public Person(String f_name, String l_name, String address) {
+//		this(null, f_name, l_name, address);
+//	}
 
 	protected Person(String id, String f_name, String l_name, String address) {
 		this.id = id;
@@ -22,10 +22,6 @@ public abstract class Person implements Persistable {
 
 	public String getId() {
 		return id;
-	}
-
-	protected final void setId(String id) {
-		this.id = id;
 	}
 
 	public String getF_name() {
