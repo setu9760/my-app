@@ -30,6 +30,7 @@ public class TutorRepositoryImplTest extends AbstractRepositoryTest<Tutor> {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 	}
 
 	@After

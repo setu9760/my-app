@@ -2,7 +2,6 @@ CREATE TABLE `users` (
   `user_id` varchar(36) NOT NULL,
   `f_name` varchar(45) NOT NULL,
   `l_name` varchar(45) NOT NULL,
-  `age` int(11) NOT NULL,
   `address` varchar(100) NOT NULL,
   `failed_attempts` int(11) NOT NULL DEFAULT '0',
   `account_locked` varchar(6) NOT NULL DEFAULT 'false',
@@ -14,7 +13,7 @@ CREATE TABLE `usrr` (
  `user_id` varchar(36) NOT NULL,
  `password` varchar(100) NOT NULL,
  `password_expired` varchar(6) NOT NULL DEFAULT 'false',
- `previous_password` varchar(100) NOT NULL,
+ `previous_password` varchar(100) NOT NULL DEFAULT 'N/A',
   PRIMARY KEY (`user_id`),
   CONSTRAINT `user_id_fkk` FOREIGN KEY(`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -44,6 +43,7 @@ CREATE TABLE `user_log` (
  `user_id` varchar(36) NOT NULL,
  `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
  `user_function` int(5) NOT NULL,
+ `ipaddress` varchar(50) NOT NULL,
  CONSTRAINT `user_function_fk` FOREIGN KEY(`user_function`) REFERENCES `user_function` (`function_code`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

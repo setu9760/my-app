@@ -6,9 +6,14 @@ public class User extends Person {
 	
 	private int failed_attempts;
 	private boolean isAccountLocked;
-	private boolean signOnStatus;
+	private SIGN_ON_STATUS signOnStatus;
 	
-	public User(String id, String f_name, String l_name, String address, int failed_attempts, boolean isAccountLocked, boolean signOnStatus) {
+	public enum SIGN_ON_STATUS {
+		LOGGED_IN,
+		LOGGED_OUT
+	}
+	
+	public User(String id, String f_name, String l_name, String address, int failed_attempts, boolean isAccountLocked, SIGN_ON_STATUS signOnStatus) {
 		super(id, f_name, l_name, address);
 		this.failed_attempts = failed_attempts;
 		this.isAccountLocked = isAccountLocked;
@@ -17,6 +22,7 @@ public class User extends Person {
 	
 	public User(String user_id, String f_name, String l_name, String address) {
 		super(user_id, f_name, l_name, address);
+		this.signOnStatus = SIGN_ON_STATUS.LOGGED_OUT;
 	}
 	
 	public int getFailed_attempts() {
@@ -35,11 +41,11 @@ public class User extends Person {
 		this.isAccountLocked = isAccountLocked;
 	}
 
-	public boolean isSignOnStatus() {
+	public SIGN_ON_STATUS getSignOnStatus() {
 		return signOnStatus;
 	}
 
-	public void setSignOnStatus(boolean signOnStatus) {
+	public void setSignOnStatus(SIGN_ON_STATUS signOnStatus) {
 		this.signOnStatus = signOnStatus;
 	}
 
@@ -70,7 +76,7 @@ public class User extends Person {
 		int result = super.hashCode();
 		result = prime * result + failed_attempts;
 		result = prime * result + (isAccountLocked ? 1231 : 1237);
-		result = prime * result + (signOnStatus ? 1231 : 1237);
+		result = prime * result + signOnStatus.hashCode();
 		return result;
 	}
 

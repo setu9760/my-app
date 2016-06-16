@@ -29,7 +29,7 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 
 	@Before
 	public void setUp() throws Exception {
-		
+		super.setUp();
 	}
 	
 	@After

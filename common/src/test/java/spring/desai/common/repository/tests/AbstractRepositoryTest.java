@@ -53,7 +53,7 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 	}
 	
 	@Value("classpath:sql/drop-ddl.sql")
-	private Resource recreateDDL;
+	private Resource drop_ddl;
 	@Value("classpath:sql/ddl.sql")
 	private Resource ddl;
 	@Value("classpath:sql/dml.sql")
@@ -62,18 +62,19 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 	@Autowired
 	private DataSource dataSource;
 	
-	@Value("doRefereshDbBetweenTests")
-	private String doRefereshDbBetweenTests;
-	
 	@Before
 	public void setUp() throws Exception {
-		if(Boolean.valueOf(doRefereshDbBetweenTests)){
+		if(doRefereshDbBetweenTests()){
 			System.out.println("Refreshing database with database populator");
 			ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 			populator.setContinueOnError(true);
-			populator.addScripts(recreateDDL, ddl, dml);
+			populator.addScripts(drop_ddl, ddl, dml);
 			DatabasePopulatorUtils.execute(populator, dataSource);
 		}
+	}
+	
+	protected boolean doRefereshDbBetweenTests(){
+		return false;
 	}
 
 	protected void doSaveTest(T persistable){

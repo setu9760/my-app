@@ -31,6 +31,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 	
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 	}
 
 	@After

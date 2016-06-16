@@ -10,6 +10,13 @@ public class DataBaseConstants {
 	public static final String PASSWORD_EXPIRED = "password_expired";
 	public static final String SIGN_ON_STATUS = "sign_on_status";
 	
+	public static final String ROLES_TABLE = "roles";
+	public static final String ROLE = "role";
+	public static final String ROLE_FULL = "role_full";
+	public static final String DESCRIPTION = "description";
+	
+	public static final String USER_ROLE_TABLE = "user_role";
+	
 	public static final String STUDENT_TABLE_NAME = "student";
 	public static final String SUBJECT_TABLE_NAME = "subject";
 	public static final String TUTOR_TABLE_NAME = "tutor";

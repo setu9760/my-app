@@ -55,6 +55,10 @@
 		<bean id="scholorshipRowMapper" class="spring.desai.common.rowmappers.ScholorshipRowMapper" />
 
 		<bean id="costRowMapper" class="spring.desai.common.rowmappers.CostRowMapper" />
+		
+		<bean id="userRowMapper" class="spring.desai.common.rowmappers.UserRowMapper"/>
+		
+		<bean id="rolesRowMapper" class="spring.desai.common.rowmappers.RolesRowMapper"/>
 	</beans>
 
 	<beans profile="jpa">

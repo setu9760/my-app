@@ -1,3 +1,44 @@
+-- Insert to users
+INSERT INTO users VALUES ('USER-1', 'F_NAME', 'l_name', 'aDDress', 0, 'false', 'LOGGED_IN');
+INSERT INTO users VALUES ('USER-2', 'F_NAME4', 'l_name', 'aDDress', 2, 'false', 'LOGGED_OUT');
+INSERT INTO users VALUES ('USER-3', 'F_NAME1', 'l_name', 'aDDress', 6, 'true', 'LOGGED_OUT');
+INSERT INTO users VALUES ('USER-4', 'F_NAME2', 'l_name', 'aDDress', 4, 'true', 'LOGGED_OUT');
+INSERT INTO users VALUES ('USER-5', 'F_NAME3', 'l_name', 'aDDress', 1, 'false', 'LOGGED_OUT');
+
+--Insert to usrr
+INSERT INTO usrr VALUES ('USER-1', 'password1', 'false', 'N/A');
+INSERT INTO usrr VALUES ('USER-2', 'password2', 'false', 'N/A');
+INSERT INTO usrr VALUES ('USER-3', 'password3', 'true', 'password');
+INSERT INTO usrr VALUES ('USER-4', 'password4', 'true', 'password');
+INSERT INTO usrr VALUES ('USER-5', 'password5', 'false', 'N/A');
+
+-- Insert to roles
+INSERT INTO roles VALUES ('ROLE1', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles VALUES ('ROLE2', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles VALUES ('ROLE3', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles VALUES ('ADMIN', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles VALUES ('READ_ONLY', 'ROLE-FULL-1', 'some description');
+
+-- Insert to user_role
+INSERT INTO user_role VALUES ('USER-1', 'ROLE1');
+INSERT INTO user_role VALUES ('USER-2', 'ROLE1');
+INSERT INTO user_role VALUES ('USER-3', 'ROLE2');
+INSERT INTO user_role VALUES ('USER-4', 'READ_ONLY');
+INSERT INTO user_role VALUES ('USER-5', 'ADMIN');
+INSERT INTO user_role VALUES ('USER-1', 'ROLE2');
+INSERT INTO user_role VALUES ('USER-2', 'ROLE3');
+INSERT INTO user_role VALUES ('USER-3', 'ROLE3');
+
+-- Insert to user_function
+INSERT INTO user_function VALUES (-1, 'Invalid password');
+INSERT INTO user_function VALUES (1, 'Succesfull login');
+INSERT INTO user_function VALUES (2, 'Succesfull logout');
+INSERT INTO user_function VALUES (3, 'Password expired');
+INSERT INTO user_function VALUES (4, 'Account locked');
+INSERT INTO user_function VALUES (5, 'User already logged in');
+INSERT INTO user_function VALUES (6, 'User exceeded MAX_FAILED_ATTEMPTS');
+INSERT INTO user_function VALUES (7, 'User tried to login from blocked ip address/host.');
+
 -- Insert to student
 INSERT INTO student VALUES('studentid1','f_name1','l_name1',21,'address1');
 INSERT INTO student VALUES('studentid2','f_name2','l_name2',21,'address2');
