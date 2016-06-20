@@ -1,6 +1,8 @@
 package spring.desai.common.model.pojo;
 
-public class Role implements Persistable {
+import org.springframework.security.core.GrantedAuthority;
+
+public class Role implements Persistable, GrantedAuthority {
 
 	private static final long serialVersionUID = -3981099290239790487L;
 	private String role;
@@ -12,7 +14,7 @@ public class Role implements Persistable {
 	}
 	
 	public Role(String role, String role_full, String description) {
-		this.role = role;
+		this.role = role.toUpperCase();
 		this.role_full = role_full;
 		this.description = description;
 	}
@@ -28,10 +30,6 @@ public class Role implements Persistable {
 
 	public String getRole_full() {
 		return role_full;
-	}
-
-	public void setRole_full(String role_full) {
-		this.role_full = role_full;
 	}
 
 	public String getDescription() {
@@ -77,6 +75,11 @@ public class Role implements Persistable {
 		} else if (!description.equals(other.description))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String getAuthority() {
+		return role;
 	}
 
 }

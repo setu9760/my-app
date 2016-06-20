@@ -21,7 +21,7 @@ CREATE TABLE `usrr` (
 CREATE TABLE `roles` (
  `role` varchar(36) NOT NULL,
  `role_full` varchar(36) NOT NULL,
- `description` varchar(255) NOT NULL,
+ `description` varchar(255) DEFAULT 'N/A',
  PRIMARY KEY(`role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -32,6 +32,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	
 	@Override
 	public Collection<String> getUserIdsforRole(Role role) throws RepositoryDataAccessException {
+		checkPersitableValidity(role);
 		try {
 			return getJdbcTemplate().queryForList(GET_USER_ID_FOR_ROLE_SQL, new Object[] { role.getId() }, String.class);
 		} catch (DataAccessException e) {
@@ -49,9 +50,10 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	}
 
 	@Override
-	public boolean isRoleAvailableToUser(User userId, Role role) throws RepositoryDataAccessException {
+	public boolean isRoleAvailableToUser(String userId, Role role) throws RepositoryDataAccessException {
+		checkPersitableValidity(role);
 		try {
-			return getJdbcTemplate().queryForObject(IS_ROLE_AVAILABLE_TO_USER_SQL, new Object[] {userId, role}, Integer.class) == 1;
+			return getJdbcTemplate().queryForObject(IS_ROLE_AVAILABLE_TO_USER_SQL, new Object[] {userId, role.getId()}, Integer.class) == 1;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

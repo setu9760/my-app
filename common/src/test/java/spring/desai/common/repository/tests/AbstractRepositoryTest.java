@@ -40,10 +40,10 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
 @Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
-@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
 @ActiveProfiles(profiles = { "jdbc" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public abstract class  AbstractRepositoryTest<T extends Persistable> {
 
 	public abstract Class<T> getPersistableClazz();
@@ -331,7 +331,7 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 		assertThat(c, is(empty()));
 	}
 	
-	protected void assertSize(Collection<T> c, int size){
+	protected void assertSize(Collection<?> c, int size){
 		assertThat(c, is(not(nullValue())));
 		assertThat(c.size(), is(equalTo(size)));
 	}

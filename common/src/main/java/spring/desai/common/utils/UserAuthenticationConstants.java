@@ -5,6 +5,7 @@ public class UserAuthenticationConstants {
 	public static final int NO_ACTIVITY_PERFORMED = 0;
 	
 	public static final int INVALID_PASSWORD = -1;
+	public static final int INVALID_USERNAME = -2;
 	
 	public static final int SUCCESS_SIGN_IN = 1;
 	public static final int SUCCESS_SIGN_OUT = 2;
