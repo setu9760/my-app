@@ -1,5 +1,6 @@
 package spring.desai.common.repository.tests.jpa;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class JPATest {
 	
 	@Test
 	@Transactional
-	public void doTest(){
+	public void doTest() throws Exception{
 //		costCodeRepository.save(new Cost("SOME_COSE", 1234));
 //		
 //		Cost c = costCodeRepository.findById("SOME_COSE");
@@ -88,6 +89,18 @@ public class JPATest {
 		System.out.println(s3);
 		
 		System.out.println(tutorRepository.findById("tutorid7"));
+		
+		Payment p = new Payment("IDD", 32434, PaymentType.CASH, "IDDD");
+		paymentRepository.save(p);
+		
+		System.out.println(paymentRepository.findById("IDD"));
+		
+		Thread.sleep(2000);
+		p.setComments("UPDATED Comments");
+		p.setAmount(400);
+		p.setPaymentDateTime(DateTime.now());
+		paymentRepository.update(p);
+		System.out.println(paymentRepository.findById("IDD"));
 //		Student s = studentRepository.findById("studentid5");
 //		System.out.println(s);
 //		System.out.println();

@@ -8,8 +8,6 @@ import static spring.desai.common.utils.DataBaseConstants.PAYMENT_TABLE_NAME;
 import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
 import static spring.desai.common.utils.DataBaseConstants.TYPE;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,6 +17,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import spring.desai.common.model.enums.PaymentType;
 
@@ -37,13 +39,14 @@ public class Payment implements Persistable {
 	@Transient
 	private PaymentType paymentType;
 	
-	@ManyToOne(targetEntity = Payment.class)
-	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
+//	@ManyToOne(targetEntity = Payment.class)
+//	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
+	@Column(name = STUD_ID)
 	private String stud_id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name=DATETIME, nullable = false, columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
-	private Date paymentDateTime;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Column(name=DATETIME, nullable=false, columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
+	private DateTime paymentDateTime;
 	
 	@Column(name = ADDITIONAL_COMMENTS, nullable = true)
 	private String comments;
@@ -70,14 +73,11 @@ public class Payment implements Persistable {
 		this.paymentType = paymentType;
 		this.stud_id = stud_id;
 		this.comments = comments;
+		this.paymentDateTime = DateTime.now();
 	}
 
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public double getAmount() {
@@ -101,11 +101,11 @@ public class Payment implements Persistable {
 		this.paymentType = paymentType;
 	}
 
-	public Date getPaymentDateTime() {
+	public DateTime getPaymentDateTime() {
 		return paymentDateTime;
 	}
 
-	public void setPaymentDateTime(Date paymentDateTime) {
+	public void setPaymentDateTime(DateTime paymentDateTime) {
 		this.paymentDateTime = paymentDateTime;
 	}
 
@@ -180,10 +180,12 @@ public class Payment implements Persistable {
 		builder.append(amount);
 		builder.append(", paymentType=");
 		builder.append(paymentType);
-		builder.append(", paymentDateTime=");
-		builder.append(paymentDateTime);
 		builder.append(", stud_id=");
 		builder.append(stud_id);
+		builder.append(", paymentDateTime=");
+		builder.append(paymentDateTime);
+		builder.append(", comments=");
+		builder.append(comments);
 		builder.append("]");
 		return builder.toString();
 	}

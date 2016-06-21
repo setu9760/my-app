@@ -13,6 +13,7 @@
 		<spring.security.version>3.2.5.RELEASE</spring.security.version>
 		<aspectj.version>1.8.6</aspectj.version>
 		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version>
+		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 	</properties>
 
 	<distributionManagement>
@@ -43,6 +44,11 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+			<version>${jadira-usertype-core.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>

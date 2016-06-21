@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class PaymentRowMapper implements RowMapper<Payment>{
 	public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Payment payment = new Payment(rs.getString(ID), rs.getDouble(AMOUNT), PaymentType.valueOf(rs.getString(TYPE)), 
 				rs.getString(STUD_ID), rs.getString(ADDITIONAL_COMMENTS));
-		payment.setPaymentDateTime(new Date(Timestamp.valueOf(rs.getString(DATETIME)).getTime()));
+		payment.setPaymentDateTime(new DateTime(Timestamp.valueOf(rs.getString(DATETIME))));
 		return payment;
 	}
 

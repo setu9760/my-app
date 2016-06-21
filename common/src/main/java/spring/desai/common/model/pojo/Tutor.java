@@ -17,8 +17,9 @@ public class Tutor extends Person {
 
 	private static final long serialVersionUID = 7912941565632566952L;
 	
-	@ManyToOne(targetEntity = Subject.class)
-	@JoinColumn(name = SUBJ_ID, nullable = false, referencedColumnName = ID)
+//	@ManyToOne(targetEntity = Subject.class)
+//	@JoinColumn(name = SUBJ_ID, nullable = false, referencedColumnName = ID)
+	@Column(name = SUBJ_ID)
 	private String subj_id;
 	
 	@Column(name = IS_FULLTIME)
@@ -59,6 +60,25 @@ public class Tutor extends Person {
 	}
 
 	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Tutor [id=");
+		builder.append(id);
+		builder.append(", f_name=");
+		builder.append(f_name);
+		builder.append(", l_name=");
+		builder.append(l_name);
+		builder.append(", address=");
+		builder.append(address);
+		builder.append(", subj_id=");
+		builder.append(subj_id);
+		builder.append(", isFulltime=");
+		builder.append(isFulltime);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
@@ -86,22 +106,6 @@ public class Tutor extends Person {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Tutor [subj_id=");
-		builder.append(subj_id);
-		builder.append(", isFulltime=");
-		builder.append(isFulltime);
-		builder.append(", id=");
-		builder.append(id);
-		builder.append(", f_name=");
-		builder.append(f_name);
-		builder.append(", l_name=");
-		builder.append(l_name);
-		builder.append(", address=");
-		builder.append(address);
-		builder.append("]");
-		return builder.toString();
-	}
+
+	
 }

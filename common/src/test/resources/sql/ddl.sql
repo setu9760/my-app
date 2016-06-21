@@ -101,7 +101,7 @@ CREATE TABLE `payment` (
   `amount` decimal(10,2) NOT NULL,
   `type` varchar(45) NOT NULL,
   `stud_id` varchar(36) NOT NULL,
-  `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `datetime` datetime AS CURRENT_TIMESTAMP,
   `additional_comments` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `student_id_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
