@@ -14,11 +14,12 @@ public class UserLogRepositoryImpl implements UserLogRepository{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	private static final String INSERT_USER_LOG_SQL = "INSERT INTO USER_LOG (user_id, user_function, ipaddress) VALUES (?, ?, ?)";
+	
 	@Override
-	public void logUserActivity(String userId, int activity) {
-		// TODO Auto-generated method stub
+	public void logUserActivity(String userId, int userFunction, String ipAddress) {
 		try {
-			getJdbcTemplate();
+			getJdbcTemplate().update(INSERT_USER_LOG_SQL, new Object[] { userId, userFunction, ipAddress});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException("Error occured while logging user activity to database", e);
 		}
