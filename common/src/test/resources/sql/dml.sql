@@ -1,16 +1,16 @@
 -- Insert to users
-INSERT INTO users VALUES ('USER-1', 'F_NAME', 'l_name', 'aDDress', 0, 'false', 'LOGGED_IN');
-INSERT INTO users VALUES ('USER-2', 'F_NAME4', 'l_name', 'aDDress', 2, 'false', 'LOGGED_OUT');
-INSERT INTO users VALUES ('USER-3', 'F_NAME1', 'l_name', 'aDDress', 6, 'true', 'LOGGED_OUT');
-INSERT INTO users VALUES ('USER-4', 'F_NAME2', 'l_name', 'aDDress', 4, 'true', 'LOGGED_OUT');
-INSERT INTO users VALUES ('USER-5', 'F_NAME3', 'l_name', 'aDDress', 1, 'false', 'LOGGED_OUT');
+INSERT INTO user_details VALUES ('USER-1', 'F_NAME', 'l_name', 'aDDress', 0, 'true', 'LOGGED_IN');
+INSERT INTO user_details VALUES ('USER-2', 'F_NAME4', 'l_name', 'aDDress', 2, 'true', 'LOGGED_OUT');
+INSERT INTO user_details VALUES ('USER-3', 'F_NAME1', 'l_name', 'aDDress', 6, 'false', 'LOGGED_OUT');
+INSERT INTO user_details VALUES ('USER-4', 'F_NAME2', 'l_name', 'aDDress', 4, 'false', 'LOGGED_OUT');
+INSERT INTO user_details VALUES ('USER-5', 'F_NAME3', 'l_name', 'aDDress', 1, 'true', 'LOGGED_OUT');
 
 --Insert to usrr
-INSERT INTO usrr VALUES ('USER-1', 'password1', 'false', 'N/A');
-INSERT INTO usrr VALUES ('USER-2', 'password2', 'false', 'N/A');
-INSERT INTO usrr VALUES ('USER-3', 'password3', 'true', 'password');
-INSERT INTO usrr VALUES ('USER-4', 'password4', 'true', 'password');
-INSERT INTO usrr VALUES ('USER-5', 'password5', 'false', 'N/A');
+INSERT INTO usrr VALUES ('USER-1', 'password1', 'true', 'N/A');
+INSERT INTO usrr VALUES ('USER-2', 'password2', 'true', 'N/A');
+INSERT INTO usrr VALUES ('USER-3', 'password3', 'false', 'password');
+INSERT INTO usrr VALUES ('USER-4', 'password4', 'false', 'password');
+INSERT INTO usrr VALUES ('USER-5', 'password5', 'true', 'N/A');
 
 -- Insert to roles
 INSERT INTO roles VALUES ('ROLE1', 'ROLE-FULL-1', 'some description');

@@ -2,12 +2,12 @@ package spring.desai.common.utils;
 
 public class DataBaseConstants {
 
-	public static final String USER_TABLE_NAME = "users";
+	public static final String USER_TABLE_NAME = "user_details";
 	public static final String USER_ID = "user_id";
 	public static final String PASSWORD = "password";
 	public static final String FAILED_ATTEMPTS = "failed_attempts";
-	public static final String ACCOUNT_LOCKED = "account_locked";
-	public static final String PASSWORD_EXPIRED = "password_expired";
+	public static final String ACCOUNT_LOCKED = "account_non_locked";
+	public static final String PASSWORD_EXPIRED = "password_non_expired";
 	public static final String SIGN_ON_STATUS = "sign_on_status";
 	
 	public static final String ROLES_TABLE = "roles";

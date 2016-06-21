@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -16,19 +17,22 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-public class UserLoginDetails implements Serializable, UserDetails, CredentialsContainer {
+import spring.desai.common.model.pojo.Persistable;
+import spring.desai.common.model.pojo.User.SIGN_ON_STATUS;
+
+public class UserLoginDetails implements Serializable, UserDetails, CredentialsContainer, Persistable {
 
 	private static final long serialVersionUID = 7370326212952865693L;
 	// ~ Instance fields
 	// ================================================================================================
 	private String password;
 	private final String username;
-	private final Set<GrantedAuthority> authorities;
-	private final boolean accountNonExpired;
 	private final boolean accountNonLocked;
 	private final boolean credentialsNonExpired;
-	private final boolean enabled;
+	private final int failedAttempts;
+	private final Set<GrantedAuthority> authorities = new HashSet<>();
 	private int state = NO_ACTIVITY_PERFORMED;
+	private final SIGN_ON_STATUS signOnStatus; 
 	// ~ Constructors
 	// ===================================================================================================
 
@@ -38,6 +42,7 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 //	private UserLoginDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 //		this(username, password, true, true, true, true, authorities);
 //	}
+
 
 	/**
 	 * Construct the <code>User</code> with the details required by
@@ -58,22 +63,18 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 	 * @throws IllegalArgumentException if a <code>null</code> value was passed either as
 	 * a parameter or as an element in the <code>GrantedAuthority</code> collection
 	 */
-	public UserLoginDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-
-		if (((username == null) || "".equals(username)) || (password == null)) {
+	public UserLoginDetails(String username, String password, boolean credentialsNonExpired, boolean accountNonLocked, int failedAttempts,
+				SIGN_ON_STATUS signOnStatus) {		if (((username == null) || "".equals(username)) || (password == null)) {
 			throw new IllegalArgumentException("Cannot pass null or empty values to constructor");
 		}
 
 		this.username = username;
 		this.password = password;
-		this.enabled = enabled;
-		this.accountNonExpired = accountNonExpired;
 		this.credentialsNonExpired = credentialsNonExpired;
 		this.accountNonLocked = accountNonLocked;
-		this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
-	}
-
+		this.failedAttempts = failedAttempts;
+		this.signOnStatus = signOnStatus;
+	}
 	// ~ Methods
 	// ========================================================================================================
 
@@ -81,12 +82,12 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 		return Collections.unmodifiableCollection(authorities);
 	}
 	
-	public void addAuthority(GrantedAuthority authority){
-		this.authorities.add(authority);
-	}
+//	public void addAuthority(GrantedAuthority authority){
+//		this.authorities.add(authority);
+//	}
 	
 	public void addAllAuthorities(Collection<GrantedAuthority> authorities){
-		this.authorities.addAll(authorities);
+		this.authorities.addAll(sortAuthorities(authorities));
 	}
 
 	public String getPassword() {
@@ -94,6 +95,11 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 	}
 
 	public String getUsername() {
+		return username;
+	}
+	
+	@Override
+	public String getId() {
 		return username;
 	}
 	
@@ -105,20 +111,20 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 		this.state = state;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public boolean isAccountNonExpired() {
-		return accountNonExpired;
-	}
-
 	public boolean isAccountNonLocked() {
 		return accountNonLocked;
 	}
 
 	public boolean isCredentialsNonExpired() {
 		return credentialsNonExpired;
+	}
+	
+	public boolean isAlreadyLoggedIn() {
+		return SIGN_ON_STATUS.LOGGED_IN.equals(signOnStatus);
+	}
+	
+	public int getFailedAttempts() {
+		return failedAttempts;
 	}
 
 	public void eraseCredentials() {
@@ -187,8 +193,6 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 		sb.append(super.toString()).append(": ");
 		sb.append("Username: ").append(this.username).append("; ");
 		sb.append("Password: [PROTECTED]; ");
-		sb.append("Enabled: ").append(this.enabled).append("; ");
-		sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
 		sb.append("credentialsNonExpired: ").append(this.credentialsNonExpired).append("; ");
 		sb.append("AccountNonLocked: ").append(this.accountNonLocked).append("; ");
 
@@ -209,5 +213,22 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 		}
 
 		return sb.toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonExpired()
+	 */
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.security.core.userdetails.UserDetails#isEnabled()
+	 */
+	public boolean isEnabled() {
+		return true;
 	}
 }

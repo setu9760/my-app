@@ -1,10 +1,10 @@
-CREATE TABLE `users` (
+CREATE TABLE `user_details` (
   `user_id` varchar(36) NOT NULL,
   `f_name` varchar(45) NOT NULL,
   `l_name` varchar(45) NOT NULL,
   `address` varchar(100) NOT NULL,
   `failed_attempts` int(11) NOT NULL DEFAULT '0',
-  `account_locked` varchar(6) NOT NULL DEFAULT 'false',
+  `account_non_locked` varchar(6) NOT NULL DEFAULT 'true',
   `sign_on_status` varchar(36) NOT NULL DEFAULT 'LOGGED_OUT',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -12,10 +12,10 @@ CREATE TABLE `users` (
 CREATE TABLE `usrr` ( 
  `user_id` varchar(36) NOT NULL,
  `password` varchar(100) NOT NULL,
- `password_expired` varchar(6) NOT NULL DEFAULT 'false',
+ `password_non_expired` varchar(6) NOT NULL DEFAULT 'true',
  `previous_password` varchar(100) NOT NULL DEFAULT 'N/A',
   PRIMARY KEY (`user_id`),
-  CONSTRAINT `user_id_fkk` FOREIGN KEY(`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `user_id_fkk` FOREIGN KEY(`user_id`) REFERENCES `user_details` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `roles` (
@@ -29,7 +29,7 @@ CREATE TABLE `user_role`(
  `user_id` varchar(36) NOT NULL,
  `role` varchar (36) NOT NULL,
  PRIMARY KEY (`user_id`,`role`),
- CONSTRAINT `user_id_fk` FOREIGN KEY(`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+ CONSTRAINT `user_id_fk` FOREIGN KEY(`user_id`) REFERENCES `user_details` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
  CONSTRAINT `role_fk` FOREIGN KEY (`role`) REFERENCES `roles` (`role`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
