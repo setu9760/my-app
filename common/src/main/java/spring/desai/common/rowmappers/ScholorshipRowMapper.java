@@ -4,11 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.model.pojo.Scholorship;
 import static spring.desai.common.utils.DataBaseConstants.*;
 
+@Component("scholorshipRowMapper")
 public class ScholorshipRowMapper implements RowMapper<Scholorship> {
 
 	@Override

@@ -1,19 +1,57 @@
 package spring.desai.common.model.pojo;
 
-import org.joda.time.DateTime;
+import static spring.desai.common.utils.DataBaseConstants.ADDITIONAL_COMMENTS;
+import static spring.desai.common.utils.DataBaseConstants.AMOUNT;
+import static spring.desai.common.utils.DataBaseConstants.DATETIME;
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.PAYMENT_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.TYPE;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import spring.desai.common.model.enums.PaymentType;
 
+@Entity
+@Table(name = PAYMENT_TABLE_NAME)
 public class Payment implements Persistable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1231412342241L;
+	@Id
+	@Column(name = ID)
 	private String id;
+	
+	@Column(name = AMOUNT)
 	private double amount;
+	
+	@Transient
 	private PaymentType paymentType;
+	
+	@ManyToOne(targetEntity = Payment.class)
+	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
 	private String stud_id;
-	private DateTime paymentDateTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name=DATETIME, nullable = false, columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
+	private Date paymentDateTime;
+	
+	@Column(name = ADDITIONAL_COMMENTS, nullable = true)
 	private String comments;
 
+	public Payment() {
+		this(null, 0, null, null, null);
+	}
+	
 	public Payment(String id, double amount, PaymentType paymentType) {
 		this(id, amount, paymentType, null);
 	}
@@ -53,16 +91,21 @@ public class Payment implements Persistable {
 	public PaymentType getPaymentType() {
 		return paymentType;
 	}
+	
+	@Column(name = TYPE)
+	public String getPaymentTypeString(){
+		return String.valueOf(paymentType);
+	}
 
 	public void setPaymentType(PaymentType paymentType) {
 		this.paymentType = paymentType;
 	}
 
-	public DateTime getPaymentDateTime() {
+	public Date getPaymentDateTime() {
 		return paymentDateTime;
 	}
 
-	public void setPaymentDateTime(DateTime paymentDateTime) {
+	public void setPaymentDateTime(Date paymentDateTime) {
 		this.paymentDateTime = paymentDateTime;
 	}
 

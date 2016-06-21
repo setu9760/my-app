@@ -1,10 +1,4 @@
-package spring.desai.common.repository.tests;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+package spring.desai.common.repository.tests.jdbc;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +11,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.CostCodeRepository;
@@ -39,14 +32,14 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 
 	@Test
 	public void testSave() {
-		doSaveTest(new Cost(CostCode.UCC9, 1200d));
+		doSaveTest(new Cost("UC19", 1200d));
 	}
 
 	@Test
 	public void testSaveAll() {
 		List<Cost> l = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
-			l.add(new Cost(CostCode.valueOf("TEST_" + i), 500 + i));
+			l.add(new Cost(("TEST_" + i), 500 + i));
 		}
 		doSaveAllTest(l);
 	}
@@ -70,17 +63,6 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 		doUpdateAllTest(origCosts, updateCosts, "TEST_");
 	}
 
-	@Test
-	public void testFindByCode() {
-		
-		Cost c = costCodeRepository.findByCode(null);
-		assertThat(c, is(nullValue()));
-		
-		c = costCodeRepository.findByCode(CostCode.BASIC);
-		assertThat(c, is(not(nullValue())));
-		assertThat(c.getAmount(), is(equalTo(1000d)));
-	}
-
 	@Test(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(5);
@@ -98,7 +80,7 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 
 	@Test
 	public void testDeleteById() {
-		costCodeRepository.save(new Cost(CostCode.UCC10, 300d));
+		costCodeRepository.save(new Cost("UCC10", 300d));
 		doDeleteByIdTest("UCC10");
 	}
 

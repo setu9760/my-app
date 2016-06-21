@@ -11,11 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import spring.desai.common.model.pojo.User;
 import spring.desai.common.model.pojo.User.SIGN_ON_STATUS;
 import spring.desai.common.utils.DataBaseConstants;
 
+@Component("userRowMapper")
 public class UserRowMapper implements RowMapper<User> {
 
 	@Override

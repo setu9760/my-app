@@ -9,16 +9,13 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
 
-	<context:component-scan	base-package="spring.desai.common.service, spring.desai.common.repository" />
-
 	<beans>
-		<bean id="dataSource"
-			class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 			<property name="driverClass" value="org.h2.Driver" />
-			<property name="url"
-				value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MVCC=TRUE;DATABASE_TO_UPPER=FALSE" />
+			<property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MVCC=TRUE;DATABASE_TO_UPPER=FALSE" />
+				<!-- >value="jdbc:h2:file:C:/data/test" /-->
 			<property name="username" value="sa" />
-			<property name="password" value="" />
+			<property name="password" value="password" />
 		</bean>
 
 		<tx:annotation-driven />
@@ -30,11 +27,13 @@
 			<jdbc:script location="classpath:sql/dml.sql" />
 		</jdbc:initialize-database>
 		
-		<context:component-scan	base-package="spring.desai.common.service, spring.desai.common.repository.impl.jdbc" />
+		<context:component-scan	base-package="spring.desai.common.service" />
 	</beans>
 
 
 	<beans profile="jdbc">
+	
+		<context:component-scan	base-package="spring.desai.common.rowmappers, spring.desai.common.repository.impl.jdbc" />
 		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 			<constructor-arg name="dataSource" ref="dataSource" />
 			<constructor-arg name="lazyInit" value="false" />
@@ -43,43 +42,32 @@
 		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 			<property name="dataSource" ref="dataSource" />
 		</bean>
-
-		<bean id="studentRowMapper" class="spring.desai.common.rowmappers.StudentRowMapper" />
-
-		<bean id="tutorRowMapper" class="spring.desai.common.rowmappers.TutorRowMapper" />
-
-		<bean id="subjectRowMapper" class="spring.desai.common.rowmappers.SubjectRowMapper" />
-
-		<bean id="paymentRowMapper" class="spring.desai.common.rowmappers.PaymentRowMapper" />
-
-		<bean id="scholorshipRowMapper" class="spring.desai.common.rowmappers.ScholorshipRowMapper" />
-
-		<bean id="costRowMapper" class="spring.desai.common.rowmappers.CostRowMapper" />
 		
-		<bean id="userRowMapper" class="spring.desai.common.rowmappers.UserRowMapper"/>
-		
-		<bean id="rolesRowMapper" class="spring.desai.common.rowmappers.RolesRowMapper"/>
 	</beans>
 
 	<beans profile="jpa">
+		<context:component-scan	base-package="spring.desai.common.repository.impl.jpa" />
 		<!-- JPA EntityManagerFactory -->
 		<bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 			<property name="dataSource" ref="dataSource" />
 			<property name="jpaVendorAdapter">
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 					<property name="database" value="H2" />
+					<property name="showSql" value="true" />
 				</bean>
 			</property>
 			<!-- gDickens: BOTH Persistence Unit and Packages to Scan are NOT compatible, 
 				persistenceUnit will win -->
-			<property name="persistenceUnitName" value="petclinic" />
-			<property name="packagesToScan" value="spring.desai.common" />
+			<property name="persistenceUnitName" value="my-app" />
+			<property name="packagesToScan" value="spring.desai.common.model" />
 		</bean>
 		
 		 <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
               <property name="entityManagerFactory" ref="entityManagerFactory" />
         </bean>
+        
+        <tx:annotation-driven transaction-manager="transactionManager"/>
 
         <!--
             Post-processor to perform exception translation on @Repository classes (from native
@@ -87,7 +75,6 @@
         -->
         <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
         
-        <context:component-scan	base-package="spring.desai.common.service, spring.desai.common.repository.impl.jpa" />
 	</beans>
 
 </beans>

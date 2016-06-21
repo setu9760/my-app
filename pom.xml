@@ -46,24 +46,35 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.3.6.Final</version>
-			<exclusions>
+			<version>4.3.7.Final</version>
+			<!-- >exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
 					<groupId>*</groupId>
 				</exclusion>
-			</exclusions>
+			</exclusions-->
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.7.Final</version>
+	<!-- >exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions-->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<version>1.0.0.Final</version>
-			<exclusions>
+	<!-- >exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
 					<groupId>*</groupId>
 				</exclusion>
-			</exclusions>
+			</exclusions-->
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>

@@ -5,20 +5,21 @@ import static spring.desai.common.utils.DataBaseConstants.STUDENT_TABLE_NAME;
 
 import java.util.Collection;
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.desai.common.model.pojo.Student;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
-@Profile("jpa")
+//@Profile("jpa")
 @Repository("studentRepository")
 public class StudentRepositoryImplJpa extends BaseJpaRepository<Student> implements StudentRepository {
 
+	
+	@Override
+	protected Class<Student> getEntityClass() {
+		return Student.class;
+	}
 	
 	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {

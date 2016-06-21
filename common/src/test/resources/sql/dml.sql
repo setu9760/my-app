@@ -91,6 +91,7 @@ INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('
 INSERT INTO scholorship (id, type, total_amount, paid_amount, isFullyPaid, stud_id) VALUES ('schlrid2', 'MGMT_PART', 100, 100, 'true', 'studentid1');
 INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('schlrid3', 'MGMT_PART', 300, 100, 'studentid2');
 INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('schlrid4', 'MGMT_PART', 200, 100, 'studentid4');
+INSERT INTO scholorship (id, type, total_amount, paid_amount, stud_id) VALUES ('schlrid5', 'MGMT_PART', 200, 100, 'studentid5');
 
 -- Insert into subj_stud_link
 INSERT INTO subj_stud_link VALUES ('subjectid1', 'studentid1');
@@ -105,4 +106,4 @@ INSERT INTO subj_stud_link VALUES ('subjectid2', 'studentid4');
 INSERT INTO subj_stud_link VALUES ('subjectid3', 'studentid4');
 INSERT INTO subj_stud_link VALUES ('subjectid3', 'studentid3');
 INSERT INTO subj_stud_link VALUES ('subjectid3', 'studentid2');
-INSERT INTO subj_stud_link VALUES ('subjectid4', 'studentid4');
+INSERT INTO subj_stud_link VALUES ('subjectid4', 'studentid5');

@@ -1,4 +1,4 @@
-package spring.desai.common.repository.tests;
+package spring.desai.common.repository.tests.jdbc;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.SubjectRepository;
@@ -40,14 +39,14 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 
 	@Test
 	public void testSave() {
-		doSaveTest(new Subject("TEST-ID", "ABCD", CostCode.BASIC, true));
+		doSaveTest(new Subject("TEST-ID", "ABCD", "BASIC", true));
 	}
 
 	@Test
 	public void testSaveAll() {
 		List<Subject> l = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
-			l.add(new Subject("ID-"+i, "NAME-"+i, CostCode.BASIC, true));
+			l.add(new Subject("ID-"+i, "NAME-"+i, "BASIC", true));
 		}
 		doSaveAllTest(l);
 	}
@@ -56,7 +55,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 	public void testUpdate() {
 		Subject s = subjectRepository.findById("subjectid1");
 		s.setName("NAMNE-XYZ");
-		s.setCost_code(CostCode.RESEARCH);
+//		s.setCostCode("RESEARCH");
 		doUpdateTest(s, "subjectid1");
 	}
 
@@ -91,7 +90,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 		c = subjectRepository.findByCostCode(null);
 		assertThat(c, is(not(nullValue())));
 		
-		c = subjectRepository.findByCostCode(CostCode.BASIC);
+		c = subjectRepository.findByCostCode("BASIC");
 		assertThat(c, hasSize(2));
 	}
 
@@ -125,7 +124,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 
 	@Test
 	public void testDeleteById() {
-		subjectRepository.save(new Subject("ID_TO_DELETE", "D", CostCode.BASIC, true));
+		subjectRepository.save(new Subject("ID_TO_DELETE", "D", "BASIC", true));
 		doDeleteByIdTest("ID_TO_DELETE");
 	}
 

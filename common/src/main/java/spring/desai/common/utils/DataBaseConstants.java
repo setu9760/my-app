@@ -21,7 +21,7 @@ public class DataBaseConstants {
 	public static final String SUBJECT_TABLE_NAME = "subject";
 	public static final String TUTOR_TABLE_NAME = "tutor";
 	public static final String PAYMENT_TABLE_NAME = "payment";
-	public static final String COST_ABLE_NAME = "cost";
+	public static final String COST_TABLE_NAME = "cost";
 	public static final String SCHOLORSHIP_TABLE_NAME = "scholorship";
 	public static final String STUDENT_SCHOLORSHIP_LINK_TABLE_NAME = "stud_schlrshp_link";
 	public static final String SUBJECT_STUDENT_LINK_TABLE_NAME = "subj_stud_link";

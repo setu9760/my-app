@@ -19,11 +19,11 @@ public abstract class BaseJpaRepository<T extends Persistable> extends AbstractB
 	@PersistenceContext
 	EntityManager entityManager;
 	
+	protected abstract Class<T> getEntityClass();
+	
 	@Override
 	public T findById(String id) throws RepositoryDataAccessException {
-		Query query = entityManager.createQuery(getFindBySql(getTableName(), getIdField()));
-		query.setParameter(1, id);
-		return (T) query.getSingleResult();
+		return entityManager.find(getEntityClass(), id);
 	}
 	
 	@Override

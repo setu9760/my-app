@@ -1,21 +1,64 @@
 package spring.desai.common.model.pojo;
 
+import static spring.desai.common.utils.DataBaseConstants.ADDITIONAL_COMMENTS;
+import static spring.desai.common.utils.DataBaseConstants.EXTERNAL_REF;
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.IS_FULLY_PAID;
+import static spring.desai.common.utils.DataBaseConstants.IS_POST_PAY;
+import static spring.desai.common.utils.DataBaseConstants.PAID_AMOUNT;
+import static spring.desai.common.utils.DataBaseConstants.SCHOLORSHIP_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.TOTAL_AMOUNT;
+import static spring.desai.common.utils.DataBaseConstants.TYPE;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import spring.desai.common.model.enums.ScholorshipType;
 
+@Entity
+@Table(name = SCHOLORSHIP_TABLE_NAME)
 public class Scholorship implements Persistable{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 234123434141L;
 	
+	@Id
+	@Column(name = ID, nullable = false)
 	private String id;
+	
+	@Column(name = EXTERNAL_REF)
 	private String external_ref;
+	
+	@Transient
 	private ScholorshipType type;
+	
+	@Column(name = TOTAL_AMOUNT)
 	private double total_amount;
+	
+	@Column(name = PAID_AMOUNT)
 	private double paid_amount;
+	
+	@Column(name = IS_FULLY_PAID)
 	private boolean isFullyPaid;
+	
+	@Column(name = IS_POST_PAY)
 	private boolean isPostPay;
+	
+	@ManyToOne(targetEntity = Scholorship.class)
+	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
 	private String stud_id;
+	
+	@Column(name = ADDITIONAL_COMMENTS)
 	private String additional_comments;
 
+	public Scholorship() {
+	}
+	
 	public Scholorship(String id, ScholorshipType type, double total_amount) {
 		this.id = id;
 		this.type = type;
@@ -56,6 +99,11 @@ public class Scholorship implements Persistable{
 
 	public ScholorshipType getType() {
 		return type;
+	}
+	
+	@Column(name = TYPE)
+	public String getTypeString() {
+		return String.valueOf(type);
 	}
 
 	public void setType(ScholorshipType type) {

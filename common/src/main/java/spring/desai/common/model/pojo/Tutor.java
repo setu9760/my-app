@@ -1,11 +1,33 @@
 package spring.desai.common.model.pojo;
 
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.IS_FULLTIME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJ_ID;
+import static spring.desai.common.utils.DataBaseConstants.TUTOR_TABLE_NAME;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = TUTOR_TABLE_NAME)
 public class Tutor extends Person {
 
 	private static final long serialVersionUID = 7912941565632566952L;
+	
+	@ManyToOne(targetEntity = Subject.class)
+	@JoinColumn(name = SUBJ_ID, nullable = false, referencedColumnName = ID)
 	private String subj_id;
+	
+	@Column(name = IS_FULLTIME)
 	private boolean isFulltime;
-
+	
+	public Tutor() {
+		this(null, null, null, null, null, false);
+	}
+	
 	public Tutor(String f_name, String l_name, String subj_id) {
 		this(f_name, l_name, subj_id, "", true);
 	}

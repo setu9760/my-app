@@ -1,27 +1,55 @@
 package spring.desai.common.model.pojo;
 
-import spring.desai.common.model.enums.CostCode;
+import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.IS_MANDATORY;
+import static spring.desai.common.utils.DataBaseConstants.NAME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJECT_TABLE_NAME;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = SUBJECT_TABLE_NAME)
 public class Subject implements Persistable {
 
 	private static final long serialVersionUID = -4367164667167006540L;
+	
+	@Id
+	@Column(name = ID, nullable = false)
 	private String id;
+	
+	@Column(name = NAME)
 	private String name;
-	private CostCode cost_code;
+	
+//	@ManyToOne(targetEntity = Cost.class)
+//	@JoinColumn(name = COST_CODE)
+	@Column(name = COST_CODE)
+	private String costCode;
+	
+	@Column(name = IS_MANDATORY)
 	private boolean isMandatory;
 
-	public Subject(String name, CostCode costCode) {
+	public Subject() {
+	}
+	
+	public Subject(String name, String costCode) {
 		this(null, name, costCode, true);
 	}
 
-	public Subject(String name, CostCode costCode, boolean isMandatory) {
+	public Subject(String name, String costCode, boolean isMandatory) {
 		this(null, name, costCode, isMandatory);
 	}
 	
-	public Subject(String id, String name, CostCode costCode, boolean isMandatory) {
+	public Subject(String id, String name, String costCode, boolean isMandatory) {
 		this.id = id;
 		this.name = name;
-		this.cost_code = costCode;
+		this.costCode = costCode;
 		this.isMandatory = isMandatory;
 	}
 
@@ -41,12 +69,12 @@ public class Subject implements Persistable {
 		this.name = name;
 	}
 
-	public CostCode getCost_code() {
-		return cost_code;
+	public String getCostCode() {
+		return costCode;
 	}
-
-	public void setCost_code(CostCode cost_code) {
-		this.cost_code = cost_code;
+	
+	public void setCostCode(String costCode) {
+		this.costCode = costCode;
 	}
 
 	public boolean isMandatory() {
@@ -61,7 +89,7 @@ public class Subject implements Persistable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cost_code == null) ? 0 : cost_code.hashCode());
+		result = prime * result + ((costCode == null) ? 0 : costCode.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + (isMandatory ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -77,7 +105,7 @@ public class Subject implements Persistable {
 		if (!(obj instanceof Subject))
 			return false;
 		Subject other = (Subject) obj;
-		if (cost_code != other.cost_code)
+		if (costCode != other.costCode)
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -101,8 +129,8 @@ public class Subject implements Persistable {
 		builder.append(id);
 		builder.append(", name= ");
 		builder.append(name);
-		builder.append(", cost_code= ");
-		builder.append(cost_code);
+		builder.append(", costCode= ");
+		builder.append(costCode);
 		builder.append(", isMandatory= ");
 		builder.append(isMandatory);
 		builder.append("]");

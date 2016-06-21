@@ -21,7 +21,6 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
@@ -38,9 +37,9 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	}
 	
 	@Override
-	public Collection<Subject> findByCostCode(CostCode costCode) throws RepositoryDataAccessException {
+	public Collection<Subject> findByCostCode(String costCode) throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { String.valueOf(costCode) }, getRowMapper());
+			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { costCode }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -103,7 +102,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, s.getId());
 				ps.setString(2, s.getName());
-				ps.setString(3, String.valueOf(s.getCost_code()));
+				ps.setString(3, String.valueOf(s.getCostCode()));
 				ps.setString(4, String.valueOf(s.isMandatory()));
 			}
 		};
@@ -116,7 +115,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, s.getName());
-				ps.setString(2, String.valueOf(s.getCost_code()));
+				ps.setString(2, String.valueOf(s.getCostCode()));
 				ps.setString(3, String.valueOf(s.isMandatory()));
 				ps.setString(4, s.getId());
 			}
@@ -134,7 +133,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 
 				ps.setString(1, s.getId());
 				ps.setString(2, s.getName());
-				ps.setString(3, String.valueOf(s.getCost_code()));
+				ps.setString(3, String.valueOf(s.getCostCode()));
 				ps.setString(4, String.valueOf(s.isMandatory()));
 			}
 			
@@ -154,7 +153,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Subject s = l.get(i);
 				ps.setString(1, s.getName());
-				ps.setString(2, String.valueOf(s.getCost_code()));
+				ps.setString(2, String.valueOf(s.getCostCode()));
 				ps.setString(3, String.valueOf(s.isMandatory()));
 				ps.setString(4, s.getId());
 			}

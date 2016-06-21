@@ -19,7 +19,7 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 import static spring.desai.common.utils.DataBaseConstants.*;
 
-@Profile(value = { "jdbc" })
+//@Profile(value = { "jdbc" })
 @Repository(value="studentRepository")
 public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implements StudentRepository {
 

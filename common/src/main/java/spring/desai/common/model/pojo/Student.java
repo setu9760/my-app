@@ -1,17 +1,48 @@
 package spring.desai.common.model.pojo;
 
+import static spring.desai.common.utils.DataBaseConstants.AGE;
+import static spring.desai.common.utils.DataBaseConstants.STUDENT_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.SUBJECT_STUDENT_LINK_TABLE_NAME;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = STUDENT_TABLE_NAME)
 public class Student extends Person {
 
 	private static final long serialVersionUID = 3674239599895293427L;
+	
+	@Column(name = AGE)
 	private int age;
-	private Collection<Subject> subjects;
-	private Collection<Payment> payments;
-	private Collection<Scholorship> scholorships;
+	
+	@ManyToMany(fetch =FetchType.EAGER)
+	@JoinTable(name = SUBJECT_STUDENT_LINK_TABLE_NAME, 
+			joinColumns= @JoinColumn(name = "stud_id", referencedColumnName = "id"), 
+			inverseJoinColumns = @JoinColumn(name = "subj_id", referencedColumnName ="id"))
+	private Collection<Subject> subjects = new HashSet<Subject>();
+	
+	@OneToMany(mappedBy = STUD_ID, fetch=FetchType.EAGER)
+	private Collection<Payment> payments = new HashSet<Payment>();
+	
+	@OneToMany(mappedBy = STUD_ID, fetch=FetchType.EAGER)
+	private Collection<Scholorship> scholorships = new HashSet<Scholorship>();
 
+	public Student() {
+		this(null, null, null, 0, null);
+	}
+	
 	public Student(String f_name, String l_name, int age) {
 		this(f_name, l_name, age, null);
 	}
@@ -23,9 +54,6 @@ public class Student extends Person {
 	public Student(String id, String f_name, String l_name, int age, String address) {
 		super(id, f_name, l_name, address);
 		this.age = age;
-		subjects = new HashSet<Subject>();
-		payments = new HashSet<Payment>();
-		scholorships = new HashSet<Scholorship>();
 	}
 
 	public int getAge() {
@@ -54,10 +82,6 @@ public class Student extends Person {
 
 	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
-	}
-
-	public void addPayments(Payment payment) {
-		this.payments.add(payment);
 	}
 
 	public Collection<Scholorship> getScholorships() {

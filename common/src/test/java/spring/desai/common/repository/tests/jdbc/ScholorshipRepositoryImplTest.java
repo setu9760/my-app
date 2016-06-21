@@ -1,4 +1,4 @@
-package spring.desai.common.repository.tests;
+package spring.desai.common.repository.tests.jdbc;
 
 import static org.junit.Assert.*;
 

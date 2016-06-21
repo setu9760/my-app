@@ -4,10 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import spring.desai.common.model.pojo.Student;
 import static spring.desai.common.utils.DataBaseConstants.*;
 
+@Component("studentRowMapper")
 public class StudentRowMapper implements RowMapper<Student> {
 
 	@Override

@@ -1,6 +1,6 @@
 package spring.desai.common.repository.impl.jdbc;
 
-import static spring.desai.common.utils.DataBaseConstants.COST_ABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.COST_TABLE_NAME;
 import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
 
 import java.sql.PreparedStatement;
@@ -14,18 +14,11 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.enums.CostCode;
 import spring.desai.common.model.pojo.Cost;
 import spring.desai.common.repository.CostCodeRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 @Repository("costCodeRepository")
 public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements CostCodeRepository {
-
-	@Override
-	public Cost findByCode(CostCode costCode) throws RepositoryDataAccessException {
-		return findById(String.valueOf(costCode));
-	}
 	
 	@Override
 	protected RowMapper<Cost> getRowMapper() {
@@ -44,7 +37,7 @@ public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements 
 
 	@Override
 	protected String getTableName() {
-		return COST_ABLE_NAME;
+		return COST_TABLE_NAME;
 	}
 	
 	@Override

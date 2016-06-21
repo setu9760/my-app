@@ -1,20 +1,38 @@
 package spring.desai.common.model.pojo;
 
-import spring.desai.common.model.enums.CostCode;
+import static spring.desai.common.utils.DataBaseConstants.AMOUNT;
+import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
+import static spring.desai.common.utils.DataBaseConstants.COST_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJECT_TABLE_NAME;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = COST_TABLE_NAME)
 public class Cost implements Persistable {
 
 	private static final long serialVersionUID = 123412341341L;
-	private CostCode costCode;
+	
+	@Id
+	@Column(name = COST_CODE)
+	private String costCode;
+	
+	@Column(name = AMOUNT)
 	private double amount;
 
-	public Cost(CostCode costCode, double amount) {
+	public Cost() {
+	}
+	
+	public Cost(String costCode, double amount) {
 		this.costCode = costCode;
 		this.amount = amount;
-	}
-
-	public void setCost_code(CostCode cost_code) {
-		this.costCode = cost_code;
 	}
 
 	public void setAmount(double amount) {
@@ -23,11 +41,11 @@ public class Cost implements Persistable {
 
 	@Override
 	public String getId() {
-		return costCode.toString();
+		return costCode;
 	}
-
+	
 	public String getCostCode() {
-		return getId();
+		return costCode;
 	}
 
 	public double getAmount() {

@@ -1,18 +1,35 @@
 package spring.desai.common.model.pojo;
 
+import static spring.desai.common.utils.DataBaseConstants.ADDRESS;
+import static spring.desai.common.utils.DataBaseConstants.F_NAME;
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.L_NAME;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class Person implements Persistable {
 
 	private static final long serialVersionUID = 6253063559299039389L;
-
+	
+	@Id
+	@Column(name = ID, length = 36, nullable = false)
 	protected String id;
+	
+	@Column(name = F_NAME, length = 36, nullable = false)
 	protected String f_name;
+	
+	@Column(name = L_NAME, length = 36, nullable = false)
 	protected String l_name;
+	
+	@Column(name = ADDRESS, length = 255)
 	protected String address;
 
-//	public Person(String f_name, String l_name, String address) {
-//		this(null, f_name, l_name, address);
-//	}
-
+	public Person() {
+	}
+	
 	protected Person(String id, String f_name, String l_name, String address) {
 		this.id = id;
 		this.f_name = f_name;
