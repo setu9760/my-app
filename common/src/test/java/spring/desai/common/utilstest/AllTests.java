@@ -16,10 +16,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+import spring.desai.common.model.Payment;
+import spring.desai.common.model.Scholorship;
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.enums.ScholorshipType;
-import spring.desai.common.model.pojo.Payment;
-import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 import spring.desai.common.repository.StudentRepository;

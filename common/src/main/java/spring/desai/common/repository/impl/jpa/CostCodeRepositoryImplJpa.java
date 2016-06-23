@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Cost;
+import spring.desai.common.model.Cost;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 

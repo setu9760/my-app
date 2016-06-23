@@ -1,6 +1,6 @@
 package spring.desai.common.repository.impl.jdbc;
 
-import static spring.desai.common.utils.DataBaseConstants.ACCOUNT_LOCKED;
+import static spring.desai.common.utils.DataBaseConstants.ACCOUNT_NON_LOCKED;
 import static spring.desai.common.utils.DataBaseConstants.FAILED_ATTEMPTS;
 import static spring.desai.common.utils.DataBaseConstants.F_NAME;
 import static spring.desai.common.utils.DataBaseConstants.SIGN_ON_STATUS;
@@ -19,7 +19,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.User;
+import spring.desai.common.model.User;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
@@ -28,16 +28,16 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 
 	private static final int MAX_FAILED_ATTEMPTS = 4;
 	private final String FIND_MAX_ATTEMPTS_USER_SQL = "SELECT * FROM " + getTableName() + " WHERE " + FAILED_ATTEMPTS + " >= ?";
-	private final String RESET_LOCKED_OUT_USER_SQL = "UPDATE " + getTableName() + " SET " + ACCOUNT_LOCKED + " = 'false' WHERE " + USER_ID + " = ? ";
+	private final String RESET_LOCKED_OUT_USER_SQL = "UPDATE " + getTableName() + " SET " + ACCOUNT_NON_LOCKED + " = 'false' WHERE " + USER_ID + " = ? ";
 	
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)";
+		return "INSERT INTO user_details VALUES (?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	@Override
 	protected String getUpdateSql() {
-		return "UPDATE users SET f_name = ?, l_name = ?, address = ?, failed_attempts = ?, account_locked = ?, sign_on_status = ? WHERE user_id = ?";
+		return "UPDATE user_details SET f_name = ?, l_name = ?, address = ?, failed_attempts = ?, account_non_locked = ?, sign_on_status = ? WHERE user_id = ?";
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 	@Override
 	public Collection<User> findLockedOutUsers() throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(getTableName(), ACCOUNT_LOCKED), new Object[] { "true" }, getRowMapper());
+			return getJdbcTemplate().query(getFindBySql(getTableName(), ACCOUNT_NON_LOCKED), new Object[] { "true" }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
@@ -153,7 +153,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 	@Override
 	public Collection<User> findCurrentlyActiveUsers()  throws RepositoryDataAccessException{
 		try {
-			return getJdbcTemplate().query(getFindBySql(getTableName(), SIGN_ON_STATUS), new Object[] { String.valueOf(spring.desai.common.model.pojo.User.SIGN_ON_STATUS.LOGGED_IN) }, getRowMapper());
+			return getJdbcTemplate().query(getFindBySql(getTableName(), SIGN_ON_STATUS), new Object[] { String.valueOf(spring.desai.common.model.User.SIGN_ON_STATUS.LOGGED_IN) }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

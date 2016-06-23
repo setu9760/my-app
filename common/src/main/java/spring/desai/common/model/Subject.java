@@ -1,4 +1,4 @@
-package spring.desai.common.model.pojo;
+package spring.desai.common.model;
 
 import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
 import static spring.desai.common.utils.DataBaseConstants.ID;
@@ -105,7 +105,7 @@ public class Subject implements Persistable {
 		if (!(obj instanceof Subject))
 			return false;
 		Subject other = (Subject) obj;
-		if (costCode != other.costCode)
+		if (!costCode.equals(other.costCode))
 			return false;
 		if (id == null) {
 			if (other.id != null)

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import spring.desai.common.model.pojo.Cost;
+import spring.desai.common.model.Cost;
 
 @Component("costRowMapper")
 public class CostRowMapper implements RowMapper<Cost> {

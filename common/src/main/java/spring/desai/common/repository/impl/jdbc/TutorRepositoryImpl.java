@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Tutor;
 import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import static spring.desai.common.utils.DataBaseConstants.*;
@@ -21,7 +21,7 @@ import static spring.desai.common.utils.DataBaseConstants.*;
 public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements TutorRepository {
 
 	@Override
-	public Collection<Tutor> getTutorsForSubject(String subj_id) throws DataAccessException {
+	public Collection<Tutor> getTutorsForSubject(String subj_id) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, SUBJ_ID), new Object[] { subj_id }, getRowMapper());
 		} catch (DataAccessException e) {

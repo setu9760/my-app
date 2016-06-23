@@ -1,4 +1,4 @@
-package spring.desai.common.model.pojo;
+package spring.desai.common.model;
 
 public class User extends Person {
 

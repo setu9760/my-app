@@ -1,4 +1,4 @@
-package spring.desai.common.model.pojo;
+package spring.desai.common.model;
 
 import org.springframework.security.core.GrantedAuthority;
 

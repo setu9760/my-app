@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import spring.desai.common.guid.GuidGeneratorException;
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Tutor;
 
 @Controller
 @RequestMapping("/tutor")

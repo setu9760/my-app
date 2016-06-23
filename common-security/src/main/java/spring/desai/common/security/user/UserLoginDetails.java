@@ -17,8 +17,8 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-import spring.desai.common.model.pojo.Persistable;
-import spring.desai.common.model.pojo.User.SIGN_ON_STATUS;
+import spring.desai.common.model.Persistable;
+import spring.desai.common.model.User.SIGN_ON_STATUS;
 
 public class UserLoginDetails implements Serializable, UserDetails, CredentialsContainer, Persistable {
 

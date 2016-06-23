@@ -1,4 +1,4 @@
-package spring.desai.common.model.pojo;
+package spring.desai.common.model;
 
 import static spring.desai.common.utils.DataBaseConstants.ADDRESS;
 import static spring.desai.common.utils.DataBaseConstants.F_NAME;

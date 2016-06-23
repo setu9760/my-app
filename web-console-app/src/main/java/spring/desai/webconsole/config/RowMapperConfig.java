@@ -4,9 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.RowMapper;
 
-import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Student;
+import spring.desai.common.model.Subject;
+import spring.desai.common.model.Tutor;
 import spring.desai.common.rowmappers.StudentRowMapper;
 import spring.desai.common.rowmappers.SubjectRowMapper;
 import spring.desai.common.rowmappers.TutorRowMapper;

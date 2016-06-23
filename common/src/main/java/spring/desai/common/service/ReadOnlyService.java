@@ -2,10 +2,10 @@ package spring.desai.common.service;
 
 import java.util.Collection;
 
-import spring.desai.common.model.pojo.Payment;
-import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Payment;
+import spring.desai.common.model.Student;
+import spring.desai.common.model.Subject;
+import spring.desai.common.model.Tutor;
 
 public interface ReadOnlyService {
 

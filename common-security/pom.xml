@@ -17,6 +17,7 @@
 		<spring-security-version>3.2.5.RELEASE</spring-security-version>
 	</properties>
 	<dependencies>
+	
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>common</artifactId>

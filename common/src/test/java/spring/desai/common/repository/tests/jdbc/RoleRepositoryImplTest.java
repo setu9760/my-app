@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 
-import spring.desai.common.model.pojo.Role;
+import spring.desai.common.model.Role;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.utils.I18N;

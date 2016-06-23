@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import spring.desai.common.model.pojo.Persistable;
+import spring.desai.common.model.Persistable;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;

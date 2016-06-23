@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Subject;
+import spring.desai.common.model.Subject;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 

@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 
-import spring.desai.common.model.pojo.Persistable;
+import spring.desai.common.model.Persistable;
 import spring.desai.common.utils.I18N;
 
 public abstract class AbstractBaseRepository<T extends Persistable> implements BasePersistableRepository<T>  {

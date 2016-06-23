@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.User.SIGN_ON_STATUS;
+import spring.desai.common.model.User.SIGN_ON_STATUS;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.security.user.UserLoginDetails;

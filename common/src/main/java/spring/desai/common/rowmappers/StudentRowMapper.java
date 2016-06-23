@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import spring.desai.common.model.pojo.Student;
+import spring.desai.common.model.Student;
+
 import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Component("studentRowMapper")

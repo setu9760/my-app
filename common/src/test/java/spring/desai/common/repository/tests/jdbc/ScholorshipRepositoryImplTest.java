@@ -13,8 +13,8 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import spring.desai.common.model.Scholorship;
 import spring.desai.common.model.enums.ScholorshipType;
-import spring.desai.common.model.pojo.Scholorship;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 
@@ -81,7 +81,7 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testFindByName() {
-		doFindByNameTest("MGMT_PART", 3, 4);
+		doFindByNameTest("MGMT_PART", 4, 5);
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testCountAll() {
-		doCountAllTest(4);
+		doCountAllTest(5);
 	}
 
 	@Override
