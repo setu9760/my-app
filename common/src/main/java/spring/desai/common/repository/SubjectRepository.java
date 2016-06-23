@@ -2,7 +2,7 @@ package spring.desai.common.repository;
 
 import java.util.Collection;
 
-import spring.desai.common.model.pojo.Subject;
+import spring.desai.common.model.Subject;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public interface SubjectRepository extends BasePersistableRepository<Subject> {

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import spring.desai.common.model.pojo.Role;
+import spring.desai.common.model.Role;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public interface RoleRepository extends BasePersistableRepository<Role> {

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Tutor;
 import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 

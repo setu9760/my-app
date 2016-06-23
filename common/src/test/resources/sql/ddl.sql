@@ -1,3 +1,5 @@
+-- Any changes to this sql file could result in many test failing. Refer to relevent repository implementation test to modify tests in case the ddl or dml changes are necessary
+
 CREATE TABLE `user_details` (
   `user_id` varchar(36) NOT NULL,
   `f_name` varchar(45) NOT NULL,

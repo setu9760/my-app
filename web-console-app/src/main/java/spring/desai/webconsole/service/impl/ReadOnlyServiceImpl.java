@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import spring.desai.common.model.pojo.Payment;
-import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Payment;
+import spring.desai.common.model.Student;
+import spring.desai.common.model.Subject;
+import spring.desai.common.model.Tutor;
 import spring.desai.common.service.BaseService;
 import spring.desai.common.service.ReadOnlyService;
 

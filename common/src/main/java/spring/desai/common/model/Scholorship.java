@@ -1,4 +1,4 @@
-package spring.desai.common.model.pojo;
+package spring.desai.common.model;
 
 import static spring.desai.common.utils.DataBaseConstants.ADDITIONAL_COMMENTS;
 import static spring.desai.common.utils.DataBaseConstants.EXTERNAL_REF;

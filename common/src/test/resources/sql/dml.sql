@@ -1,3 +1,5 @@
+-- Any changes to this sql file could result in many test failing. Refer to relevent repository implementation test to modify tests in case the ddl or dml changes are necessary
+
 -- Insert to users
 INSERT INTO user_details VALUES ('USER-1', 'F_NAME', 'l_name', 'aDDress', 0, 'true', 'LOGGED_IN');
 INSERT INTO user_details VALUES ('USER-2', 'F_NAME4', 'l_name', 'aDDress', 2, 'true', 'LOGGED_OUT');

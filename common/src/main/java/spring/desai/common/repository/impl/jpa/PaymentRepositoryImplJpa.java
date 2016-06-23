@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
+import spring.desai.common.model.Payment;
 import spring.desai.common.model.enums.PaymentType;
-import spring.desai.common.model.pojo.Payment;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 

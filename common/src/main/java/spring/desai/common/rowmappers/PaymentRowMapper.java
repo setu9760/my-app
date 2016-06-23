@@ -16,8 +16,8 @@ import org.joda.time.DateTime;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import spring.desai.common.model.Payment;
 import spring.desai.common.model.enums.PaymentType;
-import spring.desai.common.model.pojo.Payment;
 
 @Component("paymentRowMapper")
 public class PaymentRowMapper implements RowMapper<Payment>{

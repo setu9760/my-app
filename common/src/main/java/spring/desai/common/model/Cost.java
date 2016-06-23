@@ -1,4 +1,4 @@
-package spring.desai.common.model.pojo;
+package spring.desai.common.model;
 
 import static spring.desai.common.utils.DataBaseConstants.AMOUNT;
 import static spring.desai.common.utils.DataBaseConstants.COST_CODE;

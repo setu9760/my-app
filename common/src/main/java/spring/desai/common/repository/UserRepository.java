@@ -2,7 +2,7 @@ package spring.desai.common.repository;
 
 import java.util.Collection;
 
-import spring.desai.common.model.pojo.User;
+import spring.desai.common.model.User;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public interface UserRepository extends BasePersistableRepository<User> {

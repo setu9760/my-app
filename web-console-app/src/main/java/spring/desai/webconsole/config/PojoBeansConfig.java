@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.Validator;
 
 import spring.desai.common.guid.GuidGeneratorException;
-import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Student;
+import spring.desai.common.model.Subject;
+import spring.desai.common.model.Tutor;
 import spring.desai.common.pojo.validators.StudentValidator;
 import spring.desai.common.pojo.validators.SubjectValidator;
 import spring.desai.common.pojo.validators.TutorValidator;

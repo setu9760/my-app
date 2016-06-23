@@ -9,9 +9,9 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
-import spring.desai.common.model.pojo.Tutor;
+import spring.desai.common.model.Student;
+import spring.desai.common.model.Subject;
+import spring.desai.common.model.Tutor;
 import spring.desai.webconsole.config.Config;
 
 public class Application {

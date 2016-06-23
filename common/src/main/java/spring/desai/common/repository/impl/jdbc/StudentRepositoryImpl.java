@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Student;
+import spring.desai.common.model.Student;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 

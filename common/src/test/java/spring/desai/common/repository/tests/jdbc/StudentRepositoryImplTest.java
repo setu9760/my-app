@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import spring.desai.common.model.pojo.Student;
+import spring.desai.common.model.Student;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.StudentRepository;
 

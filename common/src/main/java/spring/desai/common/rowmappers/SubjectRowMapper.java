@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import spring.desai.common.model.pojo.Subject;
+import spring.desai.common.model.Subject;
 
 @Component("subjectRowMapper")
 public class SubjectRowMapper implements RowMapper<Subject> {

@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import spring.desai.common.model.pojo.User;
+import spring.desai.common.model.User;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.utils.I18N;
@@ -92,7 +92,7 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 	@Test
 	public void testFindLockedOutUsers() {
 		Collection<User> c = userRepository.findLockedOutUsers();
-		assertSize(c, 2);
+		assertSize(c, 3);
 	}
 
 	@Test

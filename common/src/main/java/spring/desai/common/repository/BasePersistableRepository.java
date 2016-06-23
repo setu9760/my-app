@@ -2,7 +2,7 @@ package spring.desai.common.repository;
 
 import java.util.Collection;
 
-import spring.desai.common.model.pojo.Persistable;
+import spring.desai.common.model.Persistable;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public interface BasePersistableRepository <T extends Persistable>{

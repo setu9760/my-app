@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import spring.desai.common.model.pojo.Cost;
+import spring.desai.common.model.Cost;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.CostCodeRepository;
 

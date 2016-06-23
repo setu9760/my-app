@@ -21,7 +21,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.pojo.Subject;
+import spring.desai.common.model.Subject;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
@@ -55,7 +55,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	}
 
 	@Override
-	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws DataAccessException {
+	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws RepositoryDataAccessException {
 		try {
 			List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
 			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getRowMapper());

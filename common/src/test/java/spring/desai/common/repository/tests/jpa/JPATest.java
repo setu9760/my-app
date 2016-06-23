@@ -13,11 +13,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
+import spring.desai.common.model.Cost;
+import spring.desai.common.model.Payment;
+import spring.desai.common.model.Student;
+import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
-import spring.desai.common.model.pojo.Cost;
-import spring.desai.common.model.pojo.Payment;
-import spring.desai.common.model.pojo.Student;
-import spring.desai.common.model.pojo.Subject;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.ScholorshipRepository;

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import spring.desai.common.model.pojo.Role;
+import spring.desai.common.model.Role;
 
 @Component("rolesRowMapper")
 public class RolesRowMapper implements RowMapper<Role> {
