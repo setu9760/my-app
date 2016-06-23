@@ -3,8 +3,6 @@ package spring.desai.webconsole.config.core;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import spring.desai.webconsole.config.Config;
-import spring.desai.webconsole.config.PojoBeansConfig;
-import spring.desai.webconsole.config.RowMapperConfig;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -15,7 +13,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] { SpringWebConfig.class };
+		return null;
 	}
 
 	@Override

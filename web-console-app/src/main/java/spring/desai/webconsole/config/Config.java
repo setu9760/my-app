@@ -15,19 +15,20 @@ import org.springframework.remoting.rmi.RmiServiceExporter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
-import spring.desai.common.guid.GuidGenerator;
-import spring.desai.common.repository.StudentRepository;
-import spring.desai.common.repository.impl.jdbc.StudentRepositoryImpl;
 import spring.desai.common.service.AdminService;
 import spring.desai.common.service.ReadOnlyService;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({ "spring.desai.*"/*, "spring.desai.webconsole.*", "spring.desai.webconsole.config.*", "spring.desai.common.*",
+@ComponentScan({ "spring.desai.webconsole.*", "spring.desai.common.repository.impl.*", "spring.desai.common.rowmappers", 
+		"spring.desai.secure.service", "spring.desai.secure.repository"
+		/*, "spring.desai.webconsole.*", "spring.desai.webconsole.config.*", "spring.desai.common.*",
 		"spring.desai.webconsole.core.*", "spring.desai.webconsole.config.aspects.*",
 		"spring.desai.webconsole.controllers.*", "spring.desai.webconsole.JdbcDaoImpl.*" */ })
-@Import({ PojoBeansConfig.class, RowMapperConfig.class /*, SecurityConfig.class*/ })
+@Import({ /*PojoBeansConfig.class,*/ RowMapperConfig.class , SecurityConfig.class })
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class Config {
@@ -37,7 +38,16 @@ public class Config {
 	// private final String DATASOURCE2_JNDI =
 	// Config_properties.getString("Config.datasource2.jndi");
 
-	@Bean(name = "dataSource", destroyMethod = "")
+	@Bean
+	public InternalResourceViewResolver viewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/WEB-INF/resources/");
+		viewResolver.setSuffix(".jsp");
+		return viewResolver;
+	}
+	
+	@Bean(name = "dataSource")
 	public DataSource getDatasource() throws NamingException {
 		return new JndiDataSourceLookup().getDataSource(DATASOURCE_JNDI);
 	}
@@ -52,25 +62,11 @@ public class Config {
 		return new TransactionTemplate(getDataSourceTransactionManager());
 	}
 
-	@Bean(name = "guidGenerator")
-	public GuidGenerator getGuidGenerator() {
-		return GuidGenerator.getInstance();
-	}
+//	@Bean(name = "guidGenerator")
+//	public GuidGenerator getGuidGenerator() {
+//		return GuidGenerator.getInstance();
+//	}
 
-	@Bean(name = "studentRepository")
-	public StudentRepository getStudentRepo() throws Exception {
-		return new StudentRepositoryImpl();
-	}
-	
-	@Bean(name = "tutorRepository")
-	public StudentRepository getTutorRepo() throws Exception {
-		return new StudentRepositoryImpl();
-	}
-
-	@Bean(name = "subjectRepository")
-	public StudentRepository getSubjectRepo() throws Exception {
-		return new StudentRepositoryImpl();
-	}
 
 	@Bean(name = "messageSource")
 	public ResourceBundleMessageSource getMessageSource() {

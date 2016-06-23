@@ -16,59 +16,58 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 
 	@Override
 	public Collection<Student> getAllStudents() {
-		Collection<Student> students = studentRepository.getAll();
-		for (Student student : students) {
-			student.setSubjects(subjectRepository.getSubjectsForStudentId(student.getId()));
-		}
-		return students;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Student getStudentById(String id) {
-		Student student = studentRepository.findById(id);
-		student.setSubjects(subjectRepository.getSubjectsForStudentId(id));
-		return student;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Collection<Subject> getAllSubjects() {
-		return subjectRepository.getAll();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Subject getSubjectById(String id) {
-		return subjectRepository.findById(id);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Collection<Tutor> getAllTutors() {
-		Collection<Tutor> tutors = tutorRepository.getAll();
-		for (Tutor tutor : tutors) {
-			tutor.setSubject(getSubjectById(tutor.getSubject().getId()));
-		}
-		return tutors;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Tutor getTutorById(String id) {
-		Tutor tutor = tutorRepository.findById(id);
-		tutor.setSubject(getSubjectById(tutor.getSubject().getId()));
-		return tutor;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Collection<Tutor> getTutorsFromSubjectId(String subjectId) {
-		return tutorRepository.getTutorsForSubject(subjectId);
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	@Override
-	public Payment getPaymentById(String id) {
-		return paymentRepository.findById(id);
-	}
-	
+
 	@Override
 	public Collection<Payment> getPaymentsForStudent(String stud_id) {
-		return paymentRepository.findbyStudentId(stud_id);
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public Payment getPaymentById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }
