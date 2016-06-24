@@ -3,9 +3,9 @@ package spring.desai.common.model.dto;
 public class TutorDTO extends PersonDTO {
 
 	SubjectDTO subject;
-	boolean isFulltime;
+	Boolean isFulltime;
 
-	public TutorDTO(String id, String f_name, String l_name, String address, SubjectDTO subject, boolean isFulltime) {
+	public TutorDTO(String id, String f_name, String l_name, String address, SubjectDTO subject, Boolean isFulltime) {
 		super(id, f_name, l_name, address);
 		this.subject = subject;
 		this.isFulltime = isFulltime;
@@ -19,7 +19,7 @@ public class TutorDTO extends PersonDTO {
 		this.subject = subject;
 	}
 
-	public boolean isFulltime() {
+	public Boolean isFulltime() {
 		return isFulltime;
 	}
 

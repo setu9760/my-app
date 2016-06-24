@@ -1,11 +1,15 @@
 package spring.desai.common.model.dto;
 
-public class PersonDTO {
+public abstract class PersonDTO {
 	String id;
 	String f_name;
 	String l_name;
 	String address;
 
+	public PersonDTO() {
+		super();
+	}
+	
 	public PersonDTO(String id, String f_name, String l_name, String address) {
 		super();
 		this.id = id;
@@ -45,5 +49,5 @@ public class PersonDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	
 }

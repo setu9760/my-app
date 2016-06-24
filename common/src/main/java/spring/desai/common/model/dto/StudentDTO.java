@@ -2,7 +2,7 @@ package spring.desai.common.model.dto;
 
 import java.util.Set;
 
-public class StudentDTO extends PersonDTO{
+public class StudentDTO extends PersonDTO {
 	int age;
 	Set<SubjectDTO> subjects;
 	
@@ -27,6 +27,5 @@ public class StudentDTO extends PersonDTO{
 	public void setSubject(Set<SubjectDTO> subjects) {
 		this.subjects = subjects;
 	}
-	
 	
 }

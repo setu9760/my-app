@@ -1,5 +1,9 @@
 package spring.desai.webconsole.controllers;
 
+import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.PropertyConfigurator;
 import org.joda.time.LocalDateTime;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -19,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class IvyExamplesController extends BaseController {
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(Model model) {
+	public String home(Model model, Principal principal, HttpServletRequest request) {
 		model.addAttribute("serverTime", getformattedDate());
 		model.addAttribute("title", "Home");
 		logger.info("returning home");
