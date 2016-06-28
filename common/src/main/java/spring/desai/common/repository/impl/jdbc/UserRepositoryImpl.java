@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -192,6 +193,19 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 			for (User user : users) {
 				resetLockedOutUser(user);
 			}
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public boolean isExistingUser(String userId) {
+		try {
+			int count = getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM " + getTableName() + " WHERE " + getIdField() + " = ?", new Object[] { userId }, Integer.class);
+			if (count > 1) {
+				getLogger().warn("More than one user found in database for userId: " + userId + ". This indicates database is in invalid state.");
+			}
+			return count != 0;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}

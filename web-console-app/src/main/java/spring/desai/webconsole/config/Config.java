@@ -35,9 +35,6 @@ public class Config {
 
 	private final String DATASOURCE_JNDI = Config_properties.getString("Config.datasource.jndi");
 
-	// private final String DATASOURCE2_JNDI =
-	// Config_properties.getString("Config.datasource2.jndi");
-
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -61,12 +58,6 @@ public class Config {
 	public TransactionTemplate getTransactionTemplate() throws NamingException {
 		return new TransactionTemplate(getDataSourceTransactionManager());
 	}
-
-//	@Bean(name = "guidGenerator")
-//	public GuidGenerator getGuidGenerator() {
-//		return GuidGenerator.getInstance();
-//	}
-
 
 	@Bean(name = "messageSource")
 	public ResourceBundleMessageSource getMessageSource() {
@@ -92,18 +83,4 @@ public class Config {
 		exporter.setRegistryPort(9595);
 		return exporter;
 	}
-	
-	/************************
-	 * 
-	 * 
-	 *************************/
-
-	// @Bean(name = "dataSource2")
-	// public DataSource getDatasource2() throws NamingException {
-	// JndiTemplate jndiTemplate = new JndiTemplate();
-	// DataSource dataSource = (DataSource) jndiTemplate
-	// .lookup(DATASOURCE2_JNDI);
-	// return dataSource;
-	// }
-
 }

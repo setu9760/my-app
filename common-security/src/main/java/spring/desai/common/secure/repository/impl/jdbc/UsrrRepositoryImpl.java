@@ -27,7 +27,7 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	private static final String UPDATE_LOGIN_STATUS = "UPDATE USER_DETAILS SET SIGN_ON_STATUS = ? WHERE USER_ID = ?";
 	
 	@Override
-	public UserDetails getUserLoginDetails(String userId) {
+	public UserDetails getUserLoginDetails(String userId)  throws RepositoryDataAccessException{
 		try {
 			List<UserDetails> list = getJdbcTemplate().query(USER_LOGIN_DETAIL_SQL, new Object[] { userId }, new RowMapper<UserDetails>(){
 
@@ -48,7 +48,7 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	}
 	
 	@Override
-	public void incrementFailedAttempt(String userId){
+	public void incrementFailedAttempt(String userId) throws RepositoryDataAccessException{
 		try {
 			getJdbcTemplate().update(INCREMENT_FAILED_ATTEMPT_SQL, new Object[] { userId });
 		} catch (DataAccessException e) {
@@ -56,12 +56,24 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 		}
 	}
 	
-	public void updateLoginStatus(String userId, SIGN_ON_STATUS status){
+	public void updateLoginStatus(String userId, SIGN_ON_STATUS status) throws RepositoryDataAccessException{
 		try {
 			getJdbcTemplate().update(UPDATE_LOGIN_STATUS, new Object[] { String.valueOf(status), userId});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException("Error occured while setting sign-on status for user " + userId, e);
 		}
+	}
+	
+	@Override
+	public void createUser(String userId, String encryptedPassword)  throws RepositoryDataAccessException{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void updatePassword(String userId, String encryptedPassword) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	private JdbcTemplate getJdbcTemplate() {

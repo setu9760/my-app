@@ -16,4 +16,6 @@ public interface UserRepository extends BasePersistableRepository<User> {
 	void resetLockedOutUser(User user) throws RepositoryDataAccessException;
 	
 	void resetLockedOutUsers(Collection<User> users) throws RepositoryDataAccessException;
+	
+	boolean isExistingUser(String userId);
 }

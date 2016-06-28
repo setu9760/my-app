@@ -17,7 +17,7 @@ public class UserLogRepositoryImpl implements UserLogRepository{
 	private static final String INSERT_USER_LOG_SQL = "INSERT INTO USER_LOG (user_id, user_function, ipaddress) VALUES (?, ?, ?)";
 	
 	@Override
-	public void logUserActivity(String userId, int userFunction, String ipAddress) {
+	public void logUserActivity(String userId, int userFunction, String ipAddress) throws RepositoryDataAccessException{
 		try {
 			getJdbcTemplate().update(INSERT_USER_LOG_SQL, new Object[] { userId, userFunction, ipAddress});
 		} catch (DataAccessException e) {
