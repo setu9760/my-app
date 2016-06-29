@@ -93,7 +93,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 
 	public void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistables);
-
+		// TODO : Check the size of collection and break down call in smaller chunks to avoid large batch inserts/updates.
 		try {
 			getJdbcTemplate().batchUpdate(getInsertSql(), getInsertBatchPreparedStatementSetter(persistables));
 		} catch (DataAccessException e) {
@@ -112,7 +112,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	
 	public void updateAll(final Collection<T> persistables) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistables);
-		// TODO : Check the size of collection and break down call to saveAllImpl in smaller chunks to avoid large batch inserts.
+		// TODO : Check the size of collection and break down call in smaller chunks to avoid large batch inserts/updates.
 		try {
 			getJdbcTemplate().batchUpdate(getUpdateSql(), getUpdateBatchPreparedStatementSetter(persistables));
 		} catch (DataAccessException e) {

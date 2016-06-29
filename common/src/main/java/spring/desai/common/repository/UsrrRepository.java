@@ -14,4 +14,6 @@ public interface UsrrRepository {
 	void updatePassword(String userId, String encryptedPassword) throws RepositoryDataAccessException;
 
 	void createUser(String userId, String encryptedPassword) throws RepositoryDataAccessException;
+	
+	void deleteUser(String userId) throws RepositoryDataAccessException;
 }

@@ -21,6 +21,7 @@ import spring.desai.common.model.Role;
 import spring.desai.common.model.User;
 import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.utils.I18N;
 import spring.desai.common.utils.Unsupported;
 
 @Repository("roleRepository")
@@ -30,6 +31,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	private static final String GET_ROLES_FOR_FOR_USER_SQL = "SELECT r.* FROM " + ROLES_TABLE + " r LEFT JOIN " + USER_ROLE_TABLE + " ur ON r." + ROLE + " = ur." + ROLE + " WHERE ur." + USER_ID + " = ?";
 	private static final String IS_ROLE_AVAILABLE_TO_USER_SQL = "SELECT COUNT(*) FROM " + USER_ROLE_TABLE + " WHERE " + USER_ID + " = ? AND " + ROLE + " = ?";
 	private static final String ASSIGN_ROLE_TO_USER_SQL = "INSERT INTO " + USER_ROLE_TABLE + " VALUES (?, ?)"; 
+	private static final String REVOKE_ROLES_FOR_USER_SQL = "DELETE FROM " + USER_ROLE_TABLE + " WHERE " + USER_ID + " ?";
 	
 	@Override
 	public Collection<String> getUserIdsforRole(Role role) throws RepositoryDataAccessException {
@@ -71,7 +73,27 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 		} else {
 			getLogger().warn("User: " + userId + " already is assigned role " + role.getId() + ", cannot assign same role twice");
 		}
-		
+	}
+	
+	@Override
+	public void unassignRoles(String userId, Collection<Role> role) throws RepositoryDataAccessException {
+		try {
+			// TODO
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
+	}
+	
+	@Override
+	public void revokeAllRoles(String userId) throws RepositoryDataAccessException {
+		if (userId == null || userId.isEmpty()) {
+			throw new IllegalArgumentException(I18N.getString("error.null.id"));
+		}
+		try {
+			getJdbcTemplate().update(REVOKE_ROLES_FOR_USER_SQL, new Object[] { userId });
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException(e);
+		}
 	}
 
 	@Override

@@ -15,5 +15,9 @@ public interface RoleRepository extends BasePersistableRepository<Role> {
 	
 	boolean isRoleAvailableToUser(String userId, Role role) throws RepositoryDataAccessException;
 	
-	void assignRoleToUser(String userId, Role role)throws RepositoryDataAccessException;
+	void assignRoleToUser(String userId, Role role) throws RepositoryDataAccessException;
+	
+	void unassignRoles(String userId, Collection<Role> role) throws RepositoryDataAccessException;
+	
+	void revokeAllRoles(String userId) throws RepositoryDataAccessException;
 }
