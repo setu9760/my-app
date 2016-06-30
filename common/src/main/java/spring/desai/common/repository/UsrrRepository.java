@@ -2,7 +2,6 @@ package spring.desai.common.repository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import spring.desai.common.model.User;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public interface UsrrRepository {

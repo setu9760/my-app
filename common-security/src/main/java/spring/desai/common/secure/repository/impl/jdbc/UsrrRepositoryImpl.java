@@ -71,6 +71,12 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	}
 	
 	@Override
+	public void deleteUser(String userId) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void updatePassword(String userId, String encryptedPassword) throws RepositoryDataAccessException {
 		// TODO Auto-generated method stub
 		

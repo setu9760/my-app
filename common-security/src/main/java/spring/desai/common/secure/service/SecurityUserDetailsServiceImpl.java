@@ -1,12 +1,11 @@
 package spring.desai.common.secure.service;
 
-import static spring.desai.common.utils.UserAuthenticationConstants.INVALID_CREDENTIALS;
-
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import spring.desai.common.model.User;
 import spring.desai.common.repository.RoleRepository;
-import spring.desai.common.repository.UserLogRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.secure.MaxLoginAttemptsExceededException;
@@ -44,6 +42,7 @@ public class SecurityUserDetailsServiceImpl implements UserDetailsService {
 	private static final int MAX_FAILED_ATTEMPTS = 4;
 	
 	@Override
+//	@Transactional(noRollbackFor=AuthenticationException.class)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if (log.isDebugEnabled()) {
 			log.debug("User " + username + " performing login.");

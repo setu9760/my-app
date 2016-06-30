@@ -1,4 +1,4 @@
-package spring.desai.common.service;
+package spring.desai.webconsole.service.impl;
 
 import static spring.desai.common.utils.UserRoleConstants.USER;
 
@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +18,12 @@ import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
+import spring.desai.common.service.AdminUserService;
+import spring.desai.common.service.ServiceException;
 import spring.desai.common.utils.I18N;
 
 @Service
-public class AdminServiceImpl implements AdminService {
+public class AdminUserServiceImpl implements AdminUserService {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -32,14 +33,17 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private UsrrRepository usrrRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	@Transactional
-	public void createUser(User user, String encryptedPassword) throws ServiceException {
+	public void createUser(User user, String rawPassword) throws ServiceException {
 		try {
 			Set<Role> roles = new HashSet<>();
 			roles.add(roleRepository.findById(USER));
-			createUser(user, encryptedPassword, roles);
+			createUser(user, rawPassword, roles);
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("createUser(user, password)", e);
 		}
@@ -47,14 +51,14 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public void createUser(User user, String encryptedPassword, Collection<Role> rolesToAssign) throws ServiceException {
+	public void createUser(User user, String rawPassword, Collection<Role> rolesToAssign) throws ServiceException {
 		notNull(user);
-		notNull(encryptedPassword);
+		notNull(rawPassword);
 		notNull(rolesToAssign);
 		try {
 			if (!isExistingUser(user.getId())) {
 				userRepository.save(user);
-				usrrRepository.createUser(user.getId(), encryptedPassword);
+				usrrRepository.createUser(user.getId(), passwordEncoder.encode(rawPassword));
 				assignRoles(user, rolesToAssign);
 			} else {
 				// TODO throw user already exists exception
