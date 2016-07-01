@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import spring.desai.common.service.AdminUserService;
+import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.ReadOnlyService;
 
 @EnableWebMvc
@@ -79,7 +79,7 @@ public class Config {
 	public RmiServiceExporter exportAdminService() throws Exception {
 		RmiServiceExporter exporter = new RmiServiceExporter();
 		exporter.setServiceName("adminService");
-		exporter.setService(AdminUserService.class);
+		exporter.setService(AdminUserMaintananceService.class);
 		exporter.setRegistryPort(9595);
 		return exporter;
 	}

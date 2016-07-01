@@ -4,8 +4,9 @@ import java.util.Collection;
 
 import spring.desai.common.model.Role;
 import spring.desai.common.model.User;
+import spring.desai.common.service.exception.ServiceException;
 
-public interface AdminUserService {
+public interface AdminUserMaintananceService {
 
 	void createUser(User user, String rawPassword) throws ServiceException;
 

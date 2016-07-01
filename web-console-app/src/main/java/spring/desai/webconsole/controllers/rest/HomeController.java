@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.dto.DTOFactory;
 import spring.desai.common.model.dto.StudentDTO;
-import spring.desai.common.service.AdminUserService;
+import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.ReadOnlyService;
 
 @RestController
 public class HomeController {
 
 	@Autowired
-	AdminUserService adminService;
+	AdminUserMaintananceService adminService;
 	
 	@Autowired
 	ReadOnlyService readOnlyService;

@@ -11,12 +11,12 @@ import spring.desai.common.model.User;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.service.ServiceException;
-import spring.desai.common.service.UserService;
+import spring.desai.common.service.UserMaintananceService;
+import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service("userMaintananceService")
+public class UserMaintananceServiceImpl implements UserMaintananceService {
 
 	@Autowired
 	private UsrrRepository usrrRepository;

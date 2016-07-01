@@ -70,4 +70,22 @@ public class SubjectRepositoryImplJpa extends BaseJpaRepository<Subject> impleme
 		return null;
 	}
 
+	@Override
+	public void addStudentToSubject(String studentId, Subject subject) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeStudentFromSubject(String studentId, Subject subject) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isStudentInSubject(String studentId, Subject subject) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -18,12 +18,12 @@ import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.service.AdminUserService;
-import spring.desai.common.service.ServiceException;
+import spring.desai.common.service.AdminUserMaintananceService;
+import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
-@Service
-public class AdminUserServiceImpl implements AdminUserService {
+@Service("adminUserMaintananceService")
+public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceService {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -33,7 +33,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
 	@Autowired
 	private UsrrRepository usrrRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -67,7 +67,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 			throw new ServiceException("createUser(user, password, roles)", e);
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public void removeUser(User user) throws ServiceException {
@@ -80,7 +80,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 			throw new ServiceException("removeUser(user)", e);
 		}
 	}
-	
 
 	@Override
 	public boolean isExistingUser(String userId) throws ServiceException {
@@ -98,7 +97,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 		notNull(user);
 		notNull(roles);
 		try {
-			// TODO should be able to pass collection to repository to persist instead of looping over in service layer.
+			// TODO should be able to pass collection to repository to persist
+			// instead of looping over in service layer.
 			for (Role role : roles) {
 				roleRepository.assignRoleToUser(user.getId(), role);
 			}
@@ -106,7 +106,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 			throw new ServiceException("assignRoles(user, roles)", e);
 		}
 	}
-	
+
 	@Override
 	public void unassignRoles(User user, Collection<Role> roles) throws ServiceException {
 		notNull(user);
@@ -114,17 +114,17 @@ public class AdminUserServiceImpl implements AdminUserService {
 		try {
 			roleRepository.unassignRoles(user.getId(), roles);
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("unassignRoles(user, roles)", e);	
+			throw new ServiceException("unassignRoles(user, roles)", e);
 		}
 	}
-	
+
 	@Override
 	public void revokeAllRoles(User user) throws ServiceException {
 		notNull(user);
 		try {
 			roleRepository.revokeAllRoles(user.getId());
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("revokeAllRoles(user)", e);	
+			throw new ServiceException("revokeAllRoles(user)", e);
 		}
 	}
 

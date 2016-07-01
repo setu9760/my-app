@@ -13,4 +13,9 @@ public interface SubjectRepository extends BasePersistableRepository<Subject> {
 
 	Collection<Subject> findByMandatory(boolean isMandatory) throws RepositoryDataAccessException;
 
+	void addStudentToSubject(String studentId, Subject subject) throws RepositoryDataAccessException;
+	
+	void removeStudentFromSubject(String studentId, Subject subject) throws RepositoryDataAccessException;
+	
+	boolean isStudentInSubject(String studentId, Subject subject) throws RepositoryDataAccessException;
 }

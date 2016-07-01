@@ -30,4 +30,5 @@ public abstract class BaseService {
 	@Autowired
 	@Qualifier("scholorshipRepository")
 	protected ScholorshipRepository scholorshipRepository;
+	
 }

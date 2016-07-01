@@ -1,4 +1,4 @@
-package spring.desai.common.service;
+package spring.desai.common.service.exception;
 
 import spring.desai.common.utils.I18N;
 
