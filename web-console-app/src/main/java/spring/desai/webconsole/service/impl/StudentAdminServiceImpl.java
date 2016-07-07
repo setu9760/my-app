@@ -12,9 +12,12 @@ import spring.desai.common.model.Payment;
 import spring.desai.common.model.Scholorship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
+import spring.desai.common.model.enums.PaymentType;
+import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.ScholorshipRepository;
 import spring.desai.common.repository.StudentRepository;
+import spring.desai.common.repository.StudentTotalToPayRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.service.StudentAdminService;
@@ -25,23 +28,29 @@ import spring.desai.common.service.exception.ServiceException;
 public class StudentAdminServiceImpl implements StudentAdminService {
 
 	@Autowired
-	StudentRepository studentRepository;
+	private StudentRepository studentRepository;
 
 	@Autowired
-	PaymentRepository paymentRepository;
+	private PaymentRepository paymentRepository;
 
 	@Autowired
-	ScholorshipRepository scholorshipRepository;
+	private ScholorshipRepository scholorshipRepository;
 
 	@Autowired
-	SubjectRepository subjectRepository;
+	private SubjectRepository subjectRepository;
+	
+	@Autowired 
+	private CostCodeRepository costCodeRepository;
 
+	@Autowired
+	private StudentTotalToPayRepository studentTotalToPayRepository;
+	
 	@Override
 	public void save(Student student) throws ServiceException {
 		try {
 			studentRepository.save(student);
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("save(student)", e);
 		}
 	}
 
@@ -50,7 +59,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		try {
 			studentRepository.saveAll(students);
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("saveAll(students)", e);
 		}
 	}
 
@@ -59,7 +68,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		try {
 			studentRepository.update(student);
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("update(student)", e);
 		}
 	}
 
@@ -68,7 +77,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		try {
 			studentRepository.updateAll(students);
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("updateAll(students)", e);
 		}
 	}
 
@@ -78,6 +87,20 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		try {
 			if (!subjectRepository.isStudentInSubject(student.getId(), subject)) {
 				subjectRepository.addStudentToSubject(student.getId(), subject);
+				studentTotalToPayRepository.updateTotalToPayBy(student.getId(), costCodeRepository.findById(subject.getCostCode()).getAmount());
+			}
+		} catch (RepositoryDataAccessException e) {
+			throw new ServiceException("addToSubject(student,subject)", e);
+		}
+	}
+	
+	@Override
+	public void removeFromSubject(Student student, Subject subject) throws ServiceException {
+		notNull(student);
+		try {
+			if (subjectRepository.isStudentInSubject(student.getId(), subject)) {
+				subjectRepository.removeStudentFromSubject(student.getId(), subject);
+				studentTotalToPayRepository.updateTotalToPayBy(student.getId(), -costCodeRepository.findById(subject.getCostCode()).getAmount());
 			}
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("", e);
@@ -86,10 +109,29 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 
 	@Override
 	public void makePayment(Payment payment) throws ServiceException {
+		makePayment(payment, false);
+	}
+	
+	private void makePayment(Payment payment, boolean isScholorshipPayment) throws ServiceException {
+		notNull(payment);
 		try {
-			paymentRepository.save(payment);
+			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
+			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
+			double totalPaid = 0;
+			for (Payment p : payments) {
+				totalPaid += p.getAmount();
+			}
+			if ((totalPaid + payment.getAmount()) <= totalTopay) {
+				paymentRepository.save(payment);
+			} else {
+				if (isScholorshipPayment) 
+					paymentRepository.save(payment);
+				else
+					throw new IllegalArgumentException("You cannot make payment higher than totalToPay.\ntotalToPay " + totalTopay + " : totalPaid " + totalPaid);
+			}
+			
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("makePayment(payment)", e);
 		}
 	}
 
@@ -97,39 +139,41 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 	public void awardScholorship(Scholorship scholorship) throws ServiceException {
 		try {
 			scholorshipRepository.save(scholorship);
+			// TODO create payment id properly.
+			makePayment(new Payment(scholorship.getId(), scholorship.getTotal_amount(), PaymentType.SCHOLORSHIP, scholorship.getStud_id(), "SCHLR_ID:" + scholorship.getId()), true);
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
-		}
-	}
-
-	@Override
-	public void removeFromSubject(Student student, Subject subject) throws ServiceException {
-		notNull(student);
-		try {
-			if (!subjectRepository.isStudentInSubject(student.getId(), subject)) {
-				subjectRepository.removeStudentFromSubject(student.getId(), subject);
-			}
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("awardScholorship(scholorship)", e);
 		}
 	}
 
 	@Override
 	public void amendPayment(Payment payment) throws ServiceException {
 		try {
-			paymentRepository.update(payment);
+			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
+			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
+			double totalPaid = 0;
+			for (Payment p : payments) {
+				totalPaid += p.getAmount();
+			}
+			if ((totalPaid + payment.getAmount()) <= totalTopay) {
+				paymentRepository.update(payment);
+			} else {
+				throw new IllegalArgumentException("You cannot update payment with amount higher than totalToPay.\ntotalToPay " + totalTopay + " : totalPaid " + totalPaid);
+			}
+			
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("amendPayment(payment)", e);
 		}
 	}
 
 	@Override
 	public void amendScholorship(Scholorship scholorship) throws ServiceException {
 		try {
+			// TODO if amount has changed then need to update payment through here aswell but is it correct to create payment object here?. 
 			scholorshipRepository.update(scholorship);
+			amendPayment(new Payment(scholorship.getId(), scholorship.getTotal_amount(), PaymentType.SCHOLORSHIP, scholorship.getStud_id(),  "SCHLR_ID:" + scholorship.getId()));
 		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("", e);
+			throw new ServiceException("amendScholorship(scholorship)", e);
 		}
 	}
-
 }

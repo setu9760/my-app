@@ -109,6 +109,13 @@ CREATE TABLE `payment` (
   CONSTRAINT `student_id_fk` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `stud_total_payment` (
+  `stud_id` varchar(36) NOT NULL,
+  `total_to_pay` decimal(10,2) NOT NULL,
+  PRIMARY KEY(`stud_id`),
+  CONSTRAINT `student_id_fk2` FOREIGN KEY (`stud_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `subj_stud_link` (
   `subj_id` varchar(36) NOT NULL,
   `stud_id` varchar(36) NOT NULL,

@@ -25,6 +25,7 @@ public class DataBaseConstants {
 	public static final String SCHOLORSHIP_TABLE_NAME = "scholorship";
 	public static final String STUDENT_SCHOLORSHIP_LINK_TABLE_NAME = "stud_schlrshp_link";
 	public static final String SUBJECT_STUDENT_LINK_TABLE_NAME = "subj_stud_link";
+	public static final String STUD_TOTAL_PAY_TABLE_NAME = "stud_total_payment";
 
 	public static final String ID = "id";
 	public static final String F_NAME = "f_name";
@@ -53,5 +54,6 @@ public class DataBaseConstants {
 
 	public static final String STUD_ID = "stud_id";
 	public static final String SCHLRSHP_ID = "schlrshp_id";
-	
+
+	public static final String TOTAL_TO_PAY = "total_to_pay";
 }
