@@ -65,8 +65,8 @@ public class Scholorship implements Persistable{
 		this.total_amount = total_amount;
 	}
 
-	public Scholorship(String external_ref, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
-		this(null, external_ref, type, total_amount, paid_amount, isFullyPaid, isPostPay, additional_comments, stud_id);
+	public Scholorship(String id, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
+		this(id, "N/A", type, total_amount, paid_amount, isFullyPaid, isPostPay, additional_comments, stud_id);
 	}
 	
 	public Scholorship(String id, String external_ref, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {

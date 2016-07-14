@@ -76,7 +76,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 		}
 	}
 	
-	private static final String REMOVE_STUDENT_FROM_SUBJECT_SQL = "DELETE FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME + " WHERE " + SUBJ_ID + " = ? " + STUD_ID + " = ?";
+	private static final String REMOVE_STUDENT_FROM_SUBJECT_SQL = "DELETE FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME + " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
 	
 	@Override
 	public void removeStudentFromSubject(String studentId, Subject subject)  throws RepositoryDataAccessException{
@@ -88,12 +88,13 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 		}
 	}
 	
-	private static final String IS_STUDENT_IN_SUBJECT_SQL = "SELECT COUNT (*) FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME+ " WHERE " + SUBJ_ID + " = ? " + STUD_ID + " = ?";
+	private static final String IS_STUDENT_IN_SUBJECT_SQL = "SELECT COUNT (*) FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME+ " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
 	
 	@Override
 	public boolean isStudentInSubject(String studentId, Subject subject) {
+		checkPersitableValidity(subject);
 		try {
-			int count  = getJdbcTemplate().queryForObject(IS_STUDENT_IN_SUBJECT_SQL, Integer.class);
+			int count  = getJdbcTemplate().queryForObject(IS_STUDENT_IN_SUBJECT_SQL, new Object [] { subject.getId(), studentId },  Integer.class);
 			return count == 1;
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);

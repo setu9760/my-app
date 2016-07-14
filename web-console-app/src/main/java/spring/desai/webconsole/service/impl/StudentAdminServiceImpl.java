@@ -121,13 +121,13 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 			for (Payment p : payments) {
 				totalPaid += p.getAmount();
 			}
-			if ((totalPaid + payment.getAmount()) <= totalTopay) {
+			if ((totalPaid + payment.getAmount()) <= totalTopay || payment.getAmount() < 0d) {
 				paymentRepository.save(payment);
 			} else {
 				if (isScholorshipPayment) 
 					paymentRepository.save(payment);
 				else
-					throw new IllegalArgumentException("You cannot make payment higher than totalToPay.\ntotalToPay " + totalTopay + " : totalPaid " + totalPaid);
+					throw new IllegalArgumentException("You cannot make payment higher than totalToPay.\ntotalToPay " + totalTopay + " : previouslyTotalPaid " + totalPaid + " : new payment: " + payment.getAmount());
 			}
 			
 		} catch (RepositoryDataAccessException e) {
@@ -137,6 +137,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 
 	@Override
 	public void awardScholorship(Scholorship scholorship) throws ServiceException {
+		notNull(scholorship);
 		try {
 			scholorshipRepository.save(scholorship);
 			// TODO create payment id properly.
@@ -148,6 +149,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 
 	@Override
 	public void amendPayment(Payment payment) throws ServiceException {
+		notNull(payment);
 		try {
 			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
 			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
@@ -168,6 +170,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 
 	@Override
 	public void amendScholorship(Scholorship scholorship) throws ServiceException {
+		notNull(scholorship);
 		try {
 			// TODO if amount has changed then need to update payment through here aswell but is it correct to create payment object here?. 
 			scholorshipRepository.update(scholorship);
