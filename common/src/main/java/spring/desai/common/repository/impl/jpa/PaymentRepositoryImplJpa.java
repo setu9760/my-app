@@ -35,6 +35,12 @@ public class PaymentRepositoryImplJpa extends BaseJpaRepository<Payment> impleme
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public double getTotalPaid(String studId) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Override
 	protected Class<Payment> getEntityClass() {

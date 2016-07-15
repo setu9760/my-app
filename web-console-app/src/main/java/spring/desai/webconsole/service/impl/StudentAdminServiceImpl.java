@@ -117,19 +117,18 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		try {
 			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
 			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
-			double totalPaid = 0;
-			for (Payment p : payments) {
-				totalPaid += p.getAmount();
-			}
+			double totalPaid = paymentRepository.getTotalPaid(payment.getStud_id());
 			if ((totalPaid + payment.getAmount()) <= totalTopay || payment.getAmount() < 0d) {
 				paymentRepository.save(payment);
 			} else {
+				// If scholarship payment then allow payment to be higher then total topay.
 				if (isScholorshipPayment) 
 					paymentRepository.save(payment);
 				else
 					throw new IllegalArgumentException("You cannot make payment higher than totalToPay.\ntotalToPay " + totalTopay + " : previouslyTotalPaid " + totalPaid + " : new payment: " + payment.getAmount());
 			}
-			
+			// I don't know how valid this is. updating total to pay here might need revisiting.
+			studentTotalToPayRepository.updateTotalToPayBy(payment.getStud_id(), totalTopay-payment.getAmount());
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("makePayment(payment)", e);
 		}
@@ -140,7 +139,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		notNull(scholorship);
 		try {
 			scholorshipRepository.save(scholorship);
-			// TODO create payment id properly.
+			// TODO create payment id properly. However I think it is valid to have same id as scholarship.
 			makePayment(new Payment(scholorship.getId(), scholorship.getTotal_amount(), PaymentType.SCHOLORSHIP, scholorship.getStud_id(), "SCHLR_ID:" + scholorship.getId()), true);
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("awardScholorship(scholorship)", e);
@@ -153,16 +152,16 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		try {
 			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
 			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
-			double totalPaid = 0;
-			for (Payment p : payments) {
-				totalPaid += p.getAmount();
-			}
+			Payment oldPayment  = paymentRepository.findById(payment.getId());
+			double totalPaid = paymentRepository.getTotalPaid(payment.getStud_id());
 			if ((totalPaid + payment.getAmount()) <= totalTopay) {
 				paymentRepository.update(payment);
 			} else {
 				throw new IllegalArgumentException("You cannot update payment with amount higher than totalToPay.\ntotalToPay " + totalTopay + " : totalPaid " + totalPaid);
 			}
-			
+			// TODO amend totalToPay here aswell. 
+			studentTotalToPayRepository.updateTotalToPayBy(payment.getStud_id(), -oldPayment.getAmount());
+			studentTotalToPayRepository.updateTotalToPayBy(payment.getId(), payment.getAmount());
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("amendPayment(payment)", e);
 		}
@@ -173,8 +172,11 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		notNull(scholorship);
 		try {
 			// TODO if amount has changed then need to update payment through here aswell but is it correct to create payment object here?. 
+			// Actually thinking about it I could load the payment from repository and then amend the amount from scholorship.  
 			scholorshipRepository.update(scholorship);
-			amendPayment(new Payment(scholorship.getId(), scholorship.getTotal_amount(), PaymentType.SCHOLORSHIP, scholorship.getStud_id(),  "SCHLR_ID:" + scholorship.getId()));
+			Payment p = paymentRepository.findById(scholorship.getId());
+			p.setAmount(scholorship.getTotal_amount());
+			amendPayment(p);
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("amendScholorship(scholorship)", e);
 		}

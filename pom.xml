@@ -29,6 +29,7 @@
 		<module>common-security</module>
 		<module>desktop-app</module>
 		<module>web-console-app</module>
+		<module>common-test</module>
 	</modules>
 
 	<dependencies>

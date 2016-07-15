@@ -32,14 +32,12 @@ public final class DTOFactory {
 
 	public SubjectDTO fromSubject(Subject s) {
 		notNull(s);
-		// TODO
-		return null;
+		return new SubjectDTO(s.getId(), s.getName(), s.getCostCode(), s.isMandatory());
 	}
 	
 	public StudentDTO fromStudent(Student s) {
 		notNull(s);
-		// TODO
-		return null;
+		return new StudentDTO(s.getId(), s.getF_name(), s.getL_name(), s.getAddress(), s.getAge(), fromSubjects(s.getSubjects()), fromPayments(s.getPayments()), fromScholorships(s.getScholorships()));
 	}
 	
 	public ScholorshipDTO fromScholorship(Scholorship s) {

@@ -8,8 +8,10 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 public interface PaymentRepository extends BasePersistableRepository<Payment> {
 
-	Collection<Payment> findbyStudentId(String stud_id) throws RepositoryDataAccessException;
+	Collection<Payment> findbyStudentId(String studId) throws RepositoryDataAccessException;
 
+	double getTotalPaid(String studId) throws RepositoryDataAccessException;
+	
 	Collection<Payment> findByType(PaymentType type) throws RepositoryDataAccessException;
 
 }

@@ -11,7 +11,7 @@ import spring.desai.common.model.dto.StudentDTO;
 import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.ReadOnlyService;
 
-@RestController
+@RestController("/rest")
 public class HomeController {
 
 	@Autowired

@@ -48,6 +48,12 @@
 			<version>19.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.desai.app</groupId>
+			<artifactId>common-test</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.3.175</version>

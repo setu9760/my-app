@@ -23,7 +23,7 @@ import spring.desai.common.service.StudentAdminService;
 
 @ActiveProfiles(profiles = { "jdbc" })
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
+@ContextConfiguration(locations = { "classpath:/test-application-context.xml", "classpath:/test-services-context.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class StudentAdminServiceTest {
 
@@ -52,7 +52,13 @@ public class StudentAdminServiceTest {
 		sub = subjectRepository.findById("subjectid4");
 		studentAdminService.addToSubject(s, sub);
 		
-		studentAdminService.makePayment(new Payment("PAY3", 13400d, PaymentType.CASH, s.getId(), "N/A"));
+		try {
+			studentAdminService.makePayment(new Payment("PAY3", 13400d, PaymentType.CASH, s.getId(), "N/A"));
+			fail("should have failed with IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+			// Ignore
+		}
+		
 	}
 	
 }

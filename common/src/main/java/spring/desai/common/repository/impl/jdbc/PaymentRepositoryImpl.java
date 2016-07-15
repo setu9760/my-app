@@ -3,6 +3,7 @@ package spring.desai.common.repository.impl.jdbc;
 import static spring.desai.common.utils.DataBaseConstants.PAYMENT_TABLE_NAME;
 import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
 import static spring.desai.common.utils.DataBaseConstants.TYPE;
+import static spring.desai.common.utils.DataBaseConstants.AMOUNT;
 import static spring.desai.common.utils.DataBaseConstants.ID;
 
 import java.sql.PreparedStatement;
@@ -41,6 +42,12 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
+	}
+	
+	@Override
+	public double getTotalPaid(String studId) throws RepositoryDataAccessException {
+		Double totalPaid =  getJdbcTemplate().queryForObject("select SUM(" + AMOUNT + ") from " + PAYMENT_TABLE_NAME + " where " + STUD_ID + " = ?", new Object[] { studId }, Double.class);
+		return totalPaid != null ? totalPaid : 0d;
 	}
 	
 	@Override
