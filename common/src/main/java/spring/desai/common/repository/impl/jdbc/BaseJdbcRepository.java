@@ -120,9 +120,9 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		}
 	}
 	
-	@Deprecated
+//	@Deprecated
 	public Collection<T> getAll() throws RepositoryDataAccessException{
-		throwUnsupportedOperationException("getAll()", this.getClass().getName());
+//		throwUnsupportedOperationException("getAll()", this.getClass().getName());
 		return getJdbcTemplate().query(getSelectAllSql(getTableName()), getRowMapper());
 	}
 

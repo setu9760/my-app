@@ -116,7 +116,6 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		notNull(payment);
 		try {
 			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
-			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
 			double totalPaid = paymentRepository.getTotalPaid(payment.getStud_id());
 			if ((totalPaid + payment.getAmount()) <= totalTopay || payment.getAmount() < 0d) {
 				paymentRepository.save(payment);
@@ -151,7 +150,6 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		notNull(payment);
 		try {
 			double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
-			Collection<Payment> payments = paymentRepository.findbyStudentId(payment.getStud_id());
 			Payment oldPayment  = paymentRepository.findById(payment.getId());
 			double totalPaid = paymentRepository.getTotalPaid(payment.getStud_id());
 			if ((totalPaid + payment.getAmount()) <= totalTopay) {

@@ -73,7 +73,8 @@ public class PaymentRepositoryImplTest extends AbstractRepositoryTest<Payment> {
 		doUpdateAllTest(origPayments, updatePayments, "payment");
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+	//(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(5);
 	}

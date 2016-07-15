@@ -1,5 +1,8 @@
 .project
 .settings/
+common-test/.project
+common-test/.classpath
+common-test/.springBeans
 common/.project
 common/.classpath
 common/.settings/org.eclipse.core.resources.prefs
@@ -40,6 +43,7 @@ web-console-app/src/main/webapp/WEB-INF/views/scripts/
 web-console-app/.settings/org.eclipse.wst.common.project.facet.core.xml
 common/target/
 common-secure/target/
+common-test/target
 desktop-app/target/
 web-console-app/target/
 

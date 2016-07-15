@@ -80,7 +80,7 @@ public class Student extends Person {
 		return payments;
 	}
 
-	public void setPayments(Set<Payment> payments) {
+	public void setPayments(Collection<Payment> payments) {
 		this.payments = payments;
 	}
 
@@ -88,7 +88,7 @@ public class Student extends Person {
 		return scholorships;
 	}
 
-	public void setScholorships(Set<Scholorship> scholorships) {
+	public void setScholorships(Collection<Scholorship> scholorships) {
 		this.scholorships = scholorships;
 	}
 
