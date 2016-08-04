@@ -36,8 +36,8 @@ public class StudentTotalPayRepositoryImplTest {
 	}
 	
 	@Autowired
-	@Qualifier("studentTotalPayRepository")
-	StudentTotalToPayRepository studentTotalPayRepository;
+	@Qualifier("studentTotalToPayRepository")
+	private StudentTotalToPayRepository studentTotalPayRepository;
 
 	@Test
 	public void testUpdateTotalPayBy() {

@@ -117,7 +117,8 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 		assertThat(c.size(), is(equalTo(4)));
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(5);
 	}

@@ -2,21 +2,21 @@ package spring.desai.common.model.dto;
 
 public class TutorDTO extends PersonDTO {
 
-	SubjectDTO subject;
+	String subjectId;
 	Boolean isFulltime;
 
-	public TutorDTO(String id, String f_name, String l_name, String address, SubjectDTO subject, Boolean isFulltime) {
+	public TutorDTO(String id, String f_name, String l_name, String address, String subjectId, Boolean isFulltime) {
 		super(id, f_name, l_name, address);
-		this.subject = subject;
+		this.subjectId = subjectId;
 		this.isFulltime = isFulltime;
 	}
 
-	public SubjectDTO getSubject() {
-		return subject;
+	public String getSubject() {
+		return subjectId;
 	}
 
-	public void setSubject(SubjectDTO subject) {
-		this.subject = subject;
+	public void setSubject(String subjectId) {
+		this.subjectId = subjectId;
 	}
 
 	public Boolean isFulltime() {

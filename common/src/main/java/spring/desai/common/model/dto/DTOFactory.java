@@ -26,8 +26,7 @@ public final class DTOFactory {
 	
 	public TutorDTO fromTutor(Tutor t) {
 		notNull(t);
-		// TODO 
-		return null;
+		return new TutorDTO(t.getId(), t.getF_name(), t.getL_name(), t.getAddress(), t.getSubj_id(), t.isFulltime());
 	}
 
 	public SubjectDTO fromSubject(Subject s) {
@@ -42,20 +41,17 @@ public final class DTOFactory {
 	
 	public ScholorshipDTO fromScholorship(Scholorship s) {
 		notNull(s);
-		// TODO
-		return null;
+		return new ScholorshipDTO(s.getId(), s.getExternal_ref(), s.getTypeString(), s.getTotal_amount(), s.getPaid_amount(), s.isFullyPaid(), s.isPostPay(), s.getStud_id(), s.getAdditional_comments());
 	}
 	
 	public PaymentDTO fromPayment(Payment p) {
 		notNull(p);
-		// TODO
-		return null;
+		return new PaymentDTO(p.getId(), p.getAmount(), p.getPaymentTypeString(), p.getStud_id(), p.getPaymentDateTime().toDate(), p.getComments());
 	}
 	
 	public CostDTO fromCost(Cost c) {
 		notNull(c);
-		// TODO
-		return null;
+		return new CostDTO(c.getCostCode(), c.getAmount());
 	}
 	
 	public Collection<SubjectDTO> fromSubjects(Collection<Subject> subjects){

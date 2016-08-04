@@ -50,8 +50,7 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 
 	@Override
 	public Collection<Student> getAllStudents() {
-		// TODO Auto-generated method stub
-		return null;
+		return studentRepository.getAll();
 	}
 
 	@Override

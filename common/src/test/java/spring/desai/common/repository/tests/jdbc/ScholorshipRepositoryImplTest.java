@@ -1,7 +1,5 @@
 package spring.desai.common.repository.tests.jdbc;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -69,9 +67,10 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 		doUpdateAllTest(origColl, ipdateColl, "schlrid");
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		doGetAllTest(4);
+		doGetAllTest(5);
 	}
 
 	@Test

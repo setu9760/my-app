@@ -87,7 +87,8 @@ public class TutorRepositoryImplTest extends AbstractRepositoryTest<Tutor> {
 		assertThat(c.size(), is(equalTo(2)));
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(7);
 	}

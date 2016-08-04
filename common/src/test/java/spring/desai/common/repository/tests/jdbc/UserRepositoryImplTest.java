@@ -74,7 +74,8 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 		doUpdateAllTest(orig, updated, "USER-");
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(5);
 	}

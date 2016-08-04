@@ -63,9 +63,10 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 		doUpdateAllTest(origCosts, updateCosts, "TEST_");
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		doGetAllTest(5);
+		doGetAllTest(9);
 	}
 
 	@Test

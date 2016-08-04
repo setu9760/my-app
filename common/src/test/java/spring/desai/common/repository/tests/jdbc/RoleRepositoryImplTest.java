@@ -141,7 +141,8 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 		
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(5);
 	}

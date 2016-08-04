@@ -9,11 +9,27 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Spring versions -->
 		<spring.version>4.1.0.RELEASE</spring.version>
-		<spring.security.version>3.2.5.RELEASE</spring.security.version>
-		<aspectj.version>1.8.6</aspectj.version>
+		<spring.security.version>4.1.0.RELEASE</spring.security.version>
 		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version>
+
+		<!-- aspectj version -->
+		<aspectj.version>1.8.6</aspectj.version>
+
+		<!-- json related dependencies -->
+		<jackson-version>2.4.4</jackson-version>
 		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
+
+		<!-- Hibernate / JPA -->
+		<hibernate.version>4.3.6.Final</hibernate.version>
+
+		<!-- Bean validation -->
+		<hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+
+		<!-- Database access -->
+		<ehcache.version>2.6.9</ehcache.version>
 	</properties>
 
 	<distributionManagement>
@@ -31,7 +47,17 @@
 		<module>web-console-app</module>
 		<module>common-test</module>
 	</modules>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>4.1.0.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -54,34 +80,22 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>4.3.7.Final</version>
-			<!-- >exclusions>
-				<exclusion>
-					<artifactId>*</artifactId>
-					<groupId>*</groupId>
-				</exclusion>
-			</exclusions-->
+			<!-- >exclusions> <exclusion> <artifactId>*</artifactId> <groupId>*</groupId> 
+				</exclusion> </exclusions -->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.3.7.Final</version>
-	<!-- >exclusions>
-				<exclusion>
-					<artifactId>*</artifactId>
-					<groupId>*</groupId>
-				</exclusion>
-			</exclusions-->
+			<!-- >exclusions> <exclusion> <artifactId>*</artifactId> <groupId>*</groupId> 
+				</exclusion> </exclusions -->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<version>1.0.0.Final</version>
-	<!-- >exclusions>
-				<exclusion>
-					<artifactId>*</artifactId>
-					<groupId>*</groupId>
-				</exclusion>
-			</exclusions-->
+			<!-- >exclusions> <exclusion> <artifactId>*</artifactId> <groupId>*</groupId> 
+				</exclusion> </exclusions -->
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -96,37 +110,30 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jms</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

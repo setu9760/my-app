@@ -87,7 +87,8 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 		doFindByNameTest("f_name4", 2, 5);
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
+//	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
 		doGetAllTest(5);
 	}
