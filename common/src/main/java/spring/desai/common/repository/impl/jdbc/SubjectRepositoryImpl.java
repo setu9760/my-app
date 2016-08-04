@@ -58,6 +58,8 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws RepositoryDataAccessException {
 		try {
 			List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
+			if (subjIds == null || subjIds.isEmpty()) 
+				return new ArrayList<>();
 			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);

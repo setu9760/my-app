@@ -17,9 +17,11 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 	@Override
 	public Student getStudentById(String id) {
 		Student s = studentRepository.findById(id);
-		s.setSubjects(subjectRepository.getSubjectsForStudentId(id));
-		s.setPayments(paymentRepository.findbyStudentId(id));
-		s.setScholorships(scholorshipRepository.findByStudentId(id));
+		if (s != null) {
+			s.setSubjects(subjectRepository.getSubjectsForStudentId(id));
+			s.setPayments(paymentRepository.findbyStudentId(id));
+			s.setScholorships(scholorshipRepository.findByStudentId(id));
+		}
 		return s;
 	}
 

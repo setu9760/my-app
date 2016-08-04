@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 		, "spring.desai.webconsole.*", "spring.desai.webconsole.config.*", "spring.desai.common.*",
 		"spring.desai.webconsole.core.*", "spring.desai.webconsole.config.aspects.*",
 		"spring.desai.webconsole.controllers.*", "spring.desai.webconsole.JdbcDaoImpl.*" */ })
-@Import({ JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class,  SecurityConfig.class, DefaultSecurityConfig.class, WebConfig.class })
+@Import({ JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class,  SecurityConfig.class, DefaultSecurityConfig.class })
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class Config {
