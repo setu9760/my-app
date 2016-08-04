@@ -15,13 +15,17 @@ import spring.desai.common.model.dto.ExceptionDTO;
 import spring.desai.common.model.dto.StudentDTO;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.service.ReadOnlyService;
+import spring.desai.common.service.StudentAdminService;
 
 @RestController("/rest")
 public class HomeController {
 
 	@Autowired
-	ReadOnlyService readOnlyService;
+	private ReadOnlyService readOnlyService;
 
+	@Autowired
+	private StudentAdminService studentAdminService;
+	
 	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getstudentDetails(@PathVariable String id) {
 		Student s = readOnlyService.getStudentById(id);
@@ -31,7 +35,7 @@ public class HomeController {
 
 	@ExceptionHandler(value = RepositoryDataAccessException.class)
 	public ExceptionDTO exceptionHandler(RepositoryDataAccessException exception) {
-
+		// TODO ExceptionDTO logic is flawed. This returns all the attributes in json format. 
 		return new ExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR.toString(), exception.getLocalizedMessage(),
 				exception.getStackTrace(), exception);
 	}
@@ -42,5 +46,5 @@ public class HomeController {
 		else 
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 }
