@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 		, "spring.desai.webconsole.*", "spring.desai.webconsole.config.*", "spring.desai.common.*",
 		"spring.desai.webconsole.core.*", "spring.desai.webconsole.config.aspects.*",
 		"spring.desai.webconsole.controllers.*", "spring.desai.webconsole.JdbcDaoImpl.*" */ })
-@Import({ JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class,  SecurityConfig.class, DefaultSecurityConfig.class })
+@Import({ JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class,  SecurityConfig.class, DefaultSecurityConfig.class, WebConfig.class })
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class Config {
@@ -28,7 +28,7 @@ public class Config {
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/resources/");
+		viewResolver.setPrefix("/WEB-INF/views/");
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}

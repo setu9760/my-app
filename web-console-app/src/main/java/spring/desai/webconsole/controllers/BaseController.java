@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 
 public abstract class BaseController {
 
-//	protected final Logger logger = Logger.getLogger(this.getClass().getName());
+	protected final Logger logger = Logger.getLogger(this.getClass().getName());
 //
 //	@Autowired
 //	protected StudentDao studentDao;
@@ -37,8 +37,8 @@ public abstract class BaseController {
 //
 //	abstract void initBinder(WebDataBinder binder);
 //
-//	protected String getformattedDate() {
-//		return LocalDateTime.now().toString("dd-MMM-yyyy  kk:mm:ss z");
-//	}
+	protected String getformattedDate() {
+		return LocalDateTime.now().toString("dd-MMM-yyyy  kk:mm:ss z");
+	}
 
 }

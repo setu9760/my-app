@@ -17,7 +17,8 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.service.ReadOnlyService;
 import spring.desai.common.service.StudentAdminService;
 
-@RestController("/rest")
+@RestController
+@RequestMapping(value = "/rest")
 public class HomeController {
 
 	@Autowired

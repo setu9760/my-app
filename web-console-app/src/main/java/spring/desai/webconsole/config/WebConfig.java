@@ -1,12 +1,12 @@
 package spring.desai.webconsole.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-//@Configuration
+@EnableWebMvc  
+@Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
 
 //	@Bean
@@ -19,4 +19,9 @@ public class WebConfig extends WebMvcConfigurationSupport {
 //	public SimpleControllerHandlerAdapter simpleControllerHandlerAdapter(){
 //		return new SimpleControllerHandlerAdapter();
 //	}
+	
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/");
+	}
 }
