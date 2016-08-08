@@ -52,7 +52,13 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 
 	@Override
 	public Collection<Student> getAllStudents() {
-		return studentRepository.getAll();
+		Collection<Student> studs = studentRepository.getAll();
+		for (Student s : studs) {
+			s.setSubjects(subjectRepository.getSubjectsForStudentId(s.getId()));
+			s.setPayments(paymentRepository.findbyStudentId(s.getId()));
+			s.setScholorships(scholorshipRepository.findByStudentId(s.getId()));
+		}
+		return studs;
 	}
 
 	@Override

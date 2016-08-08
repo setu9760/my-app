@@ -7,11 +7,6 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ContextResource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-import org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
@@ -21,8 +16,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(Config.class) 
-@EnableAutoConfiguration(exclude={ ThymeleafAutoConfiguration.class, H2ConsoleAutoConfiguration.class, DataSourceAutoConfiguration.class, 
-					HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class})
+@EnableAutoConfiguration
 public class SpringBootApp extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {

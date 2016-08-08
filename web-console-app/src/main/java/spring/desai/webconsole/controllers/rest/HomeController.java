@@ -1,5 +1,8 @@
 package spring.desai.webconsole.controllers.rest;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +29,7 @@ public class HomeController {
 
 	@Autowired
 	private StudentAdminService studentAdminService;
-	
+
 	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getstudentDetails(@PathVariable String id) {
 		Student s = readOnlyService.getStudentById(id);
@@ -34,17 +37,23 @@ public class HomeController {
 		return prepareResponse(dto);
 	}
 
+	@RequestMapping(value = "/student/all", method = RequestMethod.GET)
+	public ResponseEntity<Collection<StudentDTO>> getAllStudents() {
+		return new ResponseEntity<Collection<StudentDTO>>(DTOFactory.getInstance().fromstudents(readOnlyService.getAllStudents()), HttpStatus.OK);
+	}
+
 	@ExceptionHandler(value = RepositoryDataAccessException.class)
 	public ExceptionDTO exceptionHandler(RepositoryDataAccessException exception) {
-		// TODO ExceptionDTO logic is flawed. This returns all the attributes in json format. 
+		// TODO ExceptionDTO logic is flawed. This returns all the attributes in
+		// json format.
 		return new ExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR.toString(), exception.getLocalizedMessage(),
 				exception.getStackTrace(), exception);
 	}
 
-	private ResponseEntity<Object> prepareResponse(Object obj){
+	private ResponseEntity<Object> prepareResponse(Object obj) {
 		if (obj != null)
 			return new ResponseEntity<>(obj, HttpStatus.OK);
-		else 
+		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
