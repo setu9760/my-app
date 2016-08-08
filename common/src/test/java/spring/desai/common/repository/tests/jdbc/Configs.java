@@ -24,7 +24,7 @@ public class Configs {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/test_test");
-		dataSource.setUsername("setu");
+		dataSource.setUsername("desai");
 		dataSource.setPassword("password");
 		DatabasePopulatorUtils.execute(getDatabasePopulator(), dataSource);
 		return dataSource;
