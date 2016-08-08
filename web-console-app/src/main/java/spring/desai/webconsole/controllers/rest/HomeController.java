@@ -1,13 +1,13 @@
 package spring.desai.webconsole.controllers.rest;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,30 +31,45 @@ public class HomeController {
 	private StudentAdminService studentAdminService;
 
 	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getstudentDetails(@PathVariable String id) {
+	public ResponseEntity<Object> getstudentDetails(@PathVariable String id) throws Exception {
 		Student s = readOnlyService.getStudentById(id);
 		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
 		return prepareResponse(dto);
 	}
 
 	@RequestMapping(value = "/student/all", method = RequestMethod.GET)
-	public ResponseEntity<Collection<StudentDTO>> getAllStudents() {
+	public ResponseEntity<Collection<StudentDTO>> getAllStudents() throws Exception {
 		return new ResponseEntity<Collection<StudentDTO>>(DTOFactory.getInstance().fromstudents(readOnlyService.getAllStudents()), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/student/update", method = RequestMethod.POST)
+	public ResponseEntity<Object> updateStudent(@RequestBody StudentDTO studentDto) throws Exception{
+		studentAdminService.update(DTOFactory.getInstance().fromStudentDTO(studentDto));
+		Student s = readOnlyService.getStudentById(studentDto.getId());
+		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
+		return prepareResponse(dto);
+	}
+	
+	@RequestMapping(value = "/student/save", method = RequestMethod.POST)
+	public ResponseEntity<Object> saveStudent(@RequestBody StudentDTO studentDto) throws Exception{
+		studentAdminService.save(DTOFactory.getInstance().fromStudentDTO(studentDto));
+		Student s = readOnlyService.getStudentById(studentDto.getId());
+		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
+		return prepareResponse(dto);
+	}
+	
 	@ExceptionHandler(value = RepositoryDataAccessException.class)
 	public ExceptionDTO exceptionHandler(RepositoryDataAccessException exception) {
 		// TODO ExceptionDTO logic is flawed. This returns all the attributes in
 		// json format.
-		return new ExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR.toString(), exception.getLocalizedMessage(),
-				exception.getStackTrace(), exception);
+		return new ExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR.toString(), exception.getLocalizedMessage(), exception.getStackTrace(), exception);
 	}
 
 	private ResponseEntity<Object> prepareResponse(Object obj) {
 		if (obj != null)
 			return new ResponseEntity<>(obj, HttpStatus.OK);
 		else
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

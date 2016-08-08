@@ -22,6 +22,11 @@ public final class DTOFactory {
 		return instance;
 	}
 	
+	/****************************************************
+	*
+	*	Object to DTO methods
+	*
+	****************************************************/
 	public TutorDTO fromTutor(Tutor t) {
 		return t != null ? new TutorDTO(t.getId(), t.getF_name(), t.getL_name(), t.getAddress(), t.getSubj_id(), t.isFulltime()) : null;
 	}
@@ -84,5 +89,80 @@ public final class DTOFactory {
 			ts.add(fromTutor(t));
 		}
 		return ts;
+	}
+	
+	/****************************************************
+	*
+	*	DTO to Object methods
+	*
+	****************************************************/
+	public Student fromStudentDTO(StudentDTO dto){
+		// TODO		
+		return null;
+	}
+	
+	public Tutor fromTutorDTO(TutorDTO dto){
+		// TODO
+		return null;
+	}
+	
+	public Subject fromSubjectDTO(SubjectDTO dto){
+		// TODO
+		return null;
+	}
+	
+	public Cost fromCostDTO(CostDTO dto){
+		// TODO
+		return null;
+	}
+	
+	public Scholorship fromScholorshipDTO(ScholorshipDTO dto){
+		// TODO
+		return null;
+	}
+	
+	public Payment fromPaymentDTO(PaymentDTO dto) {
+		// TODO
+		return null;
+	}
+	
+	public Collection<Student> fromStudentDTOs(Collection<StudentDTO> dtos){
+		for (StudentDTO s : dtos) {
+			
+		}
+		return null;
+	}
+	
+	public Collection<Tutor> fromTutorDTOs(Collection<TutorDTO> dtos){
+		for (TutorDTO t : dtos) {
+			
+		}
+		return null;
+	}
+	
+	public Collection<Subject> fromSubjectDTOs(Collection<SubjectDTO> dtos){
+		for (SubjectDTO s : dtos) {
+			
+		}
+		return null;
+	}
+	
+	public Collection<Cost> fromCostDTOs(Collection<CostDTO> dtos){
+		for (CostDTO c : dtos) {
+			
+		}
+		return null;
+	}
+	
+	public Collection<Scholorship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
+		for (ScholorshipDTO s : dtos) {
+			
+		}
+		return null;
+	}
+	
+	public Collection<Payment> fromPaymentDTOs(Collection<PaymentDTO> dtos) {
+		// TODO
+		return null;
 	}
 }

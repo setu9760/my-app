@@ -19,7 +19,7 @@ public class LoggerAspect {
 //	@Value("${aspect.active}")
 //    private static boolean active = true;
 	
-	@Pointcut("execution(* spring.desai.common.repository.impl.*.*(..))")
+	@Pointcut("execution(* spring.desai.common.repository.*.*.*.*(*))")
 	public void logMethods() {
 	}
 
