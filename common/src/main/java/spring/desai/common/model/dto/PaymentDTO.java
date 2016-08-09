@@ -6,15 +6,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class PaymentDTO {
 
-	String id;
-	double amount;
-	String paymentType;
-	String studentId;
+	private String id;
+	private Double amount;
+	private String paymentType;
+	private String studentId;
 	@JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "CET")
-	Date date;
-	String comments;
+	private Date date;
+	private String comments;
 	
-	public PaymentDTO(String id, double amount, String paymentType, String studentId, Date date, String comments) {
+	public PaymentDTO() {
+	}
+	
+	public PaymentDTO(String id, Double amount, String paymentType, String studentId, Date date, String comments) {
 		super();
 		this.id = id;
 		this.amount = amount;
@@ -32,11 +35,11 @@ public class PaymentDTO {
 		this.id = id;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

@@ -1,16 +1,19 @@
 package spring.desai.common.model.dto;
 
 public class ScholorshipDTO {
-	String id;
-	String externalRef;
-	String type;
-	Double totalAmount;
-	Double paidAmount;
-	Boolean isFullyPaid;
-	Boolean isPostPay;
-	String studId;
-	String additionalComments;
+	private String id;
+	private String externalRef;
+	private String type;
+	private Double totalAmount;
+	private Double paidAmount;
+	private Boolean isFullyPaid;
+	private Boolean isPostPay;
+	private String studId;
+	private String additionalComments;
 
+	public ScholorshipDTO() {
+	}
+	
 	public ScholorshipDTO(String id, String externalRef, String type, Double totalAmount, Double paidAmount,
 			Boolean isFullyPaid, Boolean isPostPay, String studId, String additionalComments) {
 		super();

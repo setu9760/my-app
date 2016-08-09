@@ -1,10 +1,10 @@
 package spring.desai.common.model.dto;
 
 public abstract class PersonDTO {
-	String id;
-	String f_name;
-	String l_name;
-	String address;
+	private String id;
+	private String f_name;
+	private String l_name;
+	private String address;
 
 	public PersonDTO() {
 		super();

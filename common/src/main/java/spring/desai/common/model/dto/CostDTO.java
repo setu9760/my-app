@@ -1,9 +1,12 @@
 package spring.desai.common.model.dto;
 
 public class CostDTO {
-	String costCode;
-	Double amount;
+	private String costCode;
+	private Double amount;
 
+	public CostDTO() {
+	}
+	
 	public CostDTO(String costCode, Double amount) {
 		super();
 		this.costCode = costCode;

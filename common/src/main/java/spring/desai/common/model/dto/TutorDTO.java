@@ -2,8 +2,12 @@ package spring.desai.common.model.dto;
 
 public class TutorDTO extends PersonDTO {
 
-	String subjectId;
-	Boolean isFulltime;
+	private String subjectId;
+	private Boolean isFulltime;
+
+	public TutorDTO() {
+		super();
+	}
 
 	public TutorDTO(String id, String f_name, String l_name, String address, String subjectId, Boolean isFulltime) {
 		super(id, f_name, l_name, address);
