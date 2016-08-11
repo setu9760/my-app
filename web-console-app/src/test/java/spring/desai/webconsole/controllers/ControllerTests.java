@@ -1,15 +1,13 @@
 package spring.desai.webconsole.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -18,18 +16,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import spring.desai.common.model.dto.PaymentDTO;
-import spring.desai.common.model.dto.ScholorshipDTO;
 import spring.desai.common.model.dto.StudentDTO;
-import spring.desai.common.model.dto.SubjectDTO;
 
 @WebAppConfiguration
 @ActiveProfiles("jdbc")
@@ -54,30 +51,49 @@ public class ControllerTests {
 
 	@Test
 	public void testIt() throws Exception {
-//		for (String s : webApplicationContext.getBeanDefinitionNames()) {
-//			System.out.println(s);
-//		}
+
+		// Default mapping request. 
+		mvc.perform(get("")).andExpect(status().isOk()).andDo(print());
 		
-		mvc.perform(get("/rest/student/student")).andExpect(status().isNotFound());
+		// Path not found request
+		mvc.perform(get("/student/studentid1")).andExpect(status().isNotFound()).andDo(print());
 		
-		mvc.perform(get("")).andExpect(status().isOk());
+		// Valid request
+		mvc.perform(get("/rest/student/student")).andExpect(status().isNotFound()).andDo(print());
 		
-		mvc.perform(get("/rest/student/studentid1")).andExpect(status().isOk());
+		// POST request testing
+		StudentDTO dto = new StudentDTO(UUID.randomUUID().toString(), "MOCK_F", "MOCK_L", 24 , "ADDRESS", null, null , null);
 		
-		mvc.perform(get("/student/studentid1")).andExpect(status().isNotFound());
-		mvc.perform(post("/rest/student/save")
-					.content(json(new StudentDTO(UUID.randomUUID().toString(), "MOCK_F", "MOCK_L", 24 , "ADDRESS", null, null , null)))
-					.contentType(contentType))
-			.andExpect(status().isOk())
-			.andDo(print());
+		MvcResult results = mvc.perform(post("/rest/student/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
+			.andExpect(jsonPath("$.f_name").value("MOCK_F"))
+			.andExpect(jsonPath("$.l_name").value("MOCK_L"))
+			.andReturn();
 		
-//		mvc.perform(get("/rest/student/MOCK_ID")).andExpect(status().isOk()).andDo(print());
+		// Duplicate save to test controller advice and exception handler
+		mvc.perform(post("/rest/student/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isInternalServerError()).andDo(print());
+		
+		dto = (StudentDTO) toObject(results.getResponse().getContentAsString(), StudentDTO.class);
+		dto.setF_name("Updated");
+		dto.setL_name("UPDATED");
+		
+		mvc.perform(post("/rest/student/update").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
+			.andExpect(jsonPath("$.f_name").value("Updated"))
+			.andExpect(jsonPath("$.l_name").value("UPDATED"));
+		
+		mvc.perform(get("/rest/delete")).andExpect(status().isOk()).andDo(print()).andReturn().getResponse();
+
 	}
+
 	
-    protected String json(Object o) throws IOException {
+    public String toJson(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+        mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
 
+    protected <T> Object toObject(String jsonString, Class<T> clazz) throws IOException {
+    	MockHttpInputMessage httpInputMessage = new MockHttpInputMessage(jsonString.getBytes());
+    	return mappingJackson2HttpMessageConverter.read(clazz, httpInputMessage);
+    }
+    
 }

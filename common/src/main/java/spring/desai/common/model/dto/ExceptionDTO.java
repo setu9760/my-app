@@ -1,19 +1,43 @@
 package spring.desai.common.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ExceptionDTO {
 
-	String responseCode;
-	String developerMessage;
-	StackTraceElement[] stackTrace;
-	Exception e;
-
-	public ExceptionDTO(String responseCode, String developerMessage, StackTraceElement[] stackTrace, Exception e) {
+	private String responseCode;
+	private String developerMessage;
+	private String errorMessageStack;
+	
+	@JsonIgnore
+	private Exception e;
+	
+	public ExceptionDTO() {
+	}
+	
+	public ExceptionDTO(String responseCode, String developerMessage, Exception e) {
 		super();
 		this.responseCode = responseCode;
 		this.developerMessage = developerMessage;
-		this.stackTrace = stackTrace;
 		this.e = e;
+		this.errorMessageStack = generateErrorStackMessage(e);
 	}
+	
+	/**
+	 * Generate an error message that is the concatenation of all the stacks
+	 * @param t
+	 * @return String
+	 */
+	private String generateErrorStackMessage(Throwable t) {
+		StringBuilder buf = new StringBuilder(t.getMessage()==null ? "" : t.getMessage());
+		Throwable cause = t.getCause();
+		while (cause != null) {
+			buf.append(System.lineSeparator());
+			buf.append(cause.getMessage());
+			cause = cause.getCause();
+		}
+		return buf.toString();
+	}
+	
 
 	public String getResponseCode() {
 		return responseCode;
@@ -31,12 +55,8 @@ public class ExceptionDTO {
 		this.developerMessage = developerMessage;
 	}
 
-	public StackTraceElement[] getStackTrace() {
-		return stackTrace;
-	}
-
-	public void setStackTrace(StackTraceElement[] stackTrace) {
-		this.stackTrace = stackTrace;
+	public String getStackTrace() {
+		return errorMessageStack;
 	}
 
 	public Exception getE() {
