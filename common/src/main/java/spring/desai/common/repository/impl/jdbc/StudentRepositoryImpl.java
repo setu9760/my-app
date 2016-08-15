@@ -1,12 +1,18 @@
 package spring.desai.common.repository.impl.jdbc;
 
+import static spring.desai.common.utils.DataBaseConstants.F_NAME;
+import static spring.desai.common.utils.DataBaseConstants.ID;
+import static spring.desai.common.utils.DataBaseConstants.STUDENT_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
+import static spring.desai.common.utils.DataBaseConstants.SUBJECT_STUDENT_LINK_TABLE_NAME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJ_ID;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -16,8 +22,6 @@ import org.springframework.stereotype.Repository;
 import spring.desai.common.model.Student;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-
-import static spring.desai.common.utils.DataBaseConstants.*;
 
 //@Profile(value = { "jdbc" })
 @Repository(value="studentRepository")

@@ -13,7 +13,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;

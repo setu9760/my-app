@@ -10,7 +10,6 @@ import static spring.desai.common.utils.DataBaseConstants.TYPE;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.springframework.jdbc.core.RowMapper;

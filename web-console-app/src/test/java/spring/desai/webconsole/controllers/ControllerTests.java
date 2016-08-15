@@ -1,14 +1,19 @@
 package spring.desai.webconsole.controllers;
 
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.Principal;
 import java.util.UUID;
+
+import javax.servlet.Filter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +42,9 @@ public class ControllerTests {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
+//	@Autowired
+//	private Filter springSecurityFilterChain;
+	
 	private MockMvc mvc;
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -46,7 +54,7 @@ public class ControllerTests {
 	
 	@Before
 	public void setup() {
-		mvc = webAppContextSetup(webApplicationContext).build();
+		mvc = webAppContextSetup(webApplicationContext)/*.addFilter(springSecurityFilterChain)*/.build();
 	}
 
 	@Test
@@ -64,7 +72,14 @@ public class ControllerTests {
 		// POST request testing
 		StudentDTO dto = new StudentDTO(UUID.randomUUID().toString(), "MOCK_F", "MOCK_L", 24 , "ADDRESS", null, null , null);
 		
-		MvcResult results = mvc.perform(post("/rest/student/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
+		MvcResult results = mvc.perform(post("/rest/student/save").principal(new Principal() {
+			
+			@Override
+			public String getName() {
+				return "rest";
+			}
+		}).content(toJson(dto)).contentType(contentType))
+			.andExpect(status().isOk()).andDo(print())
 			.andExpect(jsonPath("$.f_name").value("MOCK_F"))
 			.andExpect(jsonPath("$.l_name").value("MOCK_L"))
 			.andReturn();
@@ -80,7 +95,7 @@ public class ControllerTests {
 			.andExpect(jsonPath("$.f_name").value("Updated"))
 			.andExpect(jsonPath("$.l_name").value("UPDATED"));
 		
-		mvc.perform(get("/rest/delete")).andExpect(status().isOk()).andDo(print()).andReturn().getResponse();
+		mvc.perform(delete("/rest/delete")).andExpect(status().isOk()).andDo(print()).andReturn().getResponse();
 
 	}
 

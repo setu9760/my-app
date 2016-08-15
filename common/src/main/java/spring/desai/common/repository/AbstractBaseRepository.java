@@ -56,7 +56,7 @@ public abstract class AbstractBaseRepository<T extends Persistable> implements B
 		return sb.toString();
 	}
 	
-	private final String truncateTableSql(String tableName) {
+	protected final String truncateTableSql(String tableName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("TRUNCATE TABLE ").append(tableName);
 		return sb.toString();

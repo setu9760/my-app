@@ -2,10 +2,6 @@ package spring.desai.webconsole.controllers;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.WebDataBinder;
-
-import com.google.gson.Gson;
 
 public abstract class BaseController {
 

@@ -8,10 +8,7 @@ import static spring.desai.common.utils.DataBaseConstants.SUBJECT_TABLE_NAME;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity

@@ -56,7 +56,7 @@ public class HomeController {
 		return prepareResponse(dto);
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> justTest(){
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

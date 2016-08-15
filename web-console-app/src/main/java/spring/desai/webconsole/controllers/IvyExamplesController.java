@@ -3,19 +3,16 @@ package spring.desai.webconsole.controllers;
 import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.PropertyConfigurator;
-import org.joda.time.LocalDateTime;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -28,6 +25,12 @@ public class IvyExamplesController extends BaseController {
 		model.addAttribute("title", "Home");
 		logger.info("returning home");
 		return "home";
+	}
+	
+	@RequestMapping(value = "log4jAdmin", method = {RequestMethod.GET, RequestMethod.POST})
+	public String log4jAdmin(Model model, HttpServletRequest request, HttpServletResponse response){
+		model.addAllAttributes(request.getParameterMap());
+		return "log4jAdmin";
 	}
 
 //	@RequestMapping(value = "/reloadLog4J", method = RequestMethod.GET)

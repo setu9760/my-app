@@ -3,15 +3,10 @@ package spring.desai.common.model;
 import static spring.desai.common.utils.DataBaseConstants.AMOUNT;
 import static spring.desai.common.utils.DataBaseConstants.COST_CODE;
 import static spring.desai.common.utils.DataBaseConstants.COST_TABLE_NAME;
-import static spring.desai.common.utils.DataBaseConstants.SUBJECT_TABLE_NAME;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity

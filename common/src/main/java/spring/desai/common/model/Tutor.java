@@ -1,14 +1,11 @@
 package spring.desai.common.model;
 
-import static spring.desai.common.utils.DataBaseConstants.ID;
 import static spring.desai.common.utils.DataBaseConstants.IS_FULLTIME;
 import static spring.desai.common.utils.DataBaseConstants.SUBJ_ID;
 import static spring.desai.common.utils.DataBaseConstants.TUTOR_TABLE_NAME;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
