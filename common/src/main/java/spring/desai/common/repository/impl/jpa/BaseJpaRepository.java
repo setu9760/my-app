@@ -40,7 +40,7 @@ public abstract class BaseJpaRepository<T extends Persistable> extends AbstractB
 	public Collection<T> findByName(String name) throws RepositoryDataAccessException {
 		Query query = entityManager.createQuery(getFindBySql(getTableName(), getNameField()));
 		query.setParameter(1, name);
-		return (Collection<T>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	@Override

@@ -21,10 +21,6 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 	@Autowired
 	private CostCodeRepository costCodeRepository;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 
 	@After
 	public void tearDown() throws Exception {

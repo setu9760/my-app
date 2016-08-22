@@ -28,10 +28,6 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 	@Autowired
 	SubjectRepository subjectRepository;
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 
 	@After
 	public void tearDown() throws Exception {

@@ -28,10 +28,6 @@ public class TutorRepositoryImplTest extends AbstractRepositoryTest<Tutor> {
 	@Autowired
 	private TutorRepository tutorRepository;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 
 	@After
 	public void tearDown() throws Exception {

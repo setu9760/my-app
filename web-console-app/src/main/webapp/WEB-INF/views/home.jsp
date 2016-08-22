@@ -3,49 +3,8 @@
 <%@include file="include.jsp"%>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<!-- link rel="stylesheet" type="text/css" href="views/scripts/style.css"-->
-<script type="text/css">
+<link type="text/css" href=<c:url value="resources/style.css"/> rel="stylesheet" >
 
-html,body {
-	height: 100%;
-}
-
-.wrapper {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0 auto -155px;
-	/* the bottom margin is the negative value of the footer's height */
-}
-
-.footer,.push {
-	height: 155px; /* .push must be the same height as .footer */
-}
-
-.footer {
-	position: relative;
-	width: 700px;
-	margin: 0 auto;
-}
-
-.footer a {
-	color: #0060b9;
-}
-
-.footer p {
-	padding: 95px 0 0;
-	color: #fff;
-	font: 1em helvetica, arial, sans-serif;
-	text-align: center;
-}
-
-.footer p.copyright {
-	padding: 1em 0 0;
-	color: #0060b9;
-	font-size: 0.8em;
-}
-
-</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>${ title }</title>
 </head>

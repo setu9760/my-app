@@ -31,10 +31,6 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 		return true;
 	}
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 
 	@After
 	public void tearDown() throws Exception {

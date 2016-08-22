@@ -26,10 +26,6 @@ public class PaymentRepositoryImplTest extends AbstractRepositoryTest<Payment> {
 	@Autowired
 	PaymentRepository paymentRepository;
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 
 	@After
 	public void tearDown() throws Exception {

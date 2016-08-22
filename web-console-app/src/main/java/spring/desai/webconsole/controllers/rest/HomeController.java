@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import spring.desai.common.model.Payment;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.dto.DTOFactory;
+import spring.desai.common.model.dto.PaymentDTO;
 import spring.desai.common.model.dto.StudentDTO;
 import spring.desai.common.service.ReadOnlyService;
 import spring.desai.common.service.StudentAdminService;
+
 
 @RestController
 @RequestMapping(value = "/rest", produces = "application/json;charset=UTF-8")
@@ -54,6 +57,14 @@ public class HomeController {
 		Student s = readOnlyService.getStudentById(studentDto.getId());
 		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
 		return prepareResponse(dto);
+	}
+	
+	@RequestMapping(value = "/payment/save", method = RequestMethod.POST)
+	public ResponseEntity<PaymentDTO> makePayment(@RequestBody PaymentDTO paymentDTO) throws Exception{
+		studentAdminService.makePayment(DTOFactory.getInstance().fromPaymentDTO(paymentDTO));
+		Payment p = readOnlyService.getPaymentById(paymentDTO.getId());
+		return prepareResponse(DTOFactory.getInstance().fromPayment(p));
+		
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)

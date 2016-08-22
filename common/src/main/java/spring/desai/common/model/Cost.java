@@ -69,7 +69,7 @@ public class Cost implements Persistable {
 		Cost other = (Cost) obj;
 		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
 			return false;
-		if (costCode != other.costCode)
+		if (!costCode.equals(other.costCode))
 			return false;
 		return true;
 	}

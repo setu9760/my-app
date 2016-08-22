@@ -25,10 +25,6 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 	@Autowired
 	private RoleRepository roleRepository; 
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 	
 	@Override
 	protected boolean doRefereshDbBetweenTests() {

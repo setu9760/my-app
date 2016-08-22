@@ -22,6 +22,6 @@ public class WebConfig extends WebMvcConfigurationSupport {
 	
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/");
+		registry.addResourceHandler("/scripts/**").addResourceLocations("/resources/");
 	}
 }

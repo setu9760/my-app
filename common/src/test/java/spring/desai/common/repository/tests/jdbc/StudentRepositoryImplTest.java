@@ -27,10 +27,6 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 	@Autowired()
 	StudentRepository studentRepository;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 	
 	@After
 	public void tearDown() throws Exception {

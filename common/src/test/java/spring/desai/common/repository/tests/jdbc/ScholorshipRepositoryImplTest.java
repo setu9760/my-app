@@ -22,10 +22,6 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 	@Autowired
 	ScholorshipRepository scholorshipRepository;
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
 
 	@After
 	public void tearDown() throws Exception {
