@@ -23,5 +23,11 @@
 			<artifactId>common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${javax.servlet.api.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

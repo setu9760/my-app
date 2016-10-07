@@ -16,6 +16,8 @@
 		<spring.security.version>4.1.0.RELEASE</spring.security.version>
 		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version>
 
+	<javax.servlet.api.version>2.5</javax.servlet.api.version>
+
 		<commons.dbcp2.version>2.1.1</commons.dbcp2.version>
 
 		<!-- aspectj version -->
