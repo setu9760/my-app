@@ -20,7 +20,7 @@ import spring.desai.common.secure.UserAlreadyLoggedinException;
 import spring.desai.common.secure.user.UserLoginDetails;
 
 @Service("userDetailsService")
-public class SecurityUserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	@Qualifier("userRepository")
@@ -34,7 +34,7 @@ public class SecurityUserDetailsServiceImpl implements UserDetailsService {
 	@Qualifier("usrrRepository")
 	private UsrrRepository usrrRepository;
 	
-	private static final Logger log = Logger.getLogger(SecurityUserDetailsServiceImpl.class);
+	private static final Logger log = Logger.getLogger(UserDetailsServiceImpl.class);
 	
 	// TODO: Fetch this via some sort of solution property.
 	private static final int MAX_FAILED_ATTEMPTS = 4;
