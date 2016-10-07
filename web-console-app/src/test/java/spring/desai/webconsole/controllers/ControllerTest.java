@@ -25,7 +25,10 @@ import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -37,7 +40,8 @@ import spring.desai.common.model.dto.StudentDTO;
 @ActiveProfiles("jdbc")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcTestConfig.class)
-public class ControllerTests {
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
+public class ControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -59,7 +63,7 @@ public class ControllerTests {
 
 	@Test
 	public void testIt() throws Exception {
-
+		System.out.println("ControllerTests.testIt()");
 		// Default mapping request. 
 		mvc.perform(get("")).andExpect(status().isOk()).andDo(print());
 		

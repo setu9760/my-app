@@ -1,8 +1,8 @@
 package spring.desai.common.secure;
 
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.AccountStatusException;
 
-public class MaxLoginAttemptsExceededException extends AuthenticationException {
+public class MaxLoginAttemptsExceededException extends AccountStatusException {
 
 	private static final long serialVersionUID = 5700531640441037142L;
 

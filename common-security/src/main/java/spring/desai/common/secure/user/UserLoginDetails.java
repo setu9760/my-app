@@ -1,4 +1,4 @@
-package spring.desai.common.security.user;
+package spring.desai.common.secure.user;
 
 import static spring.desai.common.utils.UserAuthenticationConstants.NO_ACTIVITY_PERFORMED;
 

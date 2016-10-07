@@ -1,8 +1,8 @@
 package spring.desai.common.secure;
 
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.AccountStatusException;
 
-public class UserAlreadyLoggedinException extends AuthenticationException {
+public class UserAlreadyLoggedinException extends AccountStatusException {
 
 	private static final long serialVersionUID = -4796376815624555320L;
 

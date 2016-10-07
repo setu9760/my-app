@@ -17,9 +17,9 @@ import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.secure.MaxLoginAttemptsExceededException;
 import spring.desai.common.secure.UserAlreadyLoggedinException;
-import spring.desai.common.security.user.UserLoginDetails;
+import spring.desai.common.secure.user.UserLoginDetails;
 
-@Service
+@Service("userDetailsService")
 public class SecurityUserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired

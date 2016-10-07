@@ -27,6 +27,12 @@ public class IvyExamplesController extends BaseController {
 		return "home";
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value= "login")
+	public String login(HttpServletRequest request, HttpServletResponse response){
+		logger.info("returning login form");
+		return "login";
+	}
+	
 	@RequestMapping(value = "log4jAdmin", method = {RequestMethod.GET, RequestMethod.POST})
 	public String log4jAdmin(Model model, HttpServletRequest request, HttpServletResponse response){
 		model.addAllAttributes(request.getParameterMap());

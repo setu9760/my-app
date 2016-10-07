@@ -24,7 +24,7 @@ import spring.desai.common.repository.StudentRepository;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 
-	@Autowired()
+	@Autowired
 	StudentRepository studentRepository;
 
 	

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import spring.desai.common.model.User.SIGN_ON_STATUS;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import spring.desai.common.security.user.UserLoginDetails;
+import spring.desai.common.secure.user.UserLoginDetails;
 
 @Repository("usrrRepository")
 public class UsrrRepositoryImpl implements UsrrRepository {
@@ -22,7 +22,7 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private static final String USER_LOGIN_DETAIL_SQL = "SELECT UD.USER_ID, U.PASSWORD, UD.ACCOUNT_LOCKED,  U.PASSWORD_EXPIRED, UD.FAILED_ATTEMPTS , UD.SIGN_ON_STATUS  FROM USER_DETAILS UD JOIN USRR U ON UD.USER_ID = U.USER_ID WHERE U.USER_ID = ?";
+	private static final String USER_LOGIN_DETAIL_SQL = "SELECT UD.USER_ID, U.PASSWORD, UD.ACCOUNT_NON_LOCKED,  U.PASSWORD_NON_EXPIRED, UD.FAILED_ATTEMPTS , UD.SIGN_ON_STATUS  FROM USER_DETAILS UD JOIN USRR U ON UD.USER_ID = U.USER_ID WHERE U.USER_ID = ?";
 	private static final String INCREMENT_FAILED_ATTEMPT_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = FAILED_ATTEMPTS+1 WHERE USER_ID = ?";
 	private static final String UPDATE_LOGIN_STATUS = "UPDATE USER_DETAILS SET SIGN_ON_STATUS = ? WHERE USER_ID = ?";
 	
@@ -39,7 +39,7 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 				
 			});
 			if (list != null && !list.isEmpty()) {
-				return list.get(1);
+				return list.get(0);
 			}
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException("Error occured while getting user login details from database.", e);

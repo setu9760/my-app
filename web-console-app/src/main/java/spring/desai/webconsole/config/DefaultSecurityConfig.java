@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Order(100)
 @Configuration
+@Profile("!secure")
 @EnableWebSecurity
 public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter{
 
@@ -29,7 +31,8 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter{
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("rest").password("password").roles("REST_USER").and()
 				.withUser("admin123").password("password").roles("USER", "ADMIN").and()
-				.withUser("test123").password("password").roles("USER");
+				.withUser("test123").password("password").roles("REST_USER").and()
+				.withUser("dis").password("password").roles("REST_USER").disabled(true);
 	}
 	
 	@Override

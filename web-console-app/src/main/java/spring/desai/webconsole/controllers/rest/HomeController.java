@@ -1,5 +1,6 @@
 package spring.desai.webconsole.controllers.rest;
 
+import java.security.Principal;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class HomeController {
 	private StudentAdminService studentAdminService;
 
 	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
-	public ResponseEntity<StudentDTO> getstudentDetails(@PathVariable String id) throws Exception {
+	public ResponseEntity<StudentDTO> getstudentDetails(@PathVariable String id, Principal principal) throws Exception {
 		Student s = readOnlyService.getStudentById(id);
 		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
 		return prepareResponse(dto);
