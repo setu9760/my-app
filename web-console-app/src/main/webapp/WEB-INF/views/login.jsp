@@ -51,8 +51,9 @@
 					<div class="error">
 						Failed to login.
 						<c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-                  Reason: <c:out
-								value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+							<p>
+			                  Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+							</p>
 						</c:if>
 					</div>
 				</c:if>

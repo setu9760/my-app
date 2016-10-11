@@ -31,40 +31,42 @@ public class HomeController {
 	@Autowired
 	private StudentAdminService studentAdminService;
 
+	private DTOFactory dtoFactory = DTOFactory.getInstance();
+	
 	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
 	public ResponseEntity<StudentDTO> getstudentDetails(@PathVariable String id, Principal principal) throws Exception {
 		Student s = readOnlyService.getStudentById(id);
-		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
+		StudentDTO dto = dtoFactory.fromStudent(s);
 		return prepareResponse(dto);
 	}
 
 	@RequestMapping(value = "/student/all", method = RequestMethod.GET)
 	public ResponseEntity<Collection<StudentDTO>> getAllStudents() throws Exception {
-		return prepareResponse(DTOFactory.getInstance().fromstudents(readOnlyService.getAllStudents()));
+		return prepareResponse(dtoFactory.fromstudents(readOnlyService.getAllStudents()));
 //		return new ResponseEntity<Collection<StudentDTO>>(DTOFactory.getInstance().fromstudents(readOnlyService.getAllStudents()), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/student/update", method = RequestMethod.POST)
 	public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDto) throws Exception{
-		studentAdminService.update(DTOFactory.getInstance().fromStudentDTO(studentDto));
+		studentAdminService.update(dtoFactory.fromStudentDTO(studentDto));
 		Student s = readOnlyService.getStudentById(studentDto.getId());
-		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
+		StudentDTO dto = dtoFactory.fromStudent(s);
 		return prepareResponse(dto);
 	}
 	
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST)
 	public ResponseEntity<StudentDTO> saveStudent(@RequestBody StudentDTO studentDto) throws Exception{
-		studentAdminService.save(DTOFactory.getInstance().fromStudentDTO(studentDto));
+		studentAdminService.save(dtoFactory.fromStudentDTO(studentDto));
 		Student s = readOnlyService.getStudentById(studentDto.getId());
-		StudentDTO dto = DTOFactory.getInstance().fromStudent(s);
+		StudentDTO dto = dtoFactory.fromStudent(s);
 		return prepareResponse(dto);
 	}
 	
 	@RequestMapping(value = "/payment/save", method = RequestMethod.POST)
 	public ResponseEntity<PaymentDTO> makePayment(@RequestBody PaymentDTO paymentDTO) throws Exception{
-		studentAdminService.makePayment(DTOFactory.getInstance().fromPaymentDTO(paymentDTO));
+		studentAdminService.makePayment(dtoFactory.fromPaymentDTO(paymentDTO));
 		Payment p = readOnlyService.getPaymentById(paymentDTO.getId());
-		return prepareResponse(DTOFactory.getInstance().fromPayment(p));
+		return prepareResponse(dtoFactory.fromPayment(p));
 		
 	}
 	

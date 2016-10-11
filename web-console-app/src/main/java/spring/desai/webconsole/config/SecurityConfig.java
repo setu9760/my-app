@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -46,8 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private CsrfTokenResponseHeaderBindingFilter csrfTokenFilter;
 	
 	@Autowired
+	private BCryptPasswordEncoder passwordEncrypter; 
+	
+	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService)/*.passwordEncoder(new BCryptPasswordEncoder())*/;
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncrypter);
 	}
 
 	@Override
@@ -58,7 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	     http.authorizeRequests().antMatchers("/rest/**").access("hasRole('ROLE_REST_USER')")
 			.and().formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").permitAll()
 			.successHandler(loginSuccessHandler)
-//			.failureUrl("/login?error=1").permitAll()
 			.failureHandler(authenticationFailureHandler).permitAll()
 			.and().logout().invalidateHttpSession(true).addLogoutHandler(logoutSuccessHandler).permitAll()
 			.and().exceptionHandling().accessDeniedPage("/403")
