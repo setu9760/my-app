@@ -13,7 +13,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.Payment;
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
@@ -44,7 +44,7 @@ public class StudentAdminServiceTest {
 		
 		studentAdminService.makePayment(new Payment("PAY1", 100, PaymentType.CASH, s.getId(), "N/A"));
 		
-		Scholorship schol = new Scholorship("SCH1", ScholorshipType.STATE_PART, 1000, 1000, true, false, "Provided by ABCD", s.getId());
+		Scholarship schol = new Scholarship("SCH1", ScholorshipType.STATE_PART, 1000, 1000, true, false, "Provided by ABCD", s.getId());
 		studentAdminService.awardScholorship(schol);
 		
 		studentAdminService.makePayment(new Payment("PAY2", -100d, PaymentType.REFUND_CASH, s.getId(), "N/A"));

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
@@ -38,10 +38,10 @@ public final class DTOFactory {
 	}
 	
 	public StudentDTO fromStudent(Student s) {
-		return s != null ? new StudentDTO(s.getId(), s.getF_name(), s.getL_name(), s.getAge(), s.getAddress(), fromSubjects(s.getSubjects()), fromPayments(s.getPayments()), fromScholorships(s.getScholorships())): null;
+		return s != null ? new StudentDTO(s.getId(), s.getF_name(), s.getL_name(), s.getAge(), s.getAddress(), fromSubjects(s.getSubjects()), fromPayments(s.getPayments()), fromScholorships(s.getScholarships())): null;
 	}
 	
-	public ScholorshipDTO fromScholorship(Scholorship s) {
+	public ScholorshipDTO fromScholorship(Scholarship s) {
 		return s != null ?new ScholorshipDTO(s.getId(), s.getExternal_ref(), s.getTypeString(), s.getTotal_amount(), s.getPaid_amount(), s.isFullyPaid(), s.isPostPay(), s.getStud_id(), s.getAdditional_comments()): null;
 	}
 	
@@ -69,9 +69,9 @@ public final class DTOFactory {
 		return pays;
 	}
 	
-	public Collection<ScholorshipDTO> fromScholorships(Collection<Scholorship> scholorships) {
+	public Collection<ScholorshipDTO> fromScholorships(Collection<Scholarship> scholorships) {
 		Set<ScholorshipDTO> ss = new HashSet<>(scholorships.size());
-		for (Scholorship s: scholorships) { 
+		for (Scholarship s: scholorships) { 
 			ss.add(fromScholorship(s));
 		}
 		return ss;
@@ -101,7 +101,7 @@ public final class DTOFactory {
 	public Student fromStudentDTO(StudentDTO dto){
 		Student s = new Student(dto.getId(), dto.getF_name(), dto.getL_name(), dto.getAge(), dto.getAddress());
 		s.setSubjects(fromSubjectDTOs(dto.getSubjects()));
-		s.setScholorships(fromScholorshipDTOs(dto.getScholorships()));
+		s.setScholarships(fromScholorshipDTOs(dto.getScholorships()));
 		s.setPayments(fromPaymentDTOs(dto.getPayments()));
 		return s;
 	}
@@ -118,8 +118,8 @@ public final class DTOFactory {
 		return new Cost(dto.getCostCode(), dto.getAmount());
 	}
 	
-	public Scholorship fromScholorshipDTO(ScholorshipDTO dto){
-		return new Scholorship(dto.getId(), dto.getExternalRef(), ScholorshipType.valueOf(dto.getType()), dto.getTotalAmount(), dto.getPaidAmount(), dto.getIsFullyPaid(), dto.getIsPostPay(), dto.getAdditionalComments(), dto.getStudId());
+	public Scholarship fromScholorshipDTO(ScholorshipDTO dto){
+		return new Scholarship(dto.getId(), dto.getExternalRef(), ScholorshipType.valueOf(dto.getType()), dto.getTotalAmount(), dto.getPaidAmount(), dto.getIsFullyPaid(), dto.getIsPostPay(), dto.getAdditionalComments(), dto.getStudId());
 	}
 	
 	public Payment fromPaymentDTO(PaymentDTO dto) {
@@ -166,10 +166,10 @@ public final class DTOFactory {
 		return costs;
 	}
 	
-	public Collection<Scholorship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
+	public Collection<Scholarship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Scholorship> schols = new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Scholarship> schols = new HashSet<>(dtos != null ? dtos.size() : 0);
 		for (ScholorshipDTO s : dtos) {
 			schols.add(fromScholorshipDTO(s));
 		}

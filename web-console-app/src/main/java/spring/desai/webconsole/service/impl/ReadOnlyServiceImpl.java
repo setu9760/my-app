@@ -20,7 +20,7 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 		if (s != null) {
 			s.setSubjects(subjectRepository.getSubjectsForStudentId(id));
 			s.setPayments(paymentRepository.findbyStudentId(id));
-			s.setScholorships(scholorshipRepository.findByStudentId(id));
+			s.setScholarships(scholarshipRepository.findByStudentId(id));
 		}
 		return s;
 	}
@@ -56,7 +56,7 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 		for (Student s : studs) {
 			s.setSubjects(subjectRepository.getSubjectsForStudentId(s.getId()));
 			s.setPayments(paymentRepository.findbyStudentId(s.getId()));
-			s.setScholorships(scholorshipRepository.findByStudentId(s.getId()));
+			s.setScholarships(scholarshipRepository.findByStudentId(s.getId()));
 		}
 		return studs;
 	}

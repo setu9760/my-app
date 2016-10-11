@@ -3,7 +3,7 @@ package spring.desai.common.service;
 import java.util.Collection;
 
 import spring.desai.common.model.Payment;
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.service.exception.ServiceException;
@@ -22,11 +22,11 @@ public interface StudentAdminService {
 	
 	void makePayment(Payment payment) throws ServiceException;
 	
-	void awardScholorship(Scholorship scholorship) throws ServiceException;
+	void awardScholorship(Scholarship scholorship) throws ServiceException;
 	
 	void removeFromSubject(Student student, Subject subject) throws ServiceException;
 	
 	void amendPayment(Payment payment) throws ServiceException;
 	
-	void amendScholorship(Scholorship scholorship) throws ServiceException;
+	void amendScholorship(Scholarship scholorship) throws ServiceException;
 }

@@ -17,11 +17,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import spring.desai.common.model.Payment;
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.repository.PaymentRepository;
-import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.SubjectRepository;
 
@@ -71,20 +71,20 @@ public class AllTests {
 		 p.setPaymentType(PaymentType.CASH);
 		 pr.update(p);
 		 
-		 ScholorshipRepository sr = context.getBean(ScholorshipRepository.class);
+		 ScholarshipRepository sr = context.getBean(ScholarshipRepository.class);
 		 
 		 System.out.println(sr.countAll());
 		 System.out.println(sr.findByType(ScholorshipType.STATE_PART));
 		 System.out.println(sr.findById("schlrid1"));
 		 System.out.println(sr.findByStudentId("studentid1"));
 		
-		 List<Scholorship> scholorships = new ArrayList<>();
+		 List<Scholarship> scholorships = new ArrayList<>();
 		 
-		 scholorships.add(new Scholorship("sch1", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
-		 scholorships.add(new Scholorship("sch2", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
-		 scholorships.add(new Scholorship("sch3", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
-		 scholorships.add(new Scholorship("sch4", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
-		 scholorships.add(new Scholorship("sch5", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholarship("sch1", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholarship("sch2", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholarship("sch3", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholarship("sch4", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
+		 scholorships.add(new Scholarship("sch5", "", ScholorshipType.MGMT_PART, 100d, 20d, false, false, null, "studentid5"));
 		 sr.saveAll(scholorships);
 		 System.out.println(sr.countAll());
 		 

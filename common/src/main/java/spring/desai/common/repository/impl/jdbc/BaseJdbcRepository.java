@@ -14,15 +14,27 @@ import org.springframework.transaction.PlatformTransactionManager;
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
 import spring.desai.common.model.Persistable;
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
 import spring.desai.common.repository.AbstractBaseRepository;
+import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.rowmappers.RolesRowMapper;
 import spring.desai.common.rowmappers.UserRowMapper;
 
+/**
+ * Abstract implementation of {@link BasePersistableRepository} for jdbc persistent store. This class provides
+ * implementation of most generic CRUD operations for conivinience which could be overridden by any child implementaions
+ * to provide custom functionality. 
+ * 
+ * <p>All {@link DataAccessException} encountered during the jdbc operations are caught and wrapped in {@link RepositoryDataAccessException}
+ * before being thrown and the same should be done for any class extending this repository.  
+ * @author desai
+ *
+ * @param <T> The type of persistable
+ */
 public abstract class BaseJdbcRepository<T extends Persistable> extends AbstractBaseRepository<T> {
 
 	private static final Logger logger = Logger.getLogger(BaseJdbcRepository.class);
@@ -58,8 +70,8 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	protected RowMapper<Payment> paymentRowMapper;
 	
 	@Autowired
-	@Qualifier("scholorshipRowMapper")
-	protected RowMapper<Scholorship> scholorshipRowMapper;
+	@Qualifier("scholarshipRowMapper")
+	protected RowMapper<Scholarship> scholarshipRowMapper;
 	
 	@Autowired
 	@Qualifier("userRowMapper")
@@ -90,7 +102,6 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		}
 	}
 	
-
 	public void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistables);
 		// TODO : Check the size of collection and break down call in smaller chunks to avoid large batch inserts/updates.
@@ -121,12 +132,12 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	}
 	
 //	@Deprecated
-	public Collection<T> getAll() throws RepositoryDataAccessException{
+	public Collection<T> getAll() throws RepositoryDataAccessException {
 //		throwUnsupportedOperationException("getAll()", this.getClass().getName());
 		return getJdbcTemplate().query(getSelectAllSql(getTableName()), getRowMapper());
 	}
 
-	public T findById(String id) throws RepositoryDataAccessException{
+	public T findById(String id) throws RepositoryDataAccessException {
 		try{
 			List<T> l = getJdbcTemplate().query(getFindBySql(getTableName(), getIdField()), new Object[] { id }, getRowMapper());
 			return (l != null && !l.isEmpty()) ? l.get(0) : null;
@@ -135,7 +146,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		}
 	}
 	
-	public Collection<T> findByName(String name) throws RepositoryDataAccessException{
+	public Collection<T> findByName(String name) throws RepositoryDataAccessException {
 		try{
 			return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { "%" + name + "%" }, getRowMapper());
 		} catch (DataAccessException e) {
@@ -143,7 +154,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		}
 	}
 	
-	public void deleteById(String id) throws RepositoryDataAccessException{
+	public void deleteById(String id) throws RepositoryDataAccessException {
 		try {
 			getJdbcTemplate().update(getDeleteBySql(getTableName(), getIdField()), new Object[]{ id });
 		} catch (DataAccessException e) {
@@ -151,7 +162,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		}
 	}
 	
-	public void deleteByName(String name) throws RepositoryDataAccessException{
+	public void deleteByName(String name) throws RepositoryDataAccessException {
 		throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
 		try {
 			getJdbcTemplate().update(getDeleteBySql(getTableName(), getNameField()), new Object[] { name });
@@ -160,7 +171,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		}
 	}
 	
-	public void deleteAll() throws RepositoryDataAccessException{
+	public void deleteAll() throws RepositoryDataAccessException {
 		throwUnsupportedOperationException("deleteAll()", this.getClass().getName());
 	}
 	

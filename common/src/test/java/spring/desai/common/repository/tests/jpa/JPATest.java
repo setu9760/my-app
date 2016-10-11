@@ -19,7 +19,7 @@ import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.PaymentRepository;
-import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.TutorRepository;
@@ -47,7 +47,7 @@ public class JPATest {
 	PaymentRepository paymentRepository;
 	
 	@Autowired
-	ScholorshipRepository scholorshipRepository;
+	ScholarshipRepository scholorshipRepository;
 	
 	@Autowired
 	TutorRepository tutorRepository;

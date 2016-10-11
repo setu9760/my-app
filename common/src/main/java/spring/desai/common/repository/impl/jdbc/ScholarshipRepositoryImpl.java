@@ -16,20 +16,20 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.enums.ScholorshipType;
-import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
-@Repository("scholorshipRepository")
-public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> implements ScholorshipRepository{
+@Repository("scholarshipRepository")
+public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> implements ScholarshipRepository{
 
 	@Override
-	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
+	public Collection<Scholarship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
 		return findByName(String.valueOf(type));
 	}
 	
-	public Collection<Scholorship> findByStudentId(String stud_id) throws RepositoryDataAccessException{
+	public Collection<Scholarship> findByStudentId(String stud_id) throws RepositoryDataAccessException{
 		try {
 			return getJdbcTemplate().query(getFindBySql(SCHOLORSHIP_TABLE_NAME, STUD_ID), new Object[] { stud_id }, getRowMapper());
 		} catch (DataAccessException e) {
@@ -38,8 +38,8 @@ public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> i
 	}
 	
 	@Override
-	protected RowMapper<Scholorship> getRowMapper() {
-		return scholorshipRowMapper;
+	protected RowMapper<Scholarship> getRowMapper() {
+		return scholarshipRowMapper;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> i
 	}
 	
 	@Override
-	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Scholorship s) {
+	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Scholarship s) {
 		return new PreparedStatementSetter() {
 			
 			@Override
@@ -82,7 +82,7 @@ public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> i
 	}
 	
 	@Override
-	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Scholorship s) {
+	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Scholarship s) {
 		return new PreparedStatementSetter() {
 			
 			@Override
@@ -101,13 +101,13 @@ public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> i
 	}
 	
 	@Override
-	protected BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(Collection<Scholorship> persistable) {
-		final List<Scholorship> l = new ArrayList<>(persistable);
+	protected BatchPreparedStatementSetter getInsertBatchPreparedStatementSetter(Collection<Scholarship> persistable) {
+		final List<Scholarship> l = new ArrayList<>(persistable);
 		return new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				Scholorship sch = l.get(i);
+				Scholarship sch = l.get(i);
 				ps.setString(1, sch.getId());
 				ps.setString(2, sch.getExternal_ref());
 				ps.setString(3, String.valueOf(sch.getType()));
@@ -127,13 +127,13 @@ public class ScholorshipRepositoryImpl extends BaseJdbcRepository<Scholorship> i
 	}
 	
 	@Override
-	protected BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(Collection<Scholorship> persistable) {
-		final List<Scholorship> l = new ArrayList<>(persistable);
+	protected BatchPreparedStatementSetter getUpdateBatchPreparedStatementSetter(Collection<Scholarship> persistable) {
+		final List<Scholarship> l = new ArrayList<>(persistable);
 		return new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				Scholorship sch = l.get(i);
+				Scholarship sch = l.get(i);
 				ps.setString(1, sch.getExternal_ref());
 				ps.setString(2, String.valueOf(sch.getType()));
 				ps.setDouble(3, sch.getTotal_amount());

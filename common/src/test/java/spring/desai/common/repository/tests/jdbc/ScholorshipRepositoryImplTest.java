@@ -11,16 +11,16 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.repository.BasePersistableRepository;
-import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.ScholarshipRepository;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholorship> {
+public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholarship> {
 
 	@Autowired
-	ScholorshipRepository scholorshipRepository;
+	ScholarshipRepository scholorshipRepository;
 	
 
 	@After
@@ -29,21 +29,21 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testSave() {
-		doSaveTest(new Scholorship("TEST-ID1", "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid1"));
+		doSaveTest(new Scholarship("TEST-ID1", "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid1"));
 	}
 
 	@Test
 	public void testSaveAll() {
-		List<Scholorship> l = new ArrayList<>();
+		List<Scholarship> l = new ArrayList<>();
 		for (int i = 1; i < 6; i++) {
-			l.add(new Scholorship("TEST-ID-" + i, "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid" + i));
+			l.add(new Scholarship("TEST-ID-" + i, "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid" + i));
 		}
 		doSaveAllTest(l);
 	}
 
 	@Test
 	public void testUpdate() {
-		Scholorship s = scholorshipRepository.findById("schlrid1");
+		Scholarship s = scholorshipRepository.findById("schlrid1");
 		s.setAdditional_comments("UPDATED ADDITIONAL COMMENTS");
 		s.setExternal_ref("UPDATED_REF1");
 		s.setPaid_amount(400d);
@@ -52,10 +52,10 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testUpdateAll() {
-		Collection<Scholorship> origColl = scholorshipRepository.findByName("MGMT_PART");
+		Collection<Scholarship> origColl = scholorshipRepository.findByName("MGMT_PART");
 		
-		Collection<Scholorship> ipdateColl = scholorshipRepository.findByName("MGMT_PART");
-		for (Scholorship s : ipdateColl) {
+		Collection<Scholarship> ipdateColl = scholorshipRepository.findByName("MGMT_PART");
+		for (Scholarship s : ipdateColl) {
 			s.setAdditional_comments("UPDATED ADDITIONAL COMMENTS");
 			s.setExternal_ref("UPDATED_REF1");
 			s.setTotal_amount(400d);
@@ -81,7 +81,7 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 	
 	@Test
 	public void testFindByType() {
-		Collection<Scholorship> c = scholorshipRepository.findByType(null);
+		Collection<Scholarship> c = scholorshipRepository.findByType(null);
 		assertNotNull(c);
 		
 		c = scholorshipRepository.findByType(ScholorshipType.STATE_PART);
@@ -90,7 +90,7 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testFindByStudentId() {
-		Collection<Scholorship> c = scholorshipRepository.findByStudentId(null);
+		Collection<Scholarship> c = scholorshipRepository.findByStudentId(null);
 		assertNotNull(c);
 		
 		c = scholorshipRepository.findByStudentId("studentid1");
@@ -100,7 +100,7 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 
 	@Test
 	public void testDeleteById() {
-		scholorshipRepository.save(new Scholorship("ID-TO-DELETE", "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid1"));
+		scholorshipRepository.save(new Scholarship("ID-TO-DELETE", "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid1"));
 		doDeleteByIdTest("ID-TO-DELETE");
 	}
 
@@ -120,12 +120,12 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Scholo
 	}
 
 	@Override
-	public Class<Scholorship> getPersistableClazz() {
-		return Scholorship.class;
+	public Class<Scholarship> getPersistableClazz() {
+		return Scholarship.class;
 	}
 
 	@Override
-	public BasePersistableRepository<Scholorship> getRepo() {
+	public BasePersistableRepository<Scholarship> getRepo() {
 		return scholorshipRepository;
 	}
 

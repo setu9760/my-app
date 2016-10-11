@@ -36,7 +36,7 @@ public class Student extends Person {
 	private Collection<Payment> payments = new HashSet<Payment>();
 	
 	@OneToMany(mappedBy = STUD_ID, fetch=FetchType.EAGER)
-	private Collection<Scholorship> scholorships = new HashSet<Scholorship>();
+	private Collection<Scholarship> scholarships = new HashSet<Scholarship>();
 
 	public Student() {
 		this(null, null, null, 0, null);
@@ -83,16 +83,16 @@ public class Student extends Person {
 		this.payments = payments;
 	}
 
-	public Collection<Scholorship> getScholorships() {
-		return scholorships;
+	public Collection<Scholarship> getScholarships() {
+		return scholarships;
 	}
 
-	public void setScholorships(Collection<Scholorship> scholorships) {
-		this.scholorships = scholorships;
+	public void setScholarships(Collection<Scholarship> scholarships) {
+		this.scholarships = scholarships;
 	}
 
-	public void addScholorship(Scholorship scholorship) {
-		this.scholorships.add(scholorship);
+	public void addScholarship(Scholarship scholarships) {
+		this.scholarships.add(scholarships);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class Student extends Person {
 		int result = super.hashCode();
 		result = prime * result + age;
 		result = prime * result + ((payments == null) ? 0 : payments.hashCode());
-		result = prime * result + ((scholorships == null) ? 0 : scholorships.hashCode());
+		result = prime * result + ((scholarships == null) ? 0 : scholarships.hashCode());
 		result = prime * result + ((subjects == null) ? 0 : subjects.hashCode());
 		return result;
 	}
@@ -143,10 +143,10 @@ public class Student extends Person {
 				return false;
 		} else if (!payments.equals(other.payments))
 			return false;
-		if (scholorships == null) {
-			if (other.scholorships != null)
+		if (scholarships == null) {
+			if (other.scholarships != null)
 				return false;
-		} else if (!scholorships.equals(other.scholorships))
+		} else if (!scholarships.equals(other.scholarships))
 			return false;
 		if (subjects == null) {
 			if (other.subjects != null)

@@ -56,6 +56,12 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 		}
 	}
 	
+	@Override
+	public void resetFailedAttempt(String userId) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void updateLoginStatus(String userId, SIGN_ON_STATUS status) throws RepositoryDataAccessException{
 		try {
 			getJdbcTemplate().update(UPDATE_LOGIN_STATUS, new Object[] { String.valueOf(status), userId});

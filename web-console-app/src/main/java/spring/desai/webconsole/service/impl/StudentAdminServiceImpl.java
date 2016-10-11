@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import spring.desai.common.model.Payment;
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.repository.CostCodeRepository;
 import spring.desai.common.repository.PaymentRepository;
-import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.StudentTotalToPayRepository;
 import spring.desai.common.repository.SubjectRepository;
@@ -34,7 +34,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 	private PaymentRepository paymentRepository;
 
 	@Autowired
-	private ScholorshipRepository scholorshipRepository;
+	private ScholarshipRepository scholorshipRepository;
 
 	@Autowired
 	private SubjectRepository subjectRepository;
@@ -134,7 +134,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 	}
 
 	@Override
-	public void awardScholorship(Scholorship scholorship) throws ServiceException {
+	public void awardScholorship(Scholarship scholorship) throws ServiceException {
 		notNull(scholorship);
 		try {
 			scholorshipRepository.save(scholorship);
@@ -166,7 +166,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 	}
 
 	@Override
-	public void amendScholorship(Scholorship scholorship) throws ServiceException {
+	public void amendScholorship(Scholarship scholorship) throws ServiceException {
 		notNull(scholorship);
 		try {
 			// TODO if amount has changed then need to update payment through here aswell but is it correct to create payment object here?. 

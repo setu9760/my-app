@@ -23,7 +23,7 @@ import spring.desai.common.model.enums.ScholorshipType;
 
 @Entity
 @Table(name = SCHOLORSHIP_TABLE_NAME)
-public class Scholorship implements Persistable{
+public class Scholarship implements Persistable{
 
 	private static final long serialVersionUID = 234123434141L;
 	
@@ -49,27 +49,27 @@ public class Scholorship implements Persistable{
 	@Column(name = IS_POST_PAY)
 	private boolean isPostPay;
 	
-	@ManyToOne(targetEntity = Scholorship.class)
+	@ManyToOne(targetEntity = Scholarship.class)
 	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
 	private String stud_id;
 	
 	@Column(name = ADDITIONAL_COMMENTS)
 	private String additional_comments;
 
-	public Scholorship() {
+	public Scholarship() {
 	}
 	
-	public Scholorship(String id, ScholorshipType type, double total_amount) {
+	public Scholarship(String id, ScholorshipType type, double total_amount) {
 		this.id = id;
 		this.type = type;
 		this.total_amount = total_amount;
 	}
 
-	public Scholorship(String id, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
+	public Scholarship(String id, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
 		this(id, "N/A", type, total_amount, paid_amount, isFullyPaid, isPostPay, additional_comments, stud_id);
 	}
 	
-	public Scholorship(String id, String external_ref, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
+	public Scholarship(String id, String external_ref, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
 		this.id = id;
 		this.external_ref = external_ref;
 		this.type = type;
@@ -203,9 +203,9 @@ public class Scholorship implements Persistable{
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Scholorship))
+		if (!(obj instanceof Scholarship))
 			return false;
-		Scholorship other = (Scholorship) obj;
+		Scholarship other = (Scholarship) obj;
 		if (external_ref == null) {
 			if (other.external_ref != null)
 				return false;

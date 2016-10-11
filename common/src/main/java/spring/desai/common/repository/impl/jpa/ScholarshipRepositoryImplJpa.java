@@ -4,41 +4,41 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
-import spring.desai.common.model.Scholorship;
+import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.enums.ScholorshipType;
-import spring.desai.common.repository.ScholorshipRepository;
+import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
-@Repository("scholorshipRepository")
-public class ScholorshipRepositoryImplJpa extends BaseJpaRepository<Scholorship> implements ScholorshipRepository {
+@Repository("scholarshipRepository")
+public class ScholarshipRepositoryImplJpa extends BaseJpaRepository<Scholarship> implements ScholarshipRepository {
 
 	@Override
-	public void saveAll(Collection<Scholorship> persistables) throws RepositoryDataAccessException {
+	public void saveAll(Collection<Scholarship> persistables) throws RepositoryDataAccessException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void updateAll(Collection<Scholorship> persistables) throws RepositoryDataAccessException {
+	public void updateAll(Collection<Scholarship> persistables) throws RepositoryDataAccessException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Collection<Scholorship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<Scholorship> findByStudentId(String stud_id) throws RepositoryDataAccessException {
+	public Collection<Scholarship> findByType(ScholorshipType type) throws RepositoryDataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected Class<Scholorship> getEntityClass() {
-		return Scholorship.class;
+	public Collection<Scholarship> findByStudentId(String stud_id) throws RepositoryDataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Class<Scholarship> getEntityClass() {
+		return Scholarship.class;
 	}
 
 	@Override
