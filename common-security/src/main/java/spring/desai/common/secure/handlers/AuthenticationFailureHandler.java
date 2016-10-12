@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 import spring.desai.common.repository.UserLogRepository;
+import spring.desai.common.repository.UsrrRepository;
 
 @Component("authenticationFailureHandler")
 public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -20,6 +21,10 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 	@Autowired
 	@Qualifier("userLogRepository")
 	private UserLogRepository userLogRepository;
+	
+	@Autowired
+	@Qualifier("usrrRepository")
+	private UsrrRepository usrrRepository;
 	
 	public AuthenticationFailureHandler() {
 		super("/login?error=1");
@@ -30,6 +35,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 			AuthenticationException exception) throws IOException, ServletException {
 		String userName = request.getParameter("username");
 		System.out.println("Invalid login attempt by user " + userName);
+		usrrRepository.incrementFailedAttempt(userName);
 		userLogRepository.logUserActivity(userName, -1, request.getRemoteHost());
 		super.onAuthenticationFailure(request, response, exception);
 	}

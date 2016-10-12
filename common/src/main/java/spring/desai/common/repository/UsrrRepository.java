@@ -3,6 +3,7 @@ package spring.desai.common.repository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import spring.desai.common.model.User.SIGN_ON_STATUS;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
 /**
@@ -33,6 +34,14 @@ public interface UsrrRepository {
 	 * @throws RepositoryDataAccessException
 	 */
 	void resetFailedAttempt(String userId) throws RepositoryDataAccessException;
+	
+	/**
+	 * Updates the sign on status for given userId 
+	 * @param userId
+	 * @param status
+	 * @throws RepositoryDataAccessException
+	 */
+	public void updateSignOnStatus(String userId, SIGN_ON_STATUS status) throws RepositoryDataAccessException;
 	
 	/**
 	 * Updates the user password

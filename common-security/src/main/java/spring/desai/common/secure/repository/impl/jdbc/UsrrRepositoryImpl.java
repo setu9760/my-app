@@ -22,9 +22,10 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private static final String USER_LOGIN_DETAIL_SQL = "SELECT UD.USER_ID, U.PASSWORD, UD.ACCOUNT_NON_LOCKED,  U.PASSWORD_NON_EXPIRED, UD.FAILED_ATTEMPTS , UD.SIGN_ON_STATUS  FROM USER_DETAILS UD JOIN USRR U ON LOWER(UD.USER_ID) = LOWER(U.USER_ID) WHERE LOWER(U.USER_ID) = LOWER( ? )";
-	private static final String INCREMENT_FAILED_ATTEMPT_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = FAILED_ATTEMPTS+1 WHERE USER_ID = ?";
-	private static final String UPDATE_LOGIN_STATUS = "UPDATE USER_DETAILS SET SIGN_ON_STATUS = ? WHERE USER_ID = ?";
+	private static final String USER_LOGIN_DETAIL_SQL = "SELECT UD.USER_ID, U.PASSWORD, UD.ACCOUNT_NON_LOCKED,  U.PASSWORD_NON_EXPIRED, UD.FAILED_ATTEMPTS , UD.SIGN_ON_STATUS  FROM USER_DETAILS UD JOIN USRR U ON LOWER(UD.USER_ID) = LOWER(U.USER_ID) WHERE LOWER(U.USER_ID) = LOWER(?)";
+	private static final String INCREMENT_FAILED_ATTEMPT_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = FAILED_ATTEMPTS+1 WHERE LOWER(USER_ID) = LOWER(?)";
+	private static final String RESET_FAILED_ATTEMPTS_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = 0 WHERE LOWER(USER_ID) = LOWER(?)";
+	private static final String UPDATE_LOGIN_STATUS_SQL = "UPDATE USER_DETAILS SET SIGN_ON_STATUS = ? WHERE LOWER(USER_ID) = LOWER(?)";
 	
 	@Override
 	public UserDetails getUserLoginDetails(String userId)  throws RepositoryDataAccessException{
@@ -58,13 +59,16 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	
 	@Override
 	public void resetFailedAttempt(String userId) throws RepositoryDataAccessException {
-		// TODO Auto-generated method stub
-		
+		try {
+			getJdbcTemplate().update(RESET_FAILED_ATTEMPTS_SQL, new Object[] { userId });
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException("Error occured while resetting failed attempts.", e);
+		}
 	}
 	
-	public void updateLoginStatus(String userId, SIGN_ON_STATUS status) throws RepositoryDataAccessException{
+	public void updateSignOnStatus(String userId, SIGN_ON_STATUS status) throws RepositoryDataAccessException{
 		try {
-			getJdbcTemplate().update(UPDATE_LOGIN_STATUS, new Object[] { String.valueOf(status), userId});
+			getJdbcTemplate().update(UPDATE_LOGIN_STATUS_SQL, new Object[] { String.valueOf(status), userId});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException("Error occured while setting sign-on status for user " + userId, e);
 		}
