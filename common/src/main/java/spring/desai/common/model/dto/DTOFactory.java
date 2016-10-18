@@ -15,13 +15,14 @@ import spring.desai.common.model.enums.ScholorshipType;
 
 public final class DTOFactory {
 
-	private DTOFactory() {
-	}
-
-	private static final DTOFactory instance = new DTOFactory();
+	private static final ThreadLocal<DTOFactory> instance = new ThreadLocal<DTOFactory>(){
+		protected DTOFactory initialValue() {
+			return new DTOFactory();			
+		};
+	};
 	
 	public static DTOFactory getInstance(){
-		return instance;
+		return instance.get();
 	}
 	
 	/****************************************************
