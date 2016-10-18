@@ -1,4 +1,4 @@
-package spring.desai.common.secure.repository;
+package spring.desai.common.secure.repository.impl.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

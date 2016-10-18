@@ -1,4 +1,4 @@
-package spring.desai.common.secure.repository;
+package spring.desai.common.repository;
 
 public interface AdminUserHelperRepository {
 

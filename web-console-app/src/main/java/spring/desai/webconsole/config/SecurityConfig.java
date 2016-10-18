@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	     http.addFilterAfter(csrfTokenFilter, CsrfFilter.class);
 	     
 	     http.authorizeRequests().antMatchers("/rest/**").access("hasRole('ROLE_REST_USER')")
+	     	.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN_USER')")
 			.and().formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").permitAll()
 			.successHandler(loginSuccessHandler)
 			.failureHandler(authenticationFailureHandler).permitAll()

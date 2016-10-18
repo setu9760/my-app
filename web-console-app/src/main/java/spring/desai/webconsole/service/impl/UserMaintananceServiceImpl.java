@@ -1,10 +1,9 @@
 package spring.desai.webconsole.service.impl;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import spring.desai.common.model.User;
@@ -16,6 +15,7 @@ import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
 @Service("userMaintananceService")
+@Transactional
 public class UserMaintananceServiceImpl implements UserMaintananceService {
 
 	@Autowired
@@ -28,7 +28,6 @@ public class UserMaintananceServiceImpl implements UserMaintananceService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	@Transactional
 	public void updateUserDetails(User user) throws ServiceException {
 		notNull(user);
 		try {
@@ -39,7 +38,6 @@ public class UserMaintananceServiceImpl implements UserMaintananceService {
 	}
 
 	@Override
-	@Transactional
 	public void updatePassword(User user, String newRawPassword) throws ServiceException {
 		notNull(user);
 		notNull(newRawPassword);

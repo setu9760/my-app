@@ -26,6 +26,8 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	private static final String INCREMENT_FAILED_ATTEMPT_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = FAILED_ATTEMPTS+1 WHERE LOWER(USER_ID) = LOWER(?)";
 	private static final String RESET_FAILED_ATTEMPTS_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = 0 WHERE LOWER(USER_ID) = LOWER(?)";
 	private static final String UPDATE_LOGIN_STATUS_SQL = "UPDATE USER_DETAILS SET SIGN_ON_STATUS = ? WHERE LOWER(USER_ID) = LOWER(?)";
+	private static final String LOCK_USER_ACCOUNT_SQL = "UPDATE USER_DETAILS SET ACCOUNT_NON_LOCKED = 'false' WHERE LOWER(USER_ID) = LOWER (?)";
+	private static final String UNLOCK_USER_ACCOUNT_SQL = "UPDATE USER_DETAILS SET ACCOUNT_NON_LOCKED = 'true' WHERE LOWER(USER_ID) = LOWER (?)";
 	
 	@Override
 	public UserDetails getUserLoginDetails(String userId)  throws RepositoryDataAccessException{
@@ -71,6 +73,24 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 			getJdbcTemplate().update(UPDATE_LOGIN_STATUS_SQL, new Object[] { String.valueOf(status), userId});
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException("Error occured while setting sign-on status for user " + userId, e);
+		}
+	}
+	
+	@Override
+	public void lockUserAccount(String userId) throws RepositoryDataAccessException {
+		try {
+			getJdbcTemplate().update(LOCK_USER_ACCOUNT_SQL, new Object[] { userId });
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException("Error occured while locking the user account.", e);
+		}
+	}
+	
+	@Override
+	public void unlockUserAccount(String userId) throws RepositoryDataAccessException {
+		try {
+			getJdbcTemplate().update(UNLOCK_USER_ACCOUNT_SQL, new Object[] { userId });
+		} catch (DataAccessException e) {
+			throw new RepositoryDataAccessException("Error occured while unlocking the user account.", e);
 		}
 	}
 	

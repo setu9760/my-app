@@ -1,6 +1,5 @@
 package spring.desai.webconsole.controllers;
 
-import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class IvyExamplesController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String home(Model model, Principal principal, HttpServletRequest request) {
+	public String home(Model model, HttpServletRequest request) {
 		model.addAttribute("serverTime", getformattedDate());
 		model.addAttribute("title", "Home");
 		logger.info("returning home");
@@ -30,6 +29,10 @@ public class IvyExamplesController extends BaseController {
 	@RequestMapping(method = RequestMethod.GET, value= "login")
 	public String login(HttpServletRequest request, HttpServletResponse response){
 		logger.info("returning login form");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			return "redirect:/";
+		}
 		return "login";
 	}
 	

@@ -21,4 +21,7 @@ public interface AdminUserMaintananceService {
 	void unassignRoles(User user, Collection<Role> roles) throws ServiceException;
 	
 	void revokeAllRoles(User user) throws ServiceException;
+	
+	void resetUserSignOn(String userId) throws ServiceException;
+	
 }

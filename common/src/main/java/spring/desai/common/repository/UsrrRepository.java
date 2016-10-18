@@ -44,6 +44,21 @@ public interface UsrrRepository {
 	public void updateSignOnStatus(String userId, SIGN_ON_STATUS status) throws RepositoryDataAccessException;
 	
 	/**
+	 * Locks user account. No action performed if the user is alread locked.
+	 * @param userId
+	 * @param doLock
+	 * @throws RepositoryDataAccessException
+	 */
+	public void lockUserAccount(String userId) throws RepositoryDataAccessException;
+	
+	/**
+	 * unlocks the user account. No action performed if user is already unlocked
+	 * @param userId
+	 * @throws RepositoryDataAccessException
+	 */
+	public void unlockUserAccount(String userId) throws RepositoryDataAccessException;
+	
+	/**
 	 * Updates the user password
 	 * @param userId
 	 * @param encryptedPassword

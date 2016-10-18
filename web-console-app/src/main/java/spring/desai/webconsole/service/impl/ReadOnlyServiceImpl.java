@@ -3,6 +3,7 @@ package spring.desai.webconsole.service.impl;
 import java.util.Collection;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import spring.desai.common.model.Payment;
 import spring.desai.common.model.Student;
@@ -12,6 +13,7 @@ import spring.desai.common.service.BaseService;
 import spring.desai.common.service.ReadOnlyService;
 
 @Service(value = "readOnlyService")
+@Transactional(readOnly = true)
 public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService {
 
 	@Override

@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 
 import spring.desai.common.model.Role;
 import spring.desai.common.model.User;
+import spring.desai.common.model.User.SIGN_ON_STATUS;
 import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
@@ -125,6 +126,18 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 			roleRepository.revokeAllRoles(user.getId());
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("revokeAllRoles(user)", e);
+		}
+	}
+	
+	@Override
+	public void resetUserSignOn(String userId) throws ServiceException {
+		notNull(userId);
+		try {
+			usrrRepository.unlockUserAccount(userId);
+			usrrRepository.updateSignOnStatus(userId, SIGN_ON_STATUS.LOGGED_OUT);
+			usrrRepository.resetFailedAttempt(userId);
+		} catch (RepositoryDataAccessException e) {
+			throw new ServiceException("resetUserSignOn(userId)", e);
 		}
 	}
 
