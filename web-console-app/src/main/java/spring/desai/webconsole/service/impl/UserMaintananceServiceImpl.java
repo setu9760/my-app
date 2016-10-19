@@ -14,8 +14,8 @@ import spring.desai.common.service.UserMaintananceService;
 import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
-@Service("userMaintananceService")
 @Transactional
+@Service("userMaintananceService")
 public class UserMaintananceServiceImpl implements UserMaintananceService {
 
 	@Autowired

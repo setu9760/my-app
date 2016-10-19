@@ -23,6 +23,7 @@ import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
+@Transactional
 @Service("adminUserMaintananceService")
 public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceService {
 
@@ -39,7 +40,6 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	@Transactional
 	public void createUser(User user, String rawPassword) throws ServiceException {
 		try {
 			Set<Role> roles = new HashSet<>();
@@ -51,7 +51,6 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 	}
 
 	@Override
-	@Transactional
 	public void createUser(User user, String rawPassword, Collection<Role> rolesToAssign) throws ServiceException {
 		notNull(user);
 		notNull(rawPassword);
@@ -70,7 +69,6 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 	}
 
 	@Override
-	@Transactional
 	public void removeUser(User user) throws ServiceException {
 		notNull(user);
 		try {
@@ -93,7 +91,6 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 	}
 
 	@Override
-	@Transactional
 	public void assignRoles(User user, Collection<Role> roles) throws ServiceException {
 		notNull(user);
 		notNull(roles);

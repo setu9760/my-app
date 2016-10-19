@@ -23,8 +23,8 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.service.StudentAdminService;
 import spring.desai.common.service.exception.ServiceException;
 
-@Service("studentAdminService")
 @Transactional
+@Service("studentAdminService")
 public class StudentAdminServiceImpl implements StudentAdminService {
 
 	@Autowired

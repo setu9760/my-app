@@ -12,8 +12,8 @@ import spring.desai.common.model.Tutor;
 import spring.desai.common.service.BaseService;
 import spring.desai.common.service.ReadOnlyService;
 
-@Service(value = "readOnlyService")
 @Transactional(readOnly = true)
+@Service(value = "readOnlyService")
 public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService {
 
 	@Override

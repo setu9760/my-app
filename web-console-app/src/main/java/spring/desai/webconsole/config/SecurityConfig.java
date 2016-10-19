@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	@Qualifier("userDetailsService")
-	UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
 		
 	@Autowired
 	@Qualifier("loginSuccessHandler")
@@ -55,6 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/js/**", "/css/**", "/img/**", "/resources/**", "/scripts/**");
+		super.configure(web);
+	}
+	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 	     http.addFilterAfter(csrfTokenFilter, CsrfFilter.class);
@@ -66,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.failureHandler(authenticationFailureHandler).permitAll()
 			.and().logout().invalidateHttpSession(true).addLogoutHandler(logoutSuccessHandler).permitAll()
 			.and().exceptionHandling().accessDeniedPage("/403")
-			.and().csrf();
+			.and().csrf()
+			.and().sessionManagement().maximumSessions(1).expiredUrl("/login?logout");
 	}
 }
