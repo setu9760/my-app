@@ -38,10 +38,4 @@ public class JdbcConfig {
 	public DataSourceTransactionManager getDataSourceTransactionManager() throws NamingException {
 		return new DataSourceTransactionManager(getDatasource());
 	}
-
-	@Bean(name = "transactionTemplate")
-	public TransactionTemplate getTransactionTemplate() throws NamingException {
-		return new TransactionTemplate(getDataSourceTransactionManager());
-	}
-	
 }

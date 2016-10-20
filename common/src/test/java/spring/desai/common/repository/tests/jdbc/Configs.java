@@ -40,11 +40,6 @@ public class Configs {
 		return new StudentRepositoryImpl();
 	}
 
-	@Bean(name = "transactionTemplate")
-	public TransactionTemplate getTransactionTemplate() {
-		return new TransactionTemplate(getTransactionManager());
-	}
-
 	@Value("sql/drop-schema.sql")
 	private Resource recreateDDL;
 	@Value("sql/ddl.sql")

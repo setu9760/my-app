@@ -15,10 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @Import({ AspectsConfig.class, JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class, SecurityConfig.class, DefaultSecurityConfig.class, WebConfig.class })
-@ComponentScan({ "spring.desai.webconsole.controllers", "spring.desai.common.rowmappers", "spring.desai.webconsole.config.core"
-		/*,  "spring.desai.webconsole.*", "spring.desai.webconsole.config.*", "spring.desai.common.*",
-		"spring.desai.webconsole.core.*", "spring.desai.webconsole.config.aspects.*",
-		"spring.desai.webconsole.controllers.*", "spring.desai.webconsole.JdbcDaoImpl.*" */ })
+@ComponentScan({ "spring.desai.webconsole.controllers", "spring.desai.common.rowmappers", "spring.desai.webconsole.config.core"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class Config {

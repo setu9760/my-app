@@ -37,7 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
 import spring.desai.common.model.dto.StudentDTO;
 
 @WebAppConfiguration
-@ActiveProfiles("jdbc")
+@ActiveProfiles({"jdbc", "secure"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcTestConfig.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })

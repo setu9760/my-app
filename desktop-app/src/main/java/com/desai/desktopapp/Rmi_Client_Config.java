@@ -1,41 +1,19 @@
 package com.desai.desktopapp;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.remoting.rmi.RmiProxyFactoryBean;
+
+import spring.desai.common.service.AdminUserMaintananceService;
 
 @Configuration
 public class Rmi_Client_Config {
-//
-//	@Value("rmi://BRIWS0609:9595/studentService")
-//	String STUDENT_SERVICE_URL;
-//
-//	@Value("rmi://BRIWS0609:9595/tutorService")
-//	String TUTOR_SERVICE_URL;
-//
-//	@Value("rmi://BRIWS0609:9595/subjectService")
-//	String SUBJECT_SERVICE_URL;
-//
-//	@Bean(name = "studentService")
-//	public RmiProxyFactoryBean getRmiStudentProxyFactoryBean() {
-//		RmiProxyFactoryBean rmiProxy = new RmiProxyFactoryBean();
-//		rmiProxy.setServiceUrl(STUDENT_SERVICE_URL);
-//		rmiProxy.setServiceInterface(StudentDao.class);
-//		return rmiProxy;
-//	}
-//
-//	@Bean(name = "tutorService")
-//	public RmiProxyFactoryBean getRmiTutorProxyFactoryBean() {
-//		RmiProxyFactoryBean rmiProxy = new RmiProxyFactoryBean();
-//		rmiProxy.setServiceUrl(TUTOR_SERVICE_URL);
-//		rmiProxy.setServiceInterface(TutorDao.class);
-//		return rmiProxy;
-//	}
-//
-//	@Bean(name = "subjectService")
-//	public RmiProxyFactoryBean getRmiSubjectProxyFactoryBean() {
-//		RmiProxyFactoryBean rmiProxy = new RmiProxyFactoryBean();
-//		rmiProxy.setServiceUrl(SUBJECT_SERVICE_URL);
-//		rmiProxy.setServiceInterface(SubjectDao.class);
-//		return rmiProxy;
-//	}
-
+	
+	@Bean(name = "rmiAdminUserMaintananceService")
+	public RmiProxyFactoryBean getRmiAdminUserMaintananceService() {
+		RmiProxyFactoryBean rmiProxy = new RmiProxyFactoryBean();
+		rmiProxy.setServiceUrl("rmi://BRIWS0609:9595/adminUserMaintananceService");
+		rmiProxy.setServiceInterface(AdminUserMaintananceService.class);
+		return rmiProxy;
+	}
 }

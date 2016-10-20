@@ -1,5 +1,11 @@
 package com.desai.desktopapp;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import spring.desai.common.service.AdminUserMaintananceService;
+import spring.desai.common.service.exception.ServiceException;
+
 public class RmiClient {
 //
 //	static StudentDao studentDao;
@@ -7,7 +13,15 @@ public class RmiClient {
 //	static SubjectDao subjectDao;
 
 	public static void main(String[] args) throws InterruptedException {
-//		ApplicationContext context = new AnnotationConfigApplicationContext(Rmi_Client_Config.class);
+		ApplicationContext context = new AnnotationConfigApplicationContext(Rmi_Client_Config.class);
+		
+		AdminUserMaintananceService aums = (AdminUserMaintananceService) context.getBean("rmiAdminUserMaintananceService");
+		
+		try {
+			System.out.println(aums.isExistingUser("USEr-1"));
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 //
 //		studentDao = (StudentDao) context.getBean("studentService");
 //

@@ -200,7 +200,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 	@Override
 	public boolean isExistingUser(String userId) {
 		try {
-			int count = getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM " + getTableName() + " WHERE " + getIdField() + " = ?", new Object[] { userId }, Integer.class);
+			int count = getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM " + getTableName() + " WHERE LOWER(" + getIdField() + ") = LOWER(?)", new Object[] { userId }, Integer.class);
 			if (count > 1) {
 				getLogger().warn("More than one user found in database for userId: " + userId + ". This indicates database is in invalid state.");
 			}
