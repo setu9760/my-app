@@ -10,6 +10,10 @@ public class ServiceException extends Exception {
 		super(I18N.getString("service.exception", operationName), t);
 	}
 	
+	public ServiceException(String msg) {
+		super(msg);
+	}
+	
 	public ServiceException(Throwable t) {
 		super(t);
 	}

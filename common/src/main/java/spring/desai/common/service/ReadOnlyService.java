@@ -3,6 +3,7 @@ package spring.desai.common.service;
 import java.util.Collection;
 
 import spring.desai.common.model.Payment;
+import spring.desai.common.model.Role;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
@@ -23,9 +24,14 @@ public interface ReadOnlyService {
 	public Tutor getTutorById(String id) throws ServiceException;
 
 	public Collection<Tutor> getTutorsFromSubjectId(String subjectId) throws ServiceException;
-	
+
 	public Collection<Payment> getPaymentsForStudent(String stud_id) throws ServiceException;
-	
+
 	public Payment getPaymentById(String id) throws ServiceException;
-	
+
+	public Role getRole(String role) throws ServiceException;
+
+	public Role getAdminRole() throws ServiceException;
+
+	public Role getRestUserRole() throws ServiceException;
 }

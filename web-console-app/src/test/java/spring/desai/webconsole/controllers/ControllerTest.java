@@ -45,20 +45,16 @@ public class ControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-
-//	@Autowired
-//	private Filter springSecurityFilterChain;
 	
 	private MockMvc mvc;
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 	
-//	@Autowired
 	private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 	
 	@Before
 	public void setup() {
-		mvc = webAppContextSetup(webApplicationContext)/*.addFilter(springSecurityFilterChain)*/.build();
+		mvc = webAppContextSetup(webApplicationContext).build();
 	}
 
 	@Test

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import spring.desai.common.repository.PaymentRepository;
+import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.SubjectRepository;
@@ -30,5 +31,9 @@ public abstract class BaseService {
 	@Autowired
 	@Qualifier("scholarshipRepository")
 	protected ScholarshipRepository scholarshipRepository;
+	
+	@Autowired
+	@Qualifier("roleRepository")
+	protected RoleRepository roleRepository;
 	
 }

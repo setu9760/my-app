@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import spring.desai.common.model.Payment;
+import spring.desai.common.model.Role;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
@@ -71,5 +72,20 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 	@Override
 	public Collection<Tutor> getAllTutors() {
 		return tutorRepository.getAll();
+	}
+	
+	@Override
+	public Role getAdminRole() {
+		return getRole("ROLE_ADMIN_USER");
+	}
+	
+	@Override
+	public Role getRestUserRole() {
+		return getRole("ROLE_REST_USER");
+	}
+	
+	@Override
+	public Role getRole(String role){
+		return roleRepository.findById(role);
 	}
 }

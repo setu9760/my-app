@@ -61,7 +61,7 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 				usrrRepository.createUser(user.getId(), passwordEncoder.encode(rawPassword));
 				assignRoles(user, rolesToAssign);
 			} else {
-				// TODO throw user already exists exception
+				throw new ServiceException("User " + user.getId() +" already exists.");
 			}
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("createUser(user, password, roles)", e);

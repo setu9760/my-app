@@ -22,6 +22,7 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	private static final String INSERT_USER_SQL = "INSERT INTO USRR VALUES (?, ?, ?, ?)";
 	private static final String USER_LOGIN_DETAIL_SQL = "SELECT UD.USER_ID, U.PASSWORD, UD.ACCOUNT_NON_LOCKED,  U.PASSWORD_NON_EXPIRED, UD.FAILED_ATTEMPTS , UD.SIGN_ON_STATUS  FROM USER_DETAILS UD JOIN USRR U ON LOWER(UD.USER_ID) = LOWER(U.USER_ID) WHERE LOWER(U.USER_ID) = LOWER(?)";
 	private static final String INCREMENT_FAILED_ATTEMPT_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = FAILED_ATTEMPTS+1 WHERE LOWER(USER_ID) = LOWER(?)";
 	private static final String RESET_FAILED_ATTEMPTS_SQL = "UPDATE USER_DETAILS SET FAILED_ATTEMPTS  = 0 WHERE LOWER(USER_ID) = LOWER(?)";
@@ -96,7 +97,11 @@ public class UsrrRepositoryImpl implements UsrrRepository {
 	
 	@Override
 	public void createUser(String userId, String encryptedPassword)  throws RepositoryDataAccessException{
-		// TODO Auto-generated method stub
+		try {
+			getJdbcTemplate().update(INSERT_USER_SQL, new Object[] {userId, encryptedPassword, "true", "N/A"});
+		} catch (DataAccessException e){
+			throw new RepositoryDataAccessException("Error occured while creating the user account.", e);
+		}
 		
 	}
 	
