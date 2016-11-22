@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Before;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -137,7 +137,7 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 
 	@Test
 	public void testCountAll() {
-		doCountAllTest(5);;
+		doCountAllTest(5);
 	}
 
 	@Override

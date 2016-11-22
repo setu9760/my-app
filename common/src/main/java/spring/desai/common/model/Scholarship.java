@@ -179,7 +179,7 @@ public class Scholarship implements Persistable{
 		builder.append(stud_id);
 		builder.append(", additional_comments=");
 		builder.append(additional_comments);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 

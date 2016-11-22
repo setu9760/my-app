@@ -81,7 +81,7 @@ public class Cost implements Persistable {
 		builder.append(costCode);
 		builder.append(", amount=");
 		builder.append(amount);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 }

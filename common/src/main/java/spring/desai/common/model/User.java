@@ -66,7 +66,7 @@ public class User extends Person {
 		builder.append(l_name);
 		builder.append(", address=");
 		builder.append(address);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 

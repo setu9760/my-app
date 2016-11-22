@@ -11,7 +11,7 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
+
 
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.impl.jdbc.StudentRepositoryImpl;

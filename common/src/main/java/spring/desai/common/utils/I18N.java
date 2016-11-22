@@ -102,7 +102,7 @@ public class I18N {
         String value = getString(key);
 
         String output;
-        if (!value.startsWith("!")) {
+        if (value.length() == 0 || value.charAt(0) != '!') {
             // found message
             output = MessageFormat.format(value, values);
         } else {

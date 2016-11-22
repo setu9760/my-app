@@ -112,7 +112,7 @@ public class Student extends Person {
 		builder.append(subjects);
 		builder.append(", payments= ");
 		builder.append(payments);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 

@@ -1,19 +1,19 @@
 package spring.desai.webconsole.config;
 
-import javax.sql.DataSource;
 
-import org.apache.catalina.Context;
-import org.apache.catalina.startup.Tomcat;
+
+
+
 //import org.apache.tomcat.util.descriptor.web.ContextResource;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
+
+
+
+
+
+
+
+
+
 
 /**
  * Commented this out as it failed to deploy on stanalone tomcat instance. 

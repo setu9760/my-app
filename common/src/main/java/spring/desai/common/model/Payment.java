@@ -181,7 +181,7 @@ public class Payment implements Persistable {
 		builder.append(paymentDateTime);
 		builder.append(", comments=");
 		builder.append(comments);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 

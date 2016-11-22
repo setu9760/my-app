@@ -86,8 +86,8 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 //		this.authorities.add(authority);
 //	}
 	
-	public void addAllAuthorities(Collection<GrantedAuthority> authorities){
-		this.authorities.addAll(sortAuthorities(authorities));
+	public void addAllAuthorities(Collection<? extends GrantedAuthority> roles){
+		this.authorities.addAll(sortAuthorities(roles));
 	}
 
 	public String getPassword() {
@@ -173,6 +173,8 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 	 */
 	@Override
 	public boolean equals(Object rhs) {
+		if (this == rhs) 
+			return true;
 		if (rhs instanceof UserLoginDetails) {
 			return username.equals(((UserLoginDetails) rhs).username);
 		}
@@ -202,7 +204,7 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 			boolean first = true;
 			for (GrantedAuthority auth : authorities) {
 				if (!first) {
-					sb.append(",");
+					sb.append(',');
 				}
 				first = false;
 

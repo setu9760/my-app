@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="org.apache.log4j.Level" %>
 <%@ page import="org.apache.log4j.LogManager" %>
 <%@ page import="org.apache.log4j.Logger" %>

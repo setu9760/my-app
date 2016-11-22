@@ -56,10 +56,10 @@ public abstract class AbstractBaseRepository<T extends Persistable> implements B
 		for (int i = 0; i < length; i++) {
 			sb.append(" ?");
 			if (i != (length-1)) {
-				sb.append(",");
+				sb.append(',');
 			}
 		}
-		sb.append(")");
+		sb.append(')');
 		return sb.toString();
 	}
 	
@@ -128,7 +128,7 @@ public abstract class AbstractBaseRepository<T extends Persistable> implements B
 			sb.append(fields[i]);
 			sb.append(" = ? ");
 			if (i < fields.length-1) {
-				sb.append(",");
+				sb.append(',');
 			}
 		}
 		sb.append(" WHERE id = ?");

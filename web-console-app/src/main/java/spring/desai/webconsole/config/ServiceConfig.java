@@ -1,7 +1,7 @@
 package spring.desai.webconsole.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+
 import org.springframework.context.annotation.Configuration;
 
 import spring.desai.common.service.AdminUserMaintananceService;

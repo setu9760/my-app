@@ -71,7 +71,7 @@ public class Tutor extends Person {
 		builder.append(subj_id);
 		builder.append(", isFulltime=");
 		builder.append(isFulltime);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 

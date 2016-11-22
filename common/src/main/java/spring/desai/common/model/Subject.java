@@ -130,7 +130,7 @@ public class Subject implements Persistable {
 		builder.append(costCode);
 		builder.append(", isMandatory= ");
 		builder.append(isMandatory);
-		builder.append("]");
+		builder.append(']');
 		return builder.toString();
 	}
 }

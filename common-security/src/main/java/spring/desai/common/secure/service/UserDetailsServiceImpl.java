@@ -59,8 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 		
 		//TODO Modify roleRepository to return collection of GrantedAuthority i.e. Roles
-		@SuppressWarnings("unchecked")
-		Collection<GrantedAuthority> roles = (Collection<GrantedAuthority>) roleRepository.getRolesForUserId(username);
+		Collection<? extends GrantedAuthority> roles = roleRepository.getRolesForUserId(username);
 		userLogin.addAllAuthorities(roles);
 		return userLogin;
 	}
