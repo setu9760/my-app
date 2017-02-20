@@ -216,4 +216,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	<scm>
+		<url>https://github.com/setu9760/my-app</url>
+		<developerConnection>sdesai</developerConnection>
+	</scm>
 </project>
