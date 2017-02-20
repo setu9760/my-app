@@ -31,7 +31,7 @@
 			</plugin>
 			<!-- Includes the runtime dependencies -->
 			<plugin>
-				<groupId>org.dstovall</groupId>
+				<groupId>com.jolira</groupId>
 				<artifactId>onejar-maven-plugin</artifactId>
 				<version>1.4.4</version>
 				<executions>
