@@ -67,7 +67,6 @@ public class HomeController {
 		studentAdminService.makePayment(dtoFactory.fromPaymentDTO(paymentDTO));
 		Payment p = readOnlyService.getPaymentById(paymentDTO.getId());
 		return prepareResponse(dtoFactory.fromPayment(p));
-		
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
