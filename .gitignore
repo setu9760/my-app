@@ -24,7 +24,6 @@ common-security/.springBeans
 desktop-app/.project
 desktop-app/.classpath
 desktop-app/.settings/
-desktop-app/src/main/resources/
 web-console-app/.project
 web-console-app/.classpath
 web-console-app/.settings/.jsdtscope
@@ -36,7 +35,6 @@ web-console-app/.settings/org.eclipse.wst.jsdt.ui.superType.container
 web-console-app/.settings/org.eclipse.wst.jsdt.ui.superType.name
 web-console-app/.settings/org.eclipse.wst.validation.prefs
 web-console-app/.springBeans
-web-console-app/src/main/resources/
 web-console-app/src/main/webapp/META-INF/
 web-console-app/src/main/webapp/WEB-INF/.gitignore
 web-console-app/src/main/webapp/WEB-INF/views/scripts/
