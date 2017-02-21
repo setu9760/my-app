@@ -46,10 +46,7 @@ public class Utils {
 			return array.length/2;
 		} else if (valueToSearch < array[array.length/2]){
 			
-		} else if (valueToSearch > array[array.length/2]){
-			
-		}
-		
+		} 		
 		return pos;
 	}
 	

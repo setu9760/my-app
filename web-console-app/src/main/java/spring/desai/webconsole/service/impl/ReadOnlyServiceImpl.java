@@ -22,7 +22,7 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 		Student s = studentRepository.findById(id);
 		if (s != null) {
 			s.setSubjects(subjectRepository.getSubjectsForStudentId(id));
-			s.setPayments(paymentRepository.findbyStudentId(id));
+			s.setPayments(paymentRepository.findByStudentId(id));
 			s.setScholarships(scholarshipRepository.findByStudentId(id));
 		}
 		return s;
@@ -45,7 +45,7 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 
 	@Override
 	public Collection<Payment> getPaymentsForStudent(String studId) {
-		return paymentRepository.findbyStudentId(studId);
+		return paymentRepository.findByStudentId(studId);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 		Collection<Student> studs = studentRepository.getAll();
 		for (Student s : studs) {
 			s.setSubjects(subjectRepository.getSubjectsForStudentId(s.getId()));
-			s.setPayments(paymentRepository.findbyStudentId(s.getId()));
+			s.setPayments(paymentRepository.findByStudentId(s.getId()));
 			s.setScholarships(scholarshipRepository.findByStudentId(s.getId()));
 		}
 		return studs;

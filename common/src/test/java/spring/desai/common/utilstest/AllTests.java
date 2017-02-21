@@ -60,7 +60,7 @@ public class AllTests {
 		 
 		 System.out.println(pr.countAll());
 		 System.out.println(pr.findById("payment1"));
-		 System.out.println(pr.findbyStudentId("studentid1"));
+		 System.out.println(pr.findByStudentId("studentid1"));
 		 System.out.println(pr.findByType(PaymentType.CHEQUE));
 		 Payment p = new Payment("DummyInsertPaymentID", 300d, PaymentType.BRAC);
 		 p.setStud_id("studentid3");
