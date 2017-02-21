@@ -36,6 +36,9 @@ public class I18N {
     public static String getString(final String key) {
         String retVal;
 
+        if (key==null)
+        	return null;
+        
         if (RESOURCE_BUNDLE == null) {
             retVal = '!' + key + '!'; //if running from a unit test we don't find messages.properties
         } else {

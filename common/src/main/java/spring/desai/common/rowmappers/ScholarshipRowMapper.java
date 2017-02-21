@@ -2,6 +2,7 @@ package spring.desai.common.rowmappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class ScholarshipRowMapper implements RowMapper<Scholarship> {
 
 	@Override
 	public Scholarship mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Scholarship scholorship = new Scholarship(rs.getString(ID), rs.getString(EXTERNAL_REF), ScholorshipType.valueOf(rs.getString(TYPE).toUpperCase()), 
+		Scholarship scholorship = new Scholarship(rs.getString(ID), rs.getString(EXTERNAL_REF), ScholorshipType.valueOf(rs.getString(TYPE).toUpperCase(Locale.ROOT)), 
 				rs.getDouble(TOTAL_AMOUNT), rs.getDouble(PAID_AMOUNT), Boolean.valueOf(rs.getString(IS_FULLY_PAID)), 
 				Boolean.valueOf(rs.getString(IS_FULLY_PAID)), rs.getString(ADDITIONAL_COMMENTS), rs.getString(STUD_ID));
 		return scholorship;
