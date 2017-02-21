@@ -87,13 +87,13 @@ public class PaymentRepositoryImplTest extends AbstractRepositoryTest<Payment> {
 	
 	@Test
 	public void testFindbyStudentId() {
-		Collection<Payment> c = paymentRepository.findbyStudentId(null);
+		Collection<Payment> c = paymentRepository.findByStudentId(null);
 		assertNotNull(c);
 		
-		c = paymentRepository.findbyStudentId("SOME_ID");
+		c = paymentRepository.findByStudentId("SOME_ID");
 		assertNotNull(c);
 		
-		c = paymentRepository.findbyStudentId("studentid1");
+		c = paymentRepository.findByStudentId("studentid1");
 		assertThat(c.size(), is(equalTo(2)));
 	}
 

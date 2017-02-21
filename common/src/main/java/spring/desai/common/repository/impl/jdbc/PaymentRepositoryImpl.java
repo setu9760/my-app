@@ -27,7 +27,7 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implements PaymentRepository {
 
 	@Override
-	public Collection<Payment> findbyStudentId(String stud_id) throws RepositoryDataAccessException {
+	public Collection<Payment> findByStudentId(String stud_id) throws RepositoryDataAccessException {
 		try {
 			return getJdbcTemplate().query(getFindBySql(PAYMENT_TABLE_NAME, STUD_ID), new Object[] { stud_id }, getRowMapper());
 		} catch (DataAccessException e) {

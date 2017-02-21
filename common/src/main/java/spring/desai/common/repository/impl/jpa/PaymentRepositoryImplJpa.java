@@ -25,7 +25,7 @@ public class PaymentRepositoryImplJpa extends BaseJpaRepository<Payment> impleme
 	}
 
 	@Override
-	public Collection<Payment> findbyStudentId(String stud_id) throws RepositoryDataAccessException {
+	public Collection<Payment> findByStudentId(String stud_id) throws RepositoryDataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
