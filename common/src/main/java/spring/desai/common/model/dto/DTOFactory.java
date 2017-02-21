@@ -130,7 +130,7 @@ public final class DTOFactory {
 	public Collection<Student> fromStudentDTOs(Collection<StudentDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Student> studs = new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Student> studs = new HashSet<>(dtos.size());
 		for (StudentDTO s : dtos) {
 			studs.add(fromStudentDTO(s));
 		}
@@ -140,7 +140,7 @@ public final class DTOFactory {
 	public Collection<Tutor> fromTutorDTOs(Collection<TutorDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Tutor> tutors= new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Tutor> tutors= new HashSet<>(dtos.size());
 		for (TutorDTO t : dtos) {
 			tutors.add(fromTutorDTO(t));
 		}
@@ -150,7 +150,7 @@ public final class DTOFactory {
 	public Collection<Subject> fromSubjectDTOs(Collection<SubjectDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Subject> subs = new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Subject> subs = new HashSet<>(dtos.size());
 		for (SubjectDTO s : dtos) {
 			subs.add(fromSubjectDTO(s));
 		}
@@ -160,7 +160,7 @@ public final class DTOFactory {
 	public Collection<Cost> fromCostDTOs(Collection<CostDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Cost> costs = new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Cost> costs = new HashSet<>(dtos.size());
 		for (CostDTO c : dtos) {
 			costs.add(fromCostDTO(c));
 		}
@@ -170,7 +170,7 @@ public final class DTOFactory {
 	public Collection<Scholarship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Scholarship> schols = new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Scholarship> schols = new HashSet<>(dtos.size());
 		for (ScholorshipDTO s : dtos) {
 			schols.add(fromScholorshipDTO(s));
 		}
@@ -180,7 +180,7 @@ public final class DTOFactory {
 	public Collection<Payment> fromPaymentDTOs(Collection<PaymentDTO> dtos) {
 		if(dtos == null)
 			return null;
-		Set<Payment> payments = new HashSet<>(dtos != null ? dtos.size() : 0);
+		Set<Payment> payments = new HashSet<>(dtos.size());
 		for (PaymentDTO p : dtos) {
 			payments.add(fromPaymentDTO(p));
 		}
