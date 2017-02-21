@@ -18,7 +18,7 @@ public interface PaymentRepository extends BasePersistableRepository<Payment> {
 	 * @return
 	 * @throws RepositoryDataAccessException
 	 */
-	Collection<Payment> findbyStudentId(String studId) throws RepositoryDataAccessException;
+	Collection<Payment> findByStudentId(String studId) throws RepositoryDataAccessException;
 
 	/**
 	 * Calculates and returns the total amount paid by a student from the id
