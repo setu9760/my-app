@@ -1,5 +1,7 @@
 package spring.desai.common.model;
 
+import java.util.Locale;
+
 import org.springframework.security.core.GrantedAuthority;
 
 public class Role implements Persistable, GrantedAuthority {
@@ -14,7 +16,7 @@ public class Role implements Persistable, GrantedAuthority {
 	}
 	
 	public Role(String role, String role_full, String description) {
-		this.role = role.toUpperCase();
+		this.role = role.toUpperCase(Locale.getDefault());
 		this.role_full = role_full;
 		this.description = description;
 	}

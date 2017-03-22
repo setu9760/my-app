@@ -44,7 +44,7 @@ public class UserMaintananceServiceImpl implements UserMaintananceService {
 		try {
 			String currentPassword = usrrRepository.getUserLoginDetails(user.getId()).getPassword();
 			if (passwordEncoder.matches(newRawPassword, currentPassword)) {
-				
+				throw new ServiceException("New password is same as old password.");
 				// TODO throw same new password exception
 			} 
 			usrrRepository.updatePassword(user.getId(), passwordEncoder.encode(newRawPassword));

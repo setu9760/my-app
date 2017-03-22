@@ -56,7 +56,7 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter{
 	 * @author Allan Ditzel
 	 * @since 1.0
 	 */
-	class CsrfTokenResponseHeaderBindingFilter extends OncePerRequestFilter {
+	static class CsrfTokenResponseHeaderBindingFilter extends OncePerRequestFilter {
 	    protected static final String REQUEST_ATTRIBUTE_NAME = "_csrf";
 	    protected static final String RESPONSE_HEADER_NAME = "X-CSRF-HEADER";
 	    protected static final String RESPONSE_PARAM_NAME = "X-CSRF-PARAM";
@@ -85,7 +85,7 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter{
 	 * to the existing behaviour for none-ajax login attempts.
 	 *
 	 */
-	class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+	static class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 	    private AuthenticationSuccessHandler defaultHandler;
 

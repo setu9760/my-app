@@ -69,7 +69,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 			return password;
 		}
 
-		public String getUserName() {
+		public String getUsername() {
 			return userName;
 		}
 	}
