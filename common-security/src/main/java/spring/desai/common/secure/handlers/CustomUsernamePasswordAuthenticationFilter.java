@@ -57,8 +57,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 		return super.attemptAuthentication(request, response);
 	}
 
-	class LoginParams implements Serializable {
-		private static final long serialVersionUID = 1234523423432667L;
+	class LoginParams {
 		String userName;
 		String password;
 
