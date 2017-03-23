@@ -20,6 +20,8 @@ INSERT INTO roles VALUES ('ROLE2', 'ROLE-FULL-1', 'some description');
 INSERT INTO roles VALUES ('ROLE3', 'ROLE-FULL-1', 'some description');
 INSERT INTO roles VALUES ('ADMIN', 'ROLE-FULL-1', 'some description');
 INSERT INTO roles VALUES ('READ_ONLY', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles VALUES ('ROLE_REST_USER', 'ROLE-REST', 'rest user for tests');
+INSERT INTO roles VALUES ('ROLE_ADMIN_USER', 'ROLE-ADMIN', 'admin user for tests');
 
 -- Insert to user_role
 INSERT INTO user_role VALUES ('USER-1', 'ROLE1');

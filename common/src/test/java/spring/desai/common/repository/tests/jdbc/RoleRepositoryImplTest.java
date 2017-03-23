@@ -140,7 +140,7 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 	@Test
 //	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		doGetAllTest(5);
+		doGetAllTest(7);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 
 	@Test
 	public void testFindByName() {
-		doFindByNameTest("ROLE", 3, 5);
+		doFindByNameTest("ROLE", 5, 7);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 
 	@Test
 	public void testCountAll() {
-		doCountAllTest(5);
+		doCountAllTest(7);
 	}
 
 	@Override
