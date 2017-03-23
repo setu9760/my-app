@@ -37,16 +37,16 @@
 <script type="text/javascript">
 function checkPasswords() {
     var password1 = document.forms["registerForm"]["password1"].value;
-    var password2 = document.forms["registerForm"]["password2"].alue;
+    var password2 = document.forms["registerForm"]["password2"].value;
     var ok = true;
     if (password1 != password2) {
-        //alert("Passwords Do not match");
+        alert("Passwords Do not match");
         document.forms["registerForm"]["password1"].style.borderColor = "#E34234";
         document.forms["registerForm"]["password2"].style.borderColor = "#E34234";
         ok = false;
     }
     else {
-        alert("Passwords Match!!!");
+        //alert("Passwords Match!!!");
     }
     return ok;
 }

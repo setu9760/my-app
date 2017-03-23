@@ -53,7 +53,7 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 	public void testUpdate() {
 		User updated = userRepository.findById("USER-1");
 		updated.setAddress("UPDATED ADDRESS");
-		updated.setAccountLocked(true);
+		updated.setAccountNonLocked(true);
 		doUpdateTest(updated, "USER-1");
 	}
 
@@ -64,7 +64,7 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 		Collection<User> updated = userRepository.findByName("F_NAME");
 		for (User u : updated) {
 			u.setAddress("UPDATED ADDRESS");
-			u.setAccountLocked(true);
+			u.setAccountNonLocked(true);
 		}
 		doUpdateAllTest(orig, updated, "USER-");
 	}
@@ -88,7 +88,7 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 	@Test
 	public void testFindLockedOutUsers() {
 		Collection<User> c = userRepository.findLockedOutUsers();
-		assertSize(c, 3);
+		assertSize(c, 2);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 		
 		userRepository.resetLockedOutUser(new User("USER-4", "sdf", "d", "s"));
 		User u = userRepository.findById("USER-4");
-		assertThat(u.isAccountLocked(), is(false));
+		assertThat(u.isAccountNonLocked(), is(true));
 	}
 
 	@Test

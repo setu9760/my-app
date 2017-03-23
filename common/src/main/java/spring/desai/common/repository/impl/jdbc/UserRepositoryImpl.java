@@ -28,7 +28,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 
 	private static final int MAX_FAILED_ATTEMPTS = 4;
 	private final String FIND_MAX_ATTEMPTS_USER_SQL = "SELECT * FROM " + getTableName() + " WHERE " + FAILED_ATTEMPTS + " >= ?";
-	private final String RESET_LOCKED_OUT_USER_SQL = "UPDATE " + getTableName() + " SET " + ACCOUNT_NON_LOCKED + " = 'false' WHERE " + USER_ID + " = ? ";
+	private final String RESET_LOCKED_OUT_USER_SQL = "UPDATE " + getTableName() + " SET " + ACCOUNT_NON_LOCKED + " = 'true' WHERE " + USER_ID + " = ? ";
 	
 	@Override
 	protected String getInsertSql() {
@@ -71,7 +71,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(3, u.getL_name());
 				ps.setString(4, u.getAddress());
 				ps.setInt(5, u.getFailed_attempts());
-				ps.setString(6, String.valueOf(u.isAccountLocked()));
+				ps.setString(6, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(7, String.valueOf(u.getSignOnStatus()));
 			}
 		};
@@ -87,7 +87,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(2, u.getL_name());
 				ps.setString(3, u.getAddress());
 				ps.setInt(4, u.getFailed_attempts());
-				ps.setString(5, String.valueOf(u.isAccountLocked()));
+				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(6, String.valueOf(u.getSignOnStatus()));
 				ps.setString(7, u.getId());
 			}
@@ -106,7 +106,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(3, u.getL_name());
 				ps.setString(4, u.getAddress());
 				ps.setInt(5, u.getFailed_attempts());
-				ps.setString(6, String.valueOf(u.isAccountLocked()));
+				ps.setString(6, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(7, String.valueOf(u.getSignOnStatus()));
 			}
 			
@@ -129,7 +129,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(2, u.getL_name());
 				ps.setString(3, u.getAddress());
 				ps.setInt(4, u.getFailed_attempts());
-				ps.setString(5, String.valueOf(u.isAccountLocked()));
+				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(6, String.valueOf(u.getSignOnStatus()));
 				ps.setString(7, u.getId());
 			}
@@ -144,7 +144,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 	@Override
 	public Collection<User> findLockedOutUsers() throws RepositoryDataAccessException {
 		try {
-			return getJdbcTemplate().query(getFindBySql(getTableName(), ACCOUNT_NON_LOCKED), new Object[] { "true" }, getRowMapper());
+			return getJdbcTemplate().query(getFindBySql(getTableName(), ACCOUNT_NON_LOCKED), new Object[] { "false" }, getRowMapper());
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
