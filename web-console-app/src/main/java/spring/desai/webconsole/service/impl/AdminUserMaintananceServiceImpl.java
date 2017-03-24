@@ -50,6 +50,23 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 		}
 	}
 
+	public Collection<User> getAllUsers() throws ServiceException {
+		try {
+			return userRepository.getAll();
+		} catch (RepositoryDataAccessException e) {
+			throw new ServiceException("getAllUsers()", e);
+		}
+	}
+	
+	@Override
+	public void updateUserPersonalDetails(User user) throws ServiceException {
+		try {
+			userRepository.update(user);
+		} catch (RepositoryDataAccessException e) {
+			throw new ServiceException("updateUserPersonalDetails(user)", e);
+		}
+	}
+
 	@Override
 	public void createUser(User user, String rawPassword, Collection<Role> rolesToAssign) throws ServiceException {
 		notNull(user);
@@ -61,7 +78,7 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 				usrrRepository.createUser(user.getId(), passwordEncoder.encode(rawPassword));
 				assignRoles(user, rolesToAssign);
 			} else {
-				throw new ServiceException("User " + user.getId() +" already exists.");
+				throw new ServiceException("User " + user.getId() + " already exists.");
 			}
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("createUser(user, password, roles)", e);
@@ -125,7 +142,7 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 			throw new ServiceException("revokeAllRoles(user)", e);
 		}
 	}
-	
+
 	@Override
 	public void resetUserSignOn(String userId) throws ServiceException {
 		notNull(userId);

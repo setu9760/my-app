@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import spring.desai.common.model.Role;
 import spring.desai.common.model.User;
+import spring.desai.common.model.dto.DTOFactory;
+import spring.desai.common.model.dto.PersonDTO;
 import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.ReadOnlyService;
 
@@ -36,6 +39,8 @@ public class UserMaintananceController {
 	@Autowired
 	@Qualifier("readOnlyService")
 	private ReadOnlyService readOnlyService; 
+	
+	private DTOFactory dtoFactory = DTOFactory.getInstance();
 	
 	@RequestMapping(value = "/resetSignOnStatus/{userId}", method = RequestMethod.GET)
 	public void resetSignOnStatus(@PathVariable String userId, Principal principal) throws Exception {
@@ -72,10 +77,23 @@ public class UserMaintananceController {
 			adminUserMaintananceService.createUser(new User(u, f, l, ""), p, roles);
 			mv.addObject("msg", "success");
 		} catch (Exception e) {
+			logger.warn("Tried to create user with existing username: " + u, e);
 			mv.addObject("error", e.getMessage());
 		}
-		
-		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/list-user", method = RequestMethod.GET)
+	public ModelAndView listUsers() throws Exception {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("users",dtoFactory.fromUsersToPersonDTOs(adminUserMaintananceService.getAllUsers()));
+		return mv;
+	}
+	
+	@RequestMapping(value = "/updateUserDetails", method = RequestMethod.POST)
+	public ModelAndView updateUserDetails(@RequestBody PersonDTO user) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		adminUserMaintananceService.updateUserPersonalDetails(dtoFactory.fromPersonDTOToUser(user));
 		return mv;
 	}
 }

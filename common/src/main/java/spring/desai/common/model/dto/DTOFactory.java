@@ -10,6 +10,7 @@ import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
+import spring.desai.common.model.User;
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.enums.ScholorshipType;
 
@@ -54,6 +55,10 @@ public final class DTOFactory {
 		return c != null ? new CostDTO(c.getCostCode(), c.getAmount()) : null;
 	}
 	
+	public PersonDTO fromUserToPersonDTOs(User u){
+		return u != null ? new PersonDTO(u.getId(), u.getF_name(), u.getL_name(), u.getAddress()) : null;
+	}
+	
 	public Collection<SubjectDTO> fromSubjects(Collection<Subject> subjects){
 		Set<SubjectDTO> subs = new HashSet<>(subjects.size());
 		for (Subject subject : subjects) {
@@ -94,6 +99,14 @@ public final class DTOFactory {
 		return ts;
 	}
 	
+	public Collection<PersonDTO> fromUsersToPersonDTOs(Collection<User> users) {
+		Set<PersonDTO> ps = new HashSet<>(users.size());
+		for (User u : users) {
+			ps.add(fromUserToPersonDTOs(u));
+		}
+		return ps;
+	}
+	
 	/****************************************************
 	*
 	*	DTO to Object methods
@@ -125,6 +138,10 @@ public final class DTOFactory {
 	
 	public Payment fromPaymentDTO(PaymentDTO dto) {
 		return new Payment(dto.getId(), dto.getAmount(), PaymentType.valueOf(dto.getPaymentType()), dto.getStudentId(), dto.getComments());
+	}
+	
+	public User fromPersonDTOToUser(PersonDTO p) {
+		return p != null ? new User(p.getId(),p.getF_name(), p.getL_name(), p.getAddress()) : null;
 	}
 	
 	public Collection<Student> fromStudentDTOs(Collection<StudentDTO> dtos){

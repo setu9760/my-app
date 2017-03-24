@@ -64,7 +64,7 @@ function checkPasswords() {
 			<fieldset>
 				<c:if test="${error != null}">
 					<div class="error">
-						Failed to login.
+						Failed to Create new user.
 						<p>
 							Reason:
 							<c:out value="${error}" />

@@ -23,5 +23,9 @@ public interface AdminUserMaintananceService {
 	void revokeAllRoles(User user) throws ServiceException;
 	
 	void resetUserSignOn(String userId) throws ServiceException;
+
+	void updateUserPersonalDetails(User user) throws ServiceException;
+
+	Collection<User> getAllUsers() throws ServiceException;
 	
 }

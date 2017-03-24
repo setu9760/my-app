@@ -37,7 +37,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 
 	@Override
 	protected String getUpdateSql() {
-		return "UPDATE user_details SET f_name = ?, l_name = ?, address = ?, failed_attempts = ?, account_non_locked = ?, sign_on_status = ? WHERE user_id = ?";
+		return "UPDATE user_details SET f_name = ?, l_name = ?, address = ? " +/**, failed_attempts = ?, account_non_locked = ?, sign_on_status = ?**/ " WHERE user_id = ?";
 	}
 
 	@Override
@@ -86,10 +86,10 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(1, u.getF_name());
 				ps.setString(2, u.getL_name());
 				ps.setString(3, u.getAddress());
-				ps.setInt(4, u.getFailed_attempts());
-				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
-				ps.setString(6, String.valueOf(u.getSignOnStatus()));
-				ps.setString(7, u.getId());
+//				ps.setInt(4, u.getFailed_attempts());
+//				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
+//				ps.setString(6, String.valueOf(u.getSignOnStatus()));
+				ps.setString(4, u.getId());
 			}
 		};
 	}
@@ -128,10 +128,10 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(1, u.getF_name());
 				ps.setString(2, u.getL_name());
 				ps.setString(3, u.getAddress());
-				ps.setInt(4, u.getFailed_attempts());
-				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
-				ps.setString(6, String.valueOf(u.getSignOnStatus()));
-				ps.setString(7, u.getId());
+//				ps.setInt(4, u.getFailed_attempts());
+//				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
+//				ps.setString(6, String.valueOf(u.getSignOnStatus()));
+				ps.setString(4, u.getId());
 			}
 			
 			@Override

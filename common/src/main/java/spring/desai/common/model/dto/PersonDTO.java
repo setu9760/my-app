@@ -1,6 +1,6 @@
 package spring.desai.common.model.dto;
 
-public abstract class PersonDTO {
+public class PersonDTO {
 	private String id;
 	private String f_name;
 	private String l_name;

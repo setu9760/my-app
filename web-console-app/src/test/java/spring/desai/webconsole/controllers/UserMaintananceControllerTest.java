@@ -52,15 +52,12 @@ public class UserMaintananceControllerTest {
 	@Test
 	public void testIt() throws Exception{
 		System.out.println("UserMaintananceControllerTest.testIt()");
-		mvc.perform(post("/admin/register-user").principal(new Principal() {
-			
-			@Override
-			public String getName() {
-				return "admin";
-			}
-		}).param("firstName", "ABC").param("lastName", "ABC").param("username", "ABC")
+		mvc.perform(post("/admin/register-user").param("firstName", "ABC")
+				.param("lastName", "ABC").param("username", "ABC")
 				.param("password1", "password").param("adminUser", "yes"))
 				.andExpect(model().attribute("msg","success")).andDo(print());
+		
+		mvc.perform(get("/admin/list-user")).andDo(print());
 	}
 
 	public String toJson(Object o) throws IOException {
