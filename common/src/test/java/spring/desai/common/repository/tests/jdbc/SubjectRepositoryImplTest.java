@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,6 +123,18 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 	public void testDeleteById() {
 		subjectRepository.save(new Subject("ID_TO_DELETE", "D", "BASIC", true));
 		doDeleteByIdTest("ID_TO_DELETE");
+	}
+	
+	@Test
+	public void testRemoveStudentFromSubject() {
+		Collection<Subject> subs = subjectRepository.getSubjectsForStudentId("studentid1");
+		for (Subject subject : subs) {
+			subjectRepository.removeStudentFromSubject("studentid1", subject);
+		}
+		assertNotEquals(subs.size(), subjectRepository.getSubjectsForStudentId("studentid1").size());
+		for (Subject subject : subs) {
+			assertFalse(subjectRepository.isStudentInSubject("studentid1", subject));
+		}
 	}
 
 	@Test(expected=UnsupportedOperationException.class)

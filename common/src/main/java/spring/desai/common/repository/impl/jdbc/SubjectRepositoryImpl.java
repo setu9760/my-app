@@ -30,9 +30,9 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	private static final String IS_STUDENT_IN_SUBJECT_SQL = "SELECT COUNT (*) FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME+ " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
 	private static final String ADD_STUDENT_TO_SUBJECT_SQL = "INSERT INTO " + SUBJECT_STUDENT_LINK_TABLE_NAME + " VALUES (?, ?)";
 	
-	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
-		return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getRowMapper());
-	}
+//	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
+//		return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getRowMapper());
+//	}
 	
 	@Override
 	public Collection<Subject> findByCostCode(String costCode) throws RepositoryDataAccessException {
@@ -47,7 +47,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	@Override
 	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws RepositoryDataAccessException {
 		List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
-		if (subjIds == null || subjIds.isEmpty()) 
+		if (subjIds.isEmpty()) 
 			return new ArrayList<>();
 		return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getRowMapper());
 	}
@@ -61,7 +61,7 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	private static final String REMOVE_STUDENT_FROM_SUBJECT_SQL = "DELETE FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME + " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
 	
 	@Override
-	public void removeStudentFromSubject(String studentId, Subject subject)  throws RepositoryDataAccessException{
+	public void removeStudentFromSubject(String studentId, Subject subject)  throws RepositoryDataAccessException {
 		checkPersitableValidity(subject);
 		getJdbcTemplate().update(REMOVE_STUDENT_FROM_SUBJECT_SQL, new Object[] { subject.getId(), studentId});
 	}
