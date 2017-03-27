@@ -18,7 +18,6 @@ import spring.desai.common.model.User.SIGN_ON_STATUS;
 import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
@@ -41,30 +40,18 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 
 	@Override
 	public void createUser(User user, String rawPassword) throws ServiceException {
-		try {
-			Set<Role> roles = new HashSet<>();
-			roles.add(roleRepository.findById(USER));
-			createUser(user, rawPassword, roles);
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("createUser(user, password)", e);
-		}
+		Set<Role> roles = new HashSet<>();
+		roles.add(roleRepository.findById(USER));
+		createUser(user, rawPassword, roles);
 	}
 
 	public Collection<User> getAllUsers() throws ServiceException {
-		try {
-			return userRepository.getAll();
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("getAllUsers()", e);
-		}
+		return userRepository.getAll();
 	}
-	
+
 	@Override
 	public void updateUserPersonalDetails(User user) throws ServiceException {
-		try {
-			userRepository.update(user);
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("updateUserPersonalDetails(user)", e);
-		}
+		userRepository.update(user);
 	}
 
 	@Override
@@ -72,53 +59,37 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 		notNull(user);
 		notNull(rawPassword);
 		notNull(rolesToAssign);
-		try {
-			if (!isExistingUser(user.getId())) {
-				userRepository.save(user);
-				usrrRepository.createUser(user.getId(), passwordEncoder.encode(rawPassword));
-				assignRoles(user, rolesToAssign);
-			} else {
-				throw new ServiceException("User " + user.getId() + " already exists.");
-			}
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("createUser(user, password, roles)", e);
+		if (!isExistingUser(user.getId())) {
+			userRepository.save(user);
+			usrrRepository.createUser(user.getId(), passwordEncoder.encode(rawPassword));
+			assignRoles(user, rolesToAssign);
+		} else {
+			throw new ServiceException("User " + user.getId() + " already exists.");
 		}
 	}
 
 	@Override
 	public void removeUser(User user) throws ServiceException {
 		notNull(user);
-		try {
-			roleRepository.revokeAllRoles(user.getId());
-			usrrRepository.deleteUser(user.getId());
-			userRepository.deleteById(user.getId());
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("removeUser(user)", e);
-		}
+		roleRepository.revokeAllRoles(user.getId());
+		usrrRepository.deleteUser(user.getId());
+		userRepository.deleteById(user.getId());
 	}
 
 	@Override
 	public boolean isExistingUser(String userId) throws ServiceException {
 		notNull(userId);
-		try {
-			return userRepository.isExistingUser(userId);
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("isExistingUser(userId)", e);
-		}
+		return userRepository.isExistingUser(userId);
 	}
 
 	@Override
 	public void assignRoles(User user, Collection<Role> roles) throws ServiceException {
 		notNull(user);
 		notNull(roles);
-		try {
-			// TODO should be able to pass collection to repository to persist
-			// instead of looping over in service layer.
-			for (Role role : roles) {
-				roleRepository.assignRoleToUser(user.getId(), role);
-			}
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("assignRoles(user, roles)", e);
+		// TODO should be able to pass collection to repository to persist
+		// instead of looping over in service layer.
+		for (Role role : roles) {
+			roleRepository.assignRoleToUser(user.getId(), role);
 		}
 	}
 
@@ -126,36 +97,24 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 	public void unassignRoles(User user, Collection<Role> roles) throws ServiceException {
 		notNull(user);
 		notNull(roles);
-		try {
-//			roles.forEach(r -> roleRepository.unassignRole(user.getId(), r));
-			for (Role role : roles) {
-				roleRepository.unassignRole(user.getId(), role);
-			}
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("unassignRoles(user, roles)", e);
+		// roles.forEach(r -> roleRepository.unassignRole(user.getId(), r));
+		for (Role role : roles) {
+			roleRepository.unassignRole(user.getId(), role);
 		}
 	}
 
 	@Override
 	public void revokeAllRoles(User user) throws ServiceException {
 		notNull(user);
-		try {
-			roleRepository.revokeAllRoles(user.getId());
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("revokeAllRoles(user)", e);
-		}
+		roleRepository.revokeAllRoles(user.getId());
 	}
 
 	@Override
 	public void resetUserSignOn(String userId) throws ServiceException {
 		notNull(userId);
-		try {
-			usrrRepository.unlockUserAccount(userId);
-			usrrRepository.updateSignOnStatus(userId, SIGN_ON_STATUS.LOGGED_OUT);
-			usrrRepository.resetFailedAttempt(userId);
-		} catch (RepositoryDataAccessException e) {
-			throw new ServiceException("resetUserSignOn(userId)", e);
-		}
+		usrrRepository.unlockUserAccount(userId);
+		usrrRepository.updateSignOnStatus(userId, SIGN_ON_STATUS.LOGGED_OUT);
+		usrrRepository.resetFailedAttempt(userId);
 	}
 
 	private void notNull(Object obj) {
