@@ -153,6 +153,17 @@ public class UserRepositoryImplTest extends AbstractRepositoryTest<User> {
 	public void testCountAll() {
 		doCountAllTest(5);
 	}
+	
+	@Test 
+	public void testIsExistingUser() {
+		assertFalse(userRepository.isExistingUser(null));
+		
+		assertFalse(userRepository.isExistingUser(""));
+		
+		assertFalse(userRepository.isExistingUser("NON_EXISTING_ID"));
+		
+		assertTrue(userRepository.isExistingUser("USER-4"));
+	}
 
 	@Override
 	public Class<User> getPersistableClazz() {

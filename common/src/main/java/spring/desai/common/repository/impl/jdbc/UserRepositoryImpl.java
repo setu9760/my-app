@@ -143,11 +143,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 
 	@Override
 	public Collection<User> findLockedOutUsers() throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(getTableName(), ACCOUNT_NON_LOCKED), new Object[] { "false" }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySql(getTableName(), ACCOUNT_NON_LOCKED), new Object[] { "false" }, getRowMapper());
 	}
 
 	@Override
@@ -184,9 +180,6 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 	@Override
 	public boolean isExistingUser(String userId) {
 		int count = getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM " + getTableName() + " WHERE LOWER(" + getIdField() + ") = LOWER(?)", new Object[] { userId }, Integer.class);
-		if (count > 1) {
-			getLogger().warn("More than one user found in database for userId: " + userId + ". This indicates database is in invalid state.");
-		}
 		return count != 0;
 	}
 }
