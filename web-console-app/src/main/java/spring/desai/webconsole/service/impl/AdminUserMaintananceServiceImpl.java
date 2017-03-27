@@ -127,7 +127,9 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 		notNull(user);
 		notNull(roles);
 		try {
-			roleRepository.unassignRoles(user.getId(), roles);
+			for (Role role : roles) {
+				roleRepository.unassignRole(user.getId(), role);
+			}
 		} catch (RepositoryDataAccessException e) {
 			throw new ServiceException("unassignRoles(user, roles)", e);
 		}
