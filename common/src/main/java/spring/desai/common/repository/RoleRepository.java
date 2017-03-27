@@ -50,7 +50,7 @@ public interface RoleRepository extends BasePersistableRepository<Role> {
 	 * @param role
 	 * @throws RepositoryDataAccessException
 	 */
-	void unassignRoles(String userId, Collection<Role> role) throws RepositoryDataAccessException;
+	void unassignRole(String userId, Role role) throws RepositoryDataAccessException;
 	
 	/**
 	 * Revokes all roles for this userId

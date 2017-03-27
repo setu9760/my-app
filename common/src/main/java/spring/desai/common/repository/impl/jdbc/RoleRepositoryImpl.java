@@ -30,7 +30,8 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	private static final String GET_ROLES_FOR_FOR_USER_SQL = "SELECT r.* FROM " + ROLES_TABLE + " r LEFT JOIN " + USER_ROLE_TABLE + " ur ON r." + ROLE + " = ur." + ROLE + " WHERE ur." + USER_ID + " = ?";
 	private static final String IS_ROLE_AVAILABLE_TO_USER_SQL = "SELECT COUNT(*) FROM " + USER_ROLE_TABLE + " WHERE " + USER_ID + " = ? AND " + ROLE + " = ?";
 	private static final String ASSIGN_ROLE_TO_USER_SQL = "INSERT INTO " + USER_ROLE_TABLE + " VALUES (?, ?)"; 
-	private static final String REVOKE_ROLES_FOR_USER_SQL = "DELETE FROM " + USER_ROLE_TABLE + " WHERE " + USER_ID + " ?";
+	private static final String UNASSIGN_ROLE_FOR_USER_SQL = "DELETE FROM " + USER_ROLE_TABLE + " WHERE " + USER_ID + " = ? AND " + ROLE + " = ?";
+	private static final String REVOKE_ROLES_FOR_USER_SQL = "DELETE FROM " + USER_ROLE_TABLE + " WHERE " + USER_ID + " = ?";
 	
 	@Override
 	public Collection<String> getUserIdsforRole(Role role) throws RepositoryDataAccessException {
@@ -75,9 +76,10 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	}
 	
 	@Override
-	public void unassignRoles(String userId, Collection<Role> role) throws RepositoryDataAccessException {
+	public void unassignRole(String userId, Role role) throws RepositoryDataAccessException {
+		checkPersitableValidity(role);
 		try {
-			// TODO
+			getJdbcTemplate().update(UNASSIGN_ROLE_FOR_USER_SQL, new Object[] { userId, role.getId() });
 		} catch (DataAccessException e) {
 			throw new RepositoryDataAccessException(e);
 		}
