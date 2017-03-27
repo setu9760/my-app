@@ -115,8 +115,9 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 		doDeleteByIdTest("ID_TO_DELETE");
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
 	public void testDeleteByName() {
+		studentRepository.save(new Student("SOME_ID", "NAME_TO_DELETE", "SOME_LNAME", 50, "ADDRESS"));
 		doDeleteByNameTest("NAME_TO_DELETE");
 	}
 

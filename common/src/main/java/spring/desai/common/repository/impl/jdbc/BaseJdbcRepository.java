@@ -163,7 +163,9 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	}
 	
 	public void deleteByName(String name) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
+		if (!isDeleteByNameOpSupported()) {
+			throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
+		}
 		try {
 			getJdbcTemplate().update(getDeleteBySql(getTableName(), getNameField()), new Object[] { name });
 		} catch (DataAccessException e) {
@@ -172,7 +174,9 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	}
 	
 	public void deleteAll() throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("deleteAll()", this.getClass().getName());
+		if (!isDeleteAllOpSupported()) {
+			throwUnsupportedOperationException("deleteAll()", this.getClass().getName());
+		}
 	}
 	
 	public int countAll() throws RepositoryDataAccessException {

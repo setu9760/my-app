@@ -141,4 +141,9 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 			}
 		};
 	}
+	
+	@Override
+	protected boolean isDeleteByNameOpSupported() {
+		return true;
+	}
 }

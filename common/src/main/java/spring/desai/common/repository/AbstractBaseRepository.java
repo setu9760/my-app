@@ -182,6 +182,22 @@ public abstract class AbstractBaseRepository<T extends Persistable> implements B
 	}
 	
 	/**
+	 * return flag if deleteByName operations be supported for this repository.
+	 * @return 
+	 */
+	protected boolean isDeleteByNameOpSupported() {
+		return false;
+	}
+	
+	/**
+	 * return flag if deleteAll operation be supported for this repository.
+	 * @return
+	 */
+	protected boolean isDeleteAllOpSupported() {
+		return false;
+	}
+	
+	/**
 	 * @return Returns the insert sql based on table name and number of fields for this repository.
 	 */
 	protected abstract String getInsertSql();
