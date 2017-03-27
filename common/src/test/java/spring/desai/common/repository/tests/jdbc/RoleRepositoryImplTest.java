@@ -171,6 +171,7 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 		isAvailable = roleRepository.isRoleAvailableToUser("USER-1", new Role("ROLE3", ""));
 		assertTrue(isAvailable);
 		
+		roleRepository.assignRoleToUser("USER-1", role);
 		roleRepository.isRoleAvailableToUser("USER-1", new Role("ROLE3", ""));
 	}
 	
