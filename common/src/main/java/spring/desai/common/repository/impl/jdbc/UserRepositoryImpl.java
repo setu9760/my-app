@@ -152,36 +152,23 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 
 	@Override
 	public Collection<User> findCurrentlyActiveUsers()  throws RepositoryDataAccessException{
-		try {
-			return getJdbcTemplate().query(getFindBySql(getTableName(), SIGN_ON_STATUS), new Object[] { String.valueOf(spring.desai.common.model.User.SIGN_ON_STATUS.LOGGED_IN) }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySql(getTableName(), SIGN_ON_STATUS), new Object[] { String.valueOf(spring.desai.common.model.User.SIGN_ON_STATUS.LOGGED_IN) }, getRowMapper());
 	}
 
 	@Override
 	public Collection<User> findUsersWithMaxFailedAttempts() throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(FIND_MAX_ATTEMPTS_USER_SQL, new Object[] { MAX_FAILED_ATTEMPTS }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(FIND_MAX_ATTEMPTS_USER_SQL, new Object[] { MAX_FAILED_ATTEMPTS }, getRowMapper());
 	}
 
 	@Override
 	public void resetLockedOutUser(User user) throws RepositoryDataAccessException {
 		checkPersitableValidity(user);
-		try {
-			getJdbcTemplate().update(RESET_LOCKED_OUT_USER_SQL, new Object[] { user.getId() });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(RESET_LOCKED_OUT_USER_SQL, new Object[] { user.getId() });
 	}
 	 
 	@Override
 	public void resetLockedOutUsers(Collection<User> users) throws RepositoryDataAccessException {
 		checkPersitableValidity(users);
-		try {
 			// TODO do this update in one update statement rather then multiple single updates.
 //			Object[] ids = new String[users.size()];
 //			int i = 0;
@@ -189,24 +176,17 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 //				ids[i++] = user.getId();
 //			}
 //			getJdbcTemplate().update("UPDATE " + getTableName() + " SET " + ACCOUNT_LOCKED + " = 'false' WHERE " + USER_ID + " IN (  ", ids);
-			for (User user : users) {
-				resetLockedOutUser(user);
-			}
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
+		for (User user : users) {
+			resetLockedOutUser(user);
 		}
 	}
 	
 	@Override
 	public boolean isExistingUser(String userId) {
-		try {
-			int count = getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM " + getTableName() + " WHERE LOWER(" + getIdField() + ") = LOWER(?)", new Object[] { userId }, Integer.class);
-			if (count > 1) {
-				getLogger().warn("More than one user found in database for userId: " + userId + ". This indicates database is in invalid state.");
-			}
-			return count != 0;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
+		int count = getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM " + getTableName() + " WHERE LOWER(" + getIdField() + ") = LOWER(?)", new Object[] { userId }, Integer.class);
+		if (count > 1) {
+			getLogger().warn("More than one user found in database for userId: " + userId + ". This indicates database is in invalid state.");
 		}
+		return count != 0;
 	}
 }

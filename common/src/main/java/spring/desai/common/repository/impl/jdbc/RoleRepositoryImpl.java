@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -36,40 +35,24 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	@Override
 	public Collection<String> getUserIdsforRole(Role role) throws RepositoryDataAccessException {
 		checkPersitableValidity(role);
-		try {
 			return getJdbcTemplate().queryForList(GET_USER_ID_FOR_ROLE_SQL, new Object[] { role.getId() }, String.class);
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
 	}
 
 	@Override
 	public Collection<Role> getRolesForUserId(String userId) throws RepositoryDataAccessException {
-		try {
 			return getJdbcTemplate().query(GET_ROLES_FOR_FOR_USER_SQL, new Object[] { userId }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
 	}
 
 	@Override
 	public boolean isRoleAvailableToUser(String userId, Role role) throws RepositoryDataAccessException {
 		checkPersitableValidity(role);
-		try {
 			return getJdbcTemplate().queryForObject(IS_ROLE_AVAILABLE_TO_USER_SQL, new Object[] {userId, role.getId()}, Integer.class) == 1;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
 	}
 	
 	@Override
-	public void assignRoleToUser(String userId, Role role) throws RepositoryDataAccessException {
+	public void assignRoleToUser(String userId, Role role){
 		if (!isRoleAvailableToUser(userId, role)) {
-			try {
 				getJdbcTemplate().update(ASSIGN_ROLE_TO_USER_SQL, new Object[] { userId, role.getId()});
-			} catch (DataAccessException e) {
-				throw new RepositoryDataAccessException(e);
-			}
 		} else {
 			getLogger().warn("User: " + userId + " already is assigned role " + role.getId() + ", cannot assign same role twice");
 		}
@@ -78,11 +61,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	@Override
 	public void unassignRole(String userId, Role role) throws RepositoryDataAccessException {
 		checkPersitableValidity(role);
-		try {
 			getJdbcTemplate().update(UNASSIGN_ROLE_FOR_USER_SQL, new Object[] { userId, role.getId() });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
 	}
 	
 	@Override
@@ -90,11 +69,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 		if (userId == null || userId.isEmpty()) {
 			throw new IllegalArgumentException(I18N.getString("error.null.id"));
 		}
-		try {
 			getJdbcTemplate().update(REVOKE_ROLES_FOR_USER_SQL, new Object[] { userId });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,54 +27,35 @@ import spring.desai.common.repository.exception.RepositoryDataAccessException;
 @Repository(value="subjectRepository")
 public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implements SubjectRepository {
 	
+	private static final String IS_STUDENT_IN_SUBJECT_SQL = "SELECT COUNT (*) FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME+ " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
+	private static final String ADD_STUDENT_TO_SUBJECT_SQL = "INSERT INTO " + SUBJECT_STUDENT_LINK_TABLE_NAME + " VALUES (?, ?)";
+	
 	public Collection<Subject> findByIds(String... ids) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, ids.length), ids, getRowMapper());
 	}
 	
 	@Override
 	public Collection<Subject> findByCostCode(String costCode) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { costCode }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, COST_CODE), new Object[] { costCode }, getRowMapper());
 	}
 
 	@Override
 	public Collection<Subject> findByMandatory(boolean isMandatory) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, IS_MANDATORY), new Object[] { isMandatory }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySql(SUBJECT_TABLE_NAME, IS_MANDATORY), new Object[] { isMandatory }, getRowMapper());
 	}
 
 	@Override
 	public Collection<Subject> getSubjectsForStudentId(String stud_id) throws RepositoryDataAccessException {
-		try {
-			List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
-			if (subjIds == null || subjIds.isEmpty()) 
-				return new ArrayList<>();
-			return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		List<String> subjIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, STUD_ID, SUBJ_ID), new Object[] { stud_id}, String.class);
+		if (subjIds == null || subjIds.isEmpty()) 
+			return new ArrayList<>();
+		return getJdbcTemplate().query(getFindBySqlWhereIn(SUBJECT_TABLE_NAME, ID, subjIds.size()), subjIds.toArray(), getRowMapper());
 	}
-	
-	private static final String ADD_STUDENT_TO_SUBJECT_SQL = "INSERT INTO " + SUBJECT_STUDENT_LINK_TABLE_NAME + " VALUES (?, ?)";
 	
 	@Override
 	public void addStudentToSubject(String studentId, Subject subject) throws RepositoryDataAccessException {
 		checkPersitableValidity(subject);
-		try {
-			getJdbcTemplate().update(ADD_STUDENT_TO_SUBJECT_SQL, new Object[] {subject.getId(), studentId});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(ADD_STUDENT_TO_SUBJECT_SQL, new Object[] {subject.getId(), studentId});
 	}
 	
 	private static final String REMOVE_STUDENT_FROM_SUBJECT_SQL = "DELETE FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME + " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
@@ -83,24 +63,15 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	@Override
 	public void removeStudentFromSubject(String studentId, Subject subject)  throws RepositoryDataAccessException{
 		checkPersitableValidity(subject);
-		try {
-			getJdbcTemplate().update(REMOVE_STUDENT_FROM_SUBJECT_SQL, new Object[] { subject.getId(), studentId});
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(REMOVE_STUDENT_FROM_SUBJECT_SQL, new Object[] { subject.getId(), studentId});
 	}
 	
-	private static final String IS_STUDENT_IN_SUBJECT_SQL = "SELECT COUNT (*) FROM " + SUBJECT_STUDENT_LINK_TABLE_NAME+ " WHERE " + SUBJ_ID + " = ? and " + STUD_ID + " = ?";
 	
 	@Override
 	public boolean isStudentInSubject(String studentId, Subject subject) {
 		checkPersitableValidity(subject);
-		try {
-			int count  = getJdbcTemplate().queryForObject(IS_STUDENT_IN_SUBJECT_SQL, new Object [] { subject.getId(), studentId },  Integer.class);
-			return count == 1;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		int count  = getJdbcTemplate().queryForObject(IS_STUDENT_IN_SUBJECT_SQL, new Object [] { subject.getId(), studentId },  Integer.class);
+		return count == 1;
 	}
 	
 	@Override

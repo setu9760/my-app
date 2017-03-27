@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,21 +22,19 @@ import spring.desai.common.model.Student;
 import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 
-//@Profile(value = { "jdbc" })
 @Repository(value="studentRepository")
 public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implements StudentRepository {
 
+	private static final String insertSql = "INSERT INTO student (id, f_name, l_name, age, address) VALUES (?, ?, ?, ?, ?)";
+	private static final String  updateSql = "UPDATE student set f_name = ?, l_name = ?, age = ?, address = ? where id = ?";
+	
 	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {
-		try {
-			List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
-			if (stud_ids == null || stud_ids.isEmpty()) {
-				return new ArrayList<>();
-			}
-			return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
+		List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
+		if (stud_ids == null || stud_ids.isEmpty()) {
+			return new ArrayList<>();
 		}
+		return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getRowMapper());
 	}
 
 	@Override
@@ -54,9 +51,6 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 	protected String getUpdateSql() {
 		return updateSql;
 	}
-	
-	private static final String insertSql = "INSERT INTO student (id, f_name, l_name, age, address) VALUES (?, ?, ?, ?, ?)";
-	private static final String  updateSql = "UPDATE student set f_name = ?, l_name = ?, age = ?, address = ? where id = ?";
 	
 	@Override
 	protected String getTableName() {

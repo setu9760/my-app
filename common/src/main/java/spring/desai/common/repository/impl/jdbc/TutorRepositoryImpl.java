@@ -1,12 +1,15 @@
 package spring.desai.common.repository.impl.jdbc;
 
+import static spring.desai.common.utils.DataBaseConstants.F_NAME;
+import static spring.desai.common.utils.DataBaseConstants.SUBJ_ID;
+import static spring.desai.common.utils.DataBaseConstants.TUTOR_TABLE_NAME;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,18 +18,13 @@ import org.springframework.stereotype.Repository;
 import spring.desai.common.model.Tutor;
 import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
-import static spring.desai.common.utils.DataBaseConstants.*;
 
 @Repository(value="tutorRepository")
 public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements TutorRepository {
 
 	@Override
 	public Collection<Tutor> getTutorsForSubject(String subj_id) throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, SUBJ_ID), new Object[] { subj_id }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, SUBJ_ID), new Object[] { subj_id }, getRowMapper());
 	}
 
 	@Override

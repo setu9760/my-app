@@ -95,40 +95,24 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	
 	public void save(final T persistable) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistable);
-		try {
-			getJdbcTemplate().update(getInsertSql(), getInsertPreparedStatementSetter(persistable));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(getInsertSql(), getInsertPreparedStatementSetter(persistable));
 	}
 	
 	public void saveAll(final Collection<T> persistables) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistables);
 		// TODO : Check the size of collection and break down call in smaller chunks to avoid large batch inserts/updates.
-		try {
-			getJdbcTemplate().batchUpdate(getInsertSql(), getInsertBatchPreparedStatementSetter(persistables));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().batchUpdate(getInsertSql(), getInsertBatchPreparedStatementSetter(persistables));
 	}
 	
 	public void update(T persistable) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistable);
-		try {
-			getJdbcTemplate().update(getUpdateSql(), getUpdatePreparedStatementSetter(persistable));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(getUpdateSql(), getUpdatePreparedStatementSetter(persistable));
 	}
 	
 	public void updateAll(final Collection<T> persistables) throws RepositoryDataAccessException {
 		checkPersitableValidity(persistables);
 		// TODO : Check the size of collection and break down call in smaller chunks to avoid large batch inserts/updates.
-		try {
-			getJdbcTemplate().batchUpdate(getUpdateSql(), getUpdateBatchPreparedStatementSetter(persistables));
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().batchUpdate(getUpdateSql(), getUpdateBatchPreparedStatementSetter(persistables));
 	}
 	
 //	@Deprecated
@@ -138,39 +122,23 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	}
 
 	public T findById(String id) throws RepositoryDataAccessException {
-		try{
-			List<T> l = getJdbcTemplate().query(getFindBySql(getTableName(), getIdField()), new Object[] { id }, getRowMapper());
-			return (l != null && !l.isEmpty()) ? l.get(0) : null;
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		List<T> l = getJdbcTemplate().query(getFindBySql(getTableName(), getIdField()), new Object[] { id }, getRowMapper());
+		return (l != null && !l.isEmpty()) ? l.get(0) : null;
 	}
 	
 	public Collection<T> findByName(String name) throws RepositoryDataAccessException {
-		try{
-			return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { "%" + name + "%" }, getRowMapper());
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { "%" + name + "%" }, getRowMapper());
 	}
 	
 	public void deleteById(String id) throws RepositoryDataAccessException {
-		try {
-			getJdbcTemplate().update(getDeleteBySql(getTableName(), getIdField()), new Object[]{ id });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(getDeleteBySql(getTableName(), getIdField()), new Object[]{ id });
 	}
 	
 	public void deleteByName(String name) throws RepositoryDataAccessException {
 		if (!isDeleteByNameOpSupported()) {
 			throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
 		}
-		try {
-			getJdbcTemplate().update(getDeleteBySql(getTableName(), getNameField()), new Object[] { name });
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		getJdbcTemplate().update(getDeleteBySql(getTableName(), getNameField()), new Object[] { name });
 	}
 	
 	public void deleteAll() throws RepositoryDataAccessException {
@@ -180,10 +148,6 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	}
 	
 	public int countAll() throws RepositoryDataAccessException {
-		try {
-			return getJdbcTemplate().queryForObject(getCountAllSql(getTableName()), Integer.class);
-		} catch (DataAccessException e) {
-			throw new RepositoryDataAccessException(e);
-		}
+		return getJdbcTemplate().queryForObject(getCountAllSql(getTableName()), Integer.class);
 	}
 }
