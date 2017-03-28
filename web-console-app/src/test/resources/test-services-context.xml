@@ -13,7 +13,7 @@
 
 	<bean id="studentAdminService" class="spring.desai.webconsole.service.impl.StudentAdminServiceImpl" />
 	
-	<!--bean id="readOnlyService" class="spring.desai.webconsole.service.impl.ReadOnlyServiceImpl" /-->
+	<bean id="readOnlyService" class="spring.desai.webconsole.service.impl.ReadOnlyServiceImpl" />
 	
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	

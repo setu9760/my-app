@@ -13,33 +13,14 @@ import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
-import spring.desai.common.repository.CostCodeRepository;
-import spring.desai.common.repository.PaymentRepository;
-import spring.desai.common.repository.ScholarshipRepository;
-import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.StudentTotalToPayRepository;
-import spring.desai.common.repository.SubjectRepository;
+import spring.desai.common.service.BaseService;
 import spring.desai.common.service.StudentAdminService;
 import spring.desai.common.service.exception.ServiceException;
 
 @Transactional
 @Service("studentAdminService")
-public class StudentAdminServiceImpl implements StudentAdminService {
-
-	@Autowired
-	private StudentRepository studentRepository;
-
-	@Autowired
-	private PaymentRepository paymentRepository;
-
-	@Autowired
-	private ScholarshipRepository scholorshipRepository;
-
-	@Autowired
-	private SubjectRepository subjectRepository;
-
-	@Autowired
-	private CostCodeRepository costCodeRepository;
+public class StudentAdminServiceImpl extends BaseService implements StudentAdminService {
 
 	@Autowired
 	private StudentTotalToPayRepository studentTotalToPayRepository;
@@ -110,7 +91,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 	@Override
 	public void awardScholorship(Scholarship scholorship) throws ServiceException {
 		notNull(scholorship);
-		scholorshipRepository.save(scholorship);
+		scholarshipRepository.save(scholorship);
 		// TODO create payment id properly. However I think it is valid to have
 		// same id as scholarship.
 		makePayment(new Payment(scholorship.getId(), scholorship.getTotal_amount(), PaymentType.SCHOLORSHIP, scholorship.getStud_id(), "SCHLR_ID:" + scholorship.getId()), true);
@@ -138,7 +119,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
 		notNull(scholorship);
 		// TODO if amount has changed then need to update payment through here aswell but is it correct to create payment object here?. 
 		// Actually thinking about it I could load the payment from repository and then amend the amount from scholorship.  
-		scholorshipRepository.update(scholorship);
+		scholarshipRepository.update(scholorship);
 		Payment p = paymentRepository.findById(scholorship.getId());
 		p.setAmount(scholorship.getTotal_amount());
 		amendPayment(p);

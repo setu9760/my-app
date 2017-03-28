@@ -3,11 +3,11 @@ package spring.desai.common.secure.user;
 import static spring.desai.common.utils.UserAuthenticationConstants.NO_ACTIVITY_PERFORMED;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -30,7 +30,7 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 	private final boolean accountNonLocked;
 	private final boolean credentialsNonExpired;
 	private final int failedAttempts;
-	private final Set<GrantedAuthority> authorities = new HashSet<>();
+	private final List<GrantedAuthority> authorities = new ArrayList<>();
 	private int state = NO_ACTIVITY_PERFORMED;
 	private final SIGN_ON_STATUS signOnStatus; 
 	// ~ Constructors

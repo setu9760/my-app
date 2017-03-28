@@ -2,9 +2,9 @@ package spring.desai.webconsole.service.impl;
 
 import static spring.desai.common.utils.UserRoleConstants.USER;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,7 +40,7 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 
 	@Override
 	public void createUser(User user, String rawPassword) throws ServiceException {
-		Set<Role> roles = new HashSet<>();
+		List<Role> roles = new ArrayList<>();
 		roles.add(roleRepository.findById(USER));
 		createUser(user, rawPassword, roles);
 	}

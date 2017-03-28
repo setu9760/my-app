@@ -5,8 +5,8 @@ import static spring.desai.common.utils.DataBaseConstants.STUDENT_TABLE_NAME;
 import static spring.desai.common.utils.DataBaseConstants.STUD_ID;
 import static spring.desai.common.utils.DataBaseConstants.SUBJECT_STUDENT_LINK_TABLE_NAME;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,14 +30,14 @@ public class Student extends Person {
 	@JoinTable(name = SUBJECT_STUDENT_LINK_TABLE_NAME, 
 			joinColumns= @JoinColumn(name = "stud_id", referencedColumnName = "id"), 
 			inverseJoinColumns = @JoinColumn(name = "subj_id", referencedColumnName ="id"))
-	private Collection<Subject> subjects = new HashSet<Subject>();
+	private Collection<Subject> subjects = new ArrayList<>();
 	
 	@OneToMany(mappedBy = STUD_ID, fetch=FetchType.EAGER)
-	private Collection<Payment> payments = new HashSet<Payment>();
+	private Collection<Payment> payments = new ArrayList<>();
 	
 	@OneToMany(mappedBy = STUD_ID, fetch=FetchType.EAGER)
-	private Collection<Scholarship> scholarships = new HashSet<Scholarship>();
-
+	private Collection<Scholarship> scholarships = new ArrayList<>();
+	
 	public Student() {
 		this(null, null, null, 0, null);
 	}

@@ -1,8 +1,8 @@
 package spring.desai.common.model.dto;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
@@ -60,7 +60,7 @@ public final class DTOFactory {
 	}
 	
 	public Collection<SubjectDTO> fromSubjects(Collection<Subject> subjects){
-		Set<SubjectDTO> subs = new HashSet<>(subjects.size());
+		List<SubjectDTO> subs = new ArrayList<>(subjects.size());
 		for (Subject subject : subjects) {
 			subs.add(fromSubject(subject));
 		}
@@ -68,7 +68,7 @@ public final class DTOFactory {
 	}
 	
 	public Collection<PaymentDTO> fromPayments(Collection<Payment> payments){
-		Set<PaymentDTO> pays = new HashSet<>(payments.size());
+		List<PaymentDTO> pays = new ArrayList<>(payments.size());
 		for (Payment p : payments) {
 			pays.add(fromPayment(p));
 		}
@@ -76,7 +76,7 @@ public final class DTOFactory {
 	}
 	
 	public Collection<ScholorshipDTO> fromScholorships(Collection<Scholarship> scholorships) {
-		Set<ScholorshipDTO> ss = new HashSet<>(scholorships.size());
+		List<ScholorshipDTO> ss = new ArrayList<>(scholorships.size());
 		for (Scholarship s: scholorships) { 
 			ss.add(fromScholorship(s));
 		}
@@ -84,7 +84,7 @@ public final class DTOFactory {
 	}
 	
 	public Collection<StudentDTO> fromstudents(Collection<Student> students){
-		Set<StudentDTO> ss = new HashSet<>(students.size());
+		List<StudentDTO> ss = new ArrayList<>(students.size());
 		for (Student s : students){
 			ss.add(fromStudent(s));
 		}
@@ -92,7 +92,7 @@ public final class DTOFactory {
 	}
 	
 	public Collection<TutorDTO> fromTutors(Collection<Tutor> tutors) {
-		Set<TutorDTO> ts = new HashSet<>(tutors.size());
+		List<TutorDTO> ts = new ArrayList<>(tutors.size());
 		for(Tutor t : tutors){
 			ts.add(fromTutor(t));
 		}
@@ -100,7 +100,7 @@ public final class DTOFactory {
 	}
 	
 	public Collection<PersonDTO> fromUsersToPersonDTOs(Collection<User> users) {
-		Set<PersonDTO> ps = new HashSet<>(users.size());
+		List<PersonDTO> ps = new ArrayList<>(users.size());
 		for (User u : users) {
 			ps.add(fromUserToPersonDTOs(u));
 		}
@@ -147,7 +147,7 @@ public final class DTOFactory {
 	public Collection<Student> fromStudentDTOs(Collection<StudentDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Student> studs = new HashSet<>(dtos.size());
+		List<Student> studs = new ArrayList<>(dtos.size());
 		for (StudentDTO s : dtos) {
 			studs.add(fromStudentDTO(s));
 		}
@@ -157,7 +157,7 @@ public final class DTOFactory {
 	public Collection<Tutor> fromTutorDTOs(Collection<TutorDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Tutor> tutors= new HashSet<>(dtos.size());
+		List<Tutor> tutors= new ArrayList<>(dtos.size());
 		for (TutorDTO t : dtos) {
 			tutors.add(fromTutorDTO(t));
 		}
@@ -167,7 +167,7 @@ public final class DTOFactory {
 	public Collection<Subject> fromSubjectDTOs(Collection<SubjectDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Subject> subs = new HashSet<>(dtos.size());
+		List<Subject> subs = new ArrayList<>(dtos.size());
 		for (SubjectDTO s : dtos) {
 			subs.add(fromSubjectDTO(s));
 		}
@@ -177,7 +177,7 @@ public final class DTOFactory {
 	public Collection<Cost> fromCostDTOs(Collection<CostDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Cost> costs = new HashSet<>(dtos.size());
+		List<Cost> costs = new ArrayList<>(dtos.size());
 		for (CostDTO c : dtos) {
 			costs.add(fromCostDTO(c));
 		}
@@ -187,7 +187,7 @@ public final class DTOFactory {
 	public Collection<Scholarship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
 		if(dtos == null)
 			return null;
-		Set<Scholarship> schols = new HashSet<>(dtos.size());
+		List<Scholarship> schols = new ArrayList<>(dtos.size());
 		for (ScholorshipDTO s : dtos) {
 			schols.add(fromScholorshipDTO(s));
 		}
@@ -197,7 +197,7 @@ public final class DTOFactory {
 	public Collection<Payment> fromPaymentDTOs(Collection<PaymentDTO> dtos) {
 		if(dtos == null)
 			return null;
-		Set<Payment> payments = new HashSet<>(dtos.size());
+		List<Payment> payments = new ArrayList<>(dtos.size());
 		for (PaymentDTO p : dtos) {
 			payments.add(fromPaymentDTO(p));
 		}
