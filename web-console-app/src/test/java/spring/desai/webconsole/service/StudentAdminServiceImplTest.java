@@ -148,44 +148,44 @@ public class StudentAdminServiceImplTest {
 		}
 	}
 
-	@Test
-	public void testUpdate() {
-		studentAdminService.update(null);
-	}
-
-	@Test
-	public void testUpdateAll() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAddToSubject() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRemoveFromSubject() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testMakePayment() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAwardScholorship() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAmendPayment() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAmendScholorship() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	public void testUpdate() {
+//		studentAdminService.update(null);
+//	}
+//
+//	@Test
+//	public void testUpdateAll() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testAddToSubject() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testRemoveFromSubject() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testMakePayment() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testAwardScholorship() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testAmendPayment() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testAmendScholorship() {
+//		fail("Not yet implemented");
+//	}
 
 }
