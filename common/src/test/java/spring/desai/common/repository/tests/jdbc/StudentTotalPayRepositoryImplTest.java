@@ -41,30 +41,24 @@ public class StudentTotalPayRepositoryImplTest {
 
 	@Test
 	public void testUpdateTotalPayBy() {
-		double newTotal = studentTotalPayRepository.getCurrentTotalToPay(null);
-		assertThat(newTotal, is(equalTo(0d)));
+		double newTotalToPay = studentTotalPayRepository.getCurrentTotalToPay(null);
+		assertThat(newTotalToPay, is(equalTo(0d)));
 		
-		newTotal = studentTotalPayRepository.getCurrentTotalToPay("studentid1");
-		assertThat(newTotal, is(equalTo(0d)));
+		newTotalToPay = studentTotalPayRepository.getCurrentTotalToPay("studentid1");
+		assertThat(newTotalToPay, is(equalTo(0d)));
 		
 		try {
-			newTotal = studentTotalPayRepository.updateTotalToPayBy(null, 500);
+			newTotalToPay = studentTotalPayRepository.updateTotalToPayBy(null, 500);
 			fail("Should have failed with IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertThat(e.getMessage(), is(equalTo(I18N.getNoArgString("error.null.id"))));
 		}
+		studentTotalPayRepository.addDefaultTotalToPayRow("studentid1");
+		newTotalToPay = studentTotalPayRepository.updateTotalToPayBy("studentid1", 500d);
+		assertThat(newTotalToPay, is(equalTo(500d)));
 		
-		newTotal = studentTotalPayRepository.updateTotalToPayBy("studentid1", 500d);
-		assertThat(newTotal, is(equalTo(500d)));
-		
-		newTotal = studentTotalPayRepository.updateTotalToPayBy("studentid1", -200d);
-		assertThat(newTotal, is(equalTo(300d)));
-		
-		newTotal = studentTotalPayRepository.updateTotalToPayBy("studentid1", -500d);
-		assertThat(newTotal, is(equalTo(-200d)));
-		
-		newTotal = studentTotalPayRepository.updateTotalToPayBy("studentid1", 500d);
-		assertThat(newTotal, is(equalTo(300d)));
+		newTotalToPay = studentTotalPayRepository.updateTotalToPayBy("studentid1", -200d);
+		assertThat(newTotalToPay, is(equalTo(-200d)));
 	}
 
 }

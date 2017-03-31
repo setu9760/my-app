@@ -14,10 +14,19 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.sql.DataSource;
+
+import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -37,6 +46,7 @@ import spring.desai.common.utils.I18N;
 
 @ActiveProfiles(profiles = { "jdbc" })
 @RunWith(SpringJUnit4ClassRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ContextConfiguration(locations = { "classpath:/test-application-context.xml", "classpath:/test-services-context.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class StudentAdminServiceImplTest {
@@ -44,6 +54,25 @@ public class StudentAdminServiceImplTest {
 	@Autowired private StudentAdminService studentAdminService;
 	
 	@Autowired private ReadOnlyService readOnlyService;
+	
+	@Value("classpath:sql/drop-ddl.sql")
+	private Resource drop_ddl;
+	@Value("classpath:sql/ddl.sql")
+	private Resource ddl;
+	@Value("classpath:sql/dml.sql")
+	private Resource dml;
+	
+	@Autowired
+	private DataSource dataSource;
+	
+	@Before
+	public void setUp() throws Exception {
+			System.out.println("Refreshing database with database populator");
+			ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+			populator.setContinueOnError(true);
+			populator.addScripts(drop_ddl, ddl, dml);
+			DatabasePopulatorUtils.execute(populator, dataSource);
+	}
 	
 	@Test
 	public void testSave() {
