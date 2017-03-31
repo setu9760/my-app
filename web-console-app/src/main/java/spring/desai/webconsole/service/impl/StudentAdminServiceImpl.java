@@ -17,29 +17,44 @@ import spring.desai.common.repository.StudentTotalToPayRepository;
 import spring.desai.common.service.BaseService;
 import spring.desai.common.service.StudentAdminService;
 import spring.desai.common.service.exception.ServiceException;
+import spring.desai.common.utils.I18N;
 
 @Transactional
 @Service("studentAdminService")
 public class StudentAdminServiceImpl extends BaseService implements StudentAdminService {
 
-	@Autowired
-	private StudentTotalToPayRepository studentTotalToPayRepository;
-
 	@Override
 	public void save(Student student) throws ServiceException {
 		studentRepository.save(student);
+		studentTotalToPayRepository.addDefaultTotalToPayRow(student.getId());
+		for(Subject s : student.getSubjects())
+			addToSubject(student, s);
+		for(Payment p : student.getPayments())
+			makePayment(p);
+		for(Scholarship s : student.getScholarships())
+			awardScholorship(s);
+		
 	}
 
 	@Override
 	public void saveAll(Collection<Student> students) throws ServiceException {
-		studentRepository.saveAll(students);
+		notNull(students);
+		// TODO This should use the saveAll methods from repositories instead of looping through the list. 
+		for (Student s : students)
+			save(s);
 	}
 
+	/**
+	 * <b>NOTE - </b>This method must only be used to update personal details of the student. 
+	 */
 	@Override
 	public void update(Student student) throws ServiceException {
 		studentRepository.update(student);
 	}
 
+	/**
+	 * <b>NOTE - </b>This method must only be used to update personal details of the students. 
+	 */
 	@Override
 	public void updateAll(Collection<Student> students) throws ServiceException {
 		studentRepository.updateAll(students);
@@ -50,7 +65,9 @@ public class StudentAdminServiceImpl extends BaseService implements StudentAdmin
 		notNull(student);
 		if (!subjectRepository.isStudentInSubject(student.getId(), subject)) {
 			subjectRepository.addStudentToSubject(student.getId(), subject);
-			studentTotalToPayRepository.updateTotalToPayBy(student.getId(),	costCodeRepository.findById(subject.getCostCode()).getAmount());
+			studentTotalToPayRepository.updateTotalToPayBy(student.getId(), studentTotalToPayRepository.getCurrentTotalToPay(student.getId())+costCodeRepository.findById(subject.getCostCode()).getAmount());
+		} else {
+			log.warn("Tried to add student to a subject more than once.");
 		}
 	}
 
@@ -59,7 +76,9 @@ public class StudentAdminServiceImpl extends BaseService implements StudentAdmin
 		notNull(student);
 		if (subjectRepository.isStudentInSubject(student.getId(), subject)) {
 			subjectRepository.removeStudentFromSubject(student.getId(), subject);
-			studentTotalToPayRepository.updateTotalToPayBy(student.getId(), -costCodeRepository.findById(subject.getCostCode()).getAmount());
+			studentTotalToPayRepository.updateTotalToPayBy(student.getId(), studentTotalToPayRepository.getCurrentTotalToPay(student.getId())-costCodeRepository.findById(subject.getCostCode()).getAmount());
+		} else {
+			log.warn("Tried to remove student for where student is not added yet to the subject");
 		}
 	}
 
@@ -92,28 +111,37 @@ public class StudentAdminServiceImpl extends BaseService implements StudentAdmin
 	public void awardScholorship(Scholarship scholorship) throws ServiceException {
 		notNull(scholorship);
 		scholarshipRepository.save(scholorship);
-		// TODO create payment id properly. However I think it is valid to have
-		// same id as scholarship.
+		// TODO create payment id properly. However I think it is valid to have same id as scholarship.
 		makePayment(new Payment(scholorship.getId(), scholorship.getTotal_amount(), PaymentType.SCHOLORSHIP, scholorship.getStud_id(), "SCHLR_ID:" + scholorship.getId()), true);
 	}
 
 	@Override
 	public void amendPayment(Payment payment) throws ServiceException {
 		notNull(payment);
+		Payment orig = paymentRepository.findById(payment.getId());
+		if (!orig.getStud_id().equalsIgnoreCase(payment.getStud_id())) {
+			log.warn(I18N.getString("error.update.studid.not.allowed"));
+			throw new ServiceException(I18N.getString("error.update.studid.not.allowed"));
+		} 
 		double totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
-		Payment oldPayment = paymentRepository.findById(payment.getId());
+//		Payment oldPayment = paymentRepository.findById(payment.getId());
 		double totalPaid = paymentRepository.getTotalPaid(payment.getStud_id());
 		if ((totalPaid + payment.getAmount()) <= totalTopay) {
 			paymentRepository.update(payment);
 		} else {
-			throw new IllegalArgumentException("You cannot update payment with amount higher than totalToPay.\ntotalToPay "
-					+ totalTopay + " : totalPaid " + totalPaid);
+			throw new IllegalArgumentException(I18N.getString("error.higher.payment.than.required", new Object[] {totalTopay, totalPaid}));
 		}
 		// TODO amend totalToPay here aswell.
-		studentTotalToPayRepository.updateTotalToPayBy(payment.getStud_id(), -oldPayment.getAmount());
-		studentTotalToPayRepository.updateTotalToPayBy(payment.getId(), payment.getAmount());
+		studentTotalToPayRepository.updateTotalToPayBy(payment.getStud_id(), totalTopay + orig.getAmount());
+		totalTopay = studentTotalToPayRepository.getCurrentTotalToPay(payment.getStud_id());
+		studentTotalToPayRepository.updateTotalToPayBy(payment.getStud_id(), totalTopay - payment.getAmount());
 	}
-
+	
+	@Override
+	public void issueRefund(Payment payment) throws ServiceException {
+		makePayment(payment);
+	}
+	
 	@Override
 	public void amendScholorship(Scholarship scholorship) throws ServiceException {
 		notNull(scholorship);

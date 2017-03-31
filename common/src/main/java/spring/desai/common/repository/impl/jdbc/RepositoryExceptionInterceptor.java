@@ -25,7 +25,7 @@ public class RepositoryExceptionInterceptor {
 		try {
 			return object.proceed();
 		} catch (DataAccessException e) {
-			log.error(e);
+			log.error("error occured while performing repository operations", e);
 			throw new RepositoryDataAccessException(e);
 		}
 	}

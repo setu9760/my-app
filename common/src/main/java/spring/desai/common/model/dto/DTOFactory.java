@@ -146,7 +146,7 @@ public final class DTOFactory {
 	
 	public Collection<Student> fromStudentDTOs(Collection<StudentDTO> dtos){
 		if(dtos == null)
-			return null;
+			return new ArrayList<>();
 		List<Student> studs = new ArrayList<>(dtos.size());
 		for (StudentDTO s : dtos) {
 			studs.add(fromStudentDTO(s));
@@ -156,7 +156,7 @@ public final class DTOFactory {
 	
 	public Collection<Tutor> fromTutorDTOs(Collection<TutorDTO> dtos){
 		if(dtos == null)
-			return null;
+			return new ArrayList<>();
 		List<Tutor> tutors= new ArrayList<>(dtos.size());
 		for (TutorDTO t : dtos) {
 			tutors.add(fromTutorDTO(t));
@@ -166,7 +166,7 @@ public final class DTOFactory {
 	
 	public Collection<Subject> fromSubjectDTOs(Collection<SubjectDTO> dtos){
 		if(dtos == null)
-			return null;
+			return new ArrayList<>();
 		List<Subject> subs = new ArrayList<>(dtos.size());
 		for (SubjectDTO s : dtos) {
 			subs.add(fromSubjectDTO(s));
@@ -176,7 +176,7 @@ public final class DTOFactory {
 	
 	public Collection<Cost> fromCostDTOs(Collection<CostDTO> dtos){
 		if(dtos == null)
-			return null;
+			return new ArrayList<>();
 		List<Cost> costs = new ArrayList<>(dtos.size());
 		for (CostDTO c : dtos) {
 			costs.add(fromCostDTO(c));
@@ -186,7 +186,7 @@ public final class DTOFactory {
 	
 	public Collection<Scholarship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
 		if(dtos == null)
-			return null;
+			return new ArrayList<>();
 		List<Scholarship> schols = new ArrayList<>(dtos.size());
 		for (ScholorshipDTO s : dtos) {
 			schols.add(fromScholorshipDTO(s));
@@ -196,7 +196,7 @@ public final class DTOFactory {
 	
 	public Collection<Payment> fromPaymentDTOs(Collection<PaymentDTO> dtos) {
 		if(dtos == null)
-			return null;
+			return new ArrayList<>();
 		List<Payment> payments = new ArrayList<>(dtos.size());
 		for (PaymentDTO p : dtos) {
 			payments.add(fromPaymentDTO(p));

@@ -29,6 +29,11 @@ public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService 
 	}
 
 	@Override
+	public Double getTotalToPay(String studId) {
+		return studentTotalToPayRepository.getCurrentTotalToPay(studId);
+	}
+	
+	@Override
 	public Subject getSubjectById(String id) {
 		return subjectRepository.findById(id);
 	}

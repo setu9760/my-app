@@ -22,6 +22,8 @@ public interface StudentAdminService {
 	
 	void makePayment(Payment payment) throws ServiceException;
 	
+	void issueRefund(Payment payment) throws ServiceException;
+	
 	void awardScholorship(Scholarship scholorship) throws ServiceException;
 	
 	void removeFromSubject(Student student, Subject subject) throws ServiceException;

@@ -15,12 +15,14 @@ public interface StudentTotalToPayRepository {
 	 * @return
 	 * @throws RepositoryDataAccessException
 	 */
-	double updateTotalToPayBy(String studId, double addToTotal) throws RepositoryDataAccessException;
+	Double updateTotalToPayBy(String studId, double addToTotal) throws RepositoryDataAccessException;
 	
 	/**
 	 * @param studId
 	 * @return the total amount owed by student for payments.
 	 * @throws RepositoryDataAccessException
 	 */
-	public double getCurrentTotalToPay(String studId) throws RepositoryDataAccessException;
+	public Double getCurrentTotalToPay(String studId) throws RepositoryDataAccessException;
+	
+	public void addDefaultTotalToPayRow(String studId) throws RepositoryDataAccessException;
 }

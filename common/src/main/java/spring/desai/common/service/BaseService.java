@@ -1,5 +1,6 @@
 package spring.desai.common.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -8,6 +9,7 @@ import spring.desai.common.repository.PaymentRepository;
 import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.ScholarshipRepository;
 import spring.desai.common.repository.StudentRepository;
+import spring.desai.common.repository.StudentTotalToPayRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.TutorRepository;
 
@@ -40,4 +42,9 @@ public abstract class BaseService {
 	@Autowired
 	@Qualifier("costCodeRepository")
 	protected CostCodeRepository costCodeRepository;
+	
+	@Autowired
+	protected StudentTotalToPayRepository studentTotalToPayRepository;
+	
+	protected final Logger log = Logger.getLogger(getClass());
 }

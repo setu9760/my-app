@@ -13,6 +13,8 @@ public interface ReadOnlyService {
 
 	public Collection<Student> getAllStudents() throws ServiceException;
 
+	public Double getTotalToPay(String studId) throws ServiceException;
+	
 	public Student getStudentById(String id) throws ServiceException;
 
 	public Collection<Subject> getAllSubjects() throws ServiceException;
@@ -25,7 +27,7 @@ public interface ReadOnlyService {
 
 	public Collection<Tutor> getTutorsFromSubjectId(String subjectId) throws ServiceException;
 
-	public Collection<Payment> getPaymentsForStudent(String stud_id) throws ServiceException;
+	public Collection<Payment> getPaymentsForStudent(String studid) throws ServiceException;
 
 	public Payment getPaymentById(String id) throws ServiceException;
 
