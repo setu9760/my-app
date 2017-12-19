@@ -2,21 +2,18 @@ package spring.desai.webconsole.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,10 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-import spring.desai.common.secure.MaxLoginAttemptsExceededException;
-import spring.desai.common.secure.UserAlreadyLoggedinException;
 import spring.desai.common.secure.handlers.CsrfTokenResponseHeaderBindingFilter;
-import spring.desai.common.secure.user.UserLoginDetails;
 
 @Order(100)
 @Configuration
@@ -52,6 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	@Qualifier("authenticationFailureHandler")
 	private AuthenticationFailureHandler authenticationFailureHandler;
+	
+	@Autowired
+	@Qualifier("preAuthenticationCheckHandler")
+	private UserDetailsChecker preAuthenticationCheckHandler;
 	
 	@Autowired
 	@Qualifier("csrfTokenFilter")
@@ -87,29 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().sessionManagement().maximumSessions(1).expiredUrl("/login?logout");
 	}
 	
+	@Bean(name="daoAuthenticationProvider")
 	public AuthenticationProvider getDaoAuthenticationProvider() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setPreAuthenticationChecks(new UserDetailsChecker() {
-
-			@Override
-			public void check(UserDetails user) {
-				if (!user.isAccountNonLocked()) 
-					throw new LockedException("User account is locked");
-				if (!user.isEnabled()) 
-					throw new DisabledException("User is disabled");
-				if (!user.isAccountNonExpired()) 
-					throw new AccountExpiredException("User account has expired");
-				if (user instanceof UserLoginDetails) {
-					UserLoginDetails uld = (UserLoginDetails) user;
-					if (uld.getFailedAttempts() >= 3) {
-						throw new MaxLoginAttemptsExceededException(uld.getUsername(), uld.getFailedAttempts());
-					}
-					if (uld.isAlreadyLoggedIn()) {
-						throw new UserAlreadyLoggedinException(uld.getUsername());
-					}
-				}
-			}
-		});
+		provider.setPreAuthenticationChecks(preAuthenticationCheckHandler);
 		provider.setUserDetailsService(userDetailsService);
 		return provider;
 	}

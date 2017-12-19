@@ -15,8 +15,6 @@ import spring.desai.common.model.User;
 import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
-import spring.desai.common.secure.MaxLoginAttemptsExceededException;
-import spring.desai.common.secure.UserAlreadyLoggedinException;
 import spring.desai.common.secure.user.UserLoginDetails;
 
 @Service("userDetailsService")
@@ -36,9 +34,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	private static final Logger log = Logger.getLogger(UserDetailsServiceImpl.class);
 	
-	// TODO: Fetch this via some sort of solution property.
-	private static final int MAX_FAILED_ATTEMPTS = 4;
-	
 	@Override
 //	@Transactional(noRollbackFor=AuthenticationException.class)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -51,14 +46,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 		UserLoginDetails userLogin = (UserLoginDetails) usrrRepository.getUserLoginDetails(username);
 		
-		if (userLogin.getFailedAttempts() >= MAX_FAILED_ATTEMPTS) {
-			throw new MaxLoginAttemptsExceededException(username, userLogin.getFailedAttempts());
-		}
-		if (userLogin.isAlreadyLoggedIn()) {
-			throw new UserAlreadyLoggedinException(username);
-		}
-		
-		//TODO Modify roleRepository to return collection of GrantedAuthority i.e. Roles
 		Collection<Role> roles = roleRepository.getRolesForUserId(username);
 		userLogin.addAllAuthorities(roles);
 		return userLogin;
