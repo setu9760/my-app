@@ -10,11 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.desai.common.model.Role;
@@ -24,8 +25,8 @@ import spring.desai.common.model.dto.PersonDTO;
 import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.ReadOnlyService;
 
-@RestController
-@RequestMapping(value = "/admin", produces = "application/json;charset=UTF-8")
+@Controller
+@RequestMapping(value = "/admin")
 public class UserMaintananceController {
 
 	private static final Logger logger = Logger.getLogger(UserMaintananceController.class);
@@ -40,27 +41,32 @@ public class UserMaintananceController {
 	
 	private DTOFactory dtoFactory = DTOFactory.getInstance();
 	
-	@RequestMapping(value = "/resetSignOnStatus/{userId}", method = RequestMethod.GET)
-	public void resetSignOnStatus(@PathVariable String userId, Principal principal) throws Exception {
-		String currentUser = principal.getName();
-//		Collection<? extends GrantedAuthority> roles = ud.getAuthorities();
-		// TODO Check if this user has super role. If so allow the user to reset itself otherwise log it as warning. 
-		if (userId.equalsIgnoreCase(currentUser)) {
-			logger.warn("Admin User " + currentUser + " cannot reset its own signon status Unless the user has role SUPER assigned.");
-			return;
-		}
-		adminUserMaintananceService.resetUserSignOn(userId);
+	@GetMapping
+	public ModelAndView admin(){
+		ModelAndView mv = new ModelAndView("user_maintenace");
+		mv.addObject("users", dtoFactory.fromUsersToPersonDTOs(adminUserMaintananceService.getAllUsers()));
+		return mv;
 	}
 
-	@RequestMapping(value = "/register-user", method = RequestMethod.GET)
-	public ModelAndView registerUser() throws Exception {
-		return new ModelAndView("register");
+	@PostMapping(value = "/resetSignOnStatus")
+	public ModelAndView resetSignOnStatus2(HttpServletRequest request, Principal principal) throws Exception {
+		ModelAndView mv = new ModelAndView("user_maintenace");
+		mv.addObject("users", dtoFactory.fromUsersToPersonDTOs(adminUserMaintananceService.getAllUsers()));
+		String userId = request.getParameter("userId");
+		String currentUser = principal.getName();
+		if (userId.equalsIgnoreCase(currentUser)) {
+			logger.warn("Admin User " + currentUser + " cannot reset its own signon status Unless the user has role SUPER assigned.");
+			mv.addObject("error", "Admin User " + currentUser + " cannot reset its own signon status Unless the user has role SUPER assigned.");
+			return mv;
+		}
+		adminUserMaintananceService.resetUserSignOn(userId);mv.addObject("msg", "reset status for user " + userId);
+		return mv;
 	}
-	
-	@RequestMapping(value = "/register-user", method = RequestMethod.POST)
+
+	@PostMapping(value = "/register-user")
 	public ModelAndView registerUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mv = new ModelAndView("register");
-		
+		ModelAndView model = new ModelAndView("user_maintenance");
+		model.addObject("users", dtoFactory.fromUsersToPersonDTOs(adminUserMaintananceService.getAllUsers()));
 		String f = request.getParameter("firstName");
 		String l = request.getParameter("lastName");
 		String u = request.getParameter("username");
@@ -73,12 +79,12 @@ public class UserMaintananceController {
 				roles.add(readOnlyService.getAdminRole());
 			}
 			adminUserMaintananceService.createUser(new User(u, f, l, ""), p, roles);
-			mv.addObject("msg", "success");
+			model.addObject("msg", "success");
 		} catch (Exception e) {
 			logger.warn("Tried to create user with existing username: " + u, e);
-			mv.addObject("error", e.getMessage());
+			model.addObject("error", e.getMessage());
 		}
-		return mv;
+		return model;
 	}
 	
 	@RequestMapping(value = "/list-user", method = RequestMethod.GET)
