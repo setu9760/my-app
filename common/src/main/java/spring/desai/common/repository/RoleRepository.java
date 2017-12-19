@@ -25,7 +25,7 @@ public interface RoleRepository extends BasePersistableRepository<Role> {
 	 * @return Returns the roles assigned to the userId
 	 * @throws RepositoryDataAccessException
 	 */
-	Collection<? extends GrantedAuthority> getRolesForUserId(String userId) throws RepositoryDataAccessException;
+	Collection<Role> getRolesForUserId(String userId) throws RepositoryDataAccessException;
 	
 	/**
 	 * Check if the role is available to the userId 

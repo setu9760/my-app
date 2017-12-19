@@ -3,14 +3,15 @@ package spring.desai.webconsole.controllers.rest;
 import java.security.Principal;
 import java.util.Collection;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import spring.desai.common.model.Payment;
 import spring.desai.common.model.Student;
@@ -21,9 +22,9 @@ import spring.desai.common.service.ReadOnlyService;
 import spring.desai.common.service.StudentAdminService;
 
 
-@RestController
+@org.springframework.web.bind.annotation.RestController
 @RequestMapping(value = "/rest", produces = "application/json;charset=UTF-8")
-public class HomeController {
+public class RestController implements InitializingBean {
 
 	@Autowired
 	private ReadOnlyService readOnlyService;
@@ -31,6 +32,16 @@ public class HomeController {
 	@Autowired
 	private StudentAdminService studentAdminService;
 
+	@Autowired
+	ApplicationContext context;
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		for(String s : context.getBeanDefinitionNames()) {
+//			System.out.println(s);
+		}
+	}
+	
 	private DTOFactory dtoFactory = DTOFactory.getInstance();
 	
 	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)

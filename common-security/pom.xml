@@ -14,7 +14,6 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-security-version>3.2.5.RELEASE</spring-security-version>
 	</properties>
 	<dependencies>
 	
@@ -29,5 +28,6 @@
 			<version>${javax.servlet.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Spring security -->
 	</dependencies>
 </project>

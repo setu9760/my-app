@@ -13,10 +13,11 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
 
+	<aop:aspectj-autoproxy />
+	<context:annotation-config />
+
 	<beans>
 		<tx:annotation-driven />
-		<context:annotation-config />
-		
 		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 			<property name="driverClass" value="org.h2.Driver" />
 			<property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MVCC=TRUE;DATABASE_TO_UPPER=FALSE" />
@@ -31,7 +32,7 @@
 			<jdbc:script location="classpath:sql/dml.sql" />
 		</jdbc:initialize-database>
 
-		<context:component-scan	base-package="spring.desai.common.service" />
+		<context:component-scan	base-package="spring.desai.common.service, spring.desai.common.intereceptors" />
 	</beans>
 
 
@@ -46,7 +47,6 @@
 			<property name="dataSource" ref="dataSource" />
 		</bean>
 		
-		<aop:aspectj-autoproxy />
 	</beans>
 
 	<beans profile="jpa">

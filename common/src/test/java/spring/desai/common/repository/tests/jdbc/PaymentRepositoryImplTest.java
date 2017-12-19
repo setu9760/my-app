@@ -26,7 +26,11 @@ public class PaymentRepositoryImplTest extends AbstractRepositoryTest<Payment> {
 	@Autowired
 	PaymentRepository paymentRepository;
 	
-
+	@Override
+	protected boolean doRefereshDbBetweenTests() {
+		return true;
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 	}

@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -21,9 +22,10 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import spring.desai.common.repository.StudentTotalToPayRepository;
 import spring.desai.common.utils.I18N;
 
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 @ActiveProfiles(profiles = { "jdbc" })
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
+@ContextConfiguration(classes = JdbcTestConfigs.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class StudentTotalPayRepositoryImplTest {
 

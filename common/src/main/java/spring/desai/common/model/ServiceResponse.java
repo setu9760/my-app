@@ -1,4 +1,4 @@
-package spring.desai.common.service;
+package spring.desai.common.model;
 
 /**
  * Composite response object from service to weblayer. Services can enclose the

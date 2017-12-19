@@ -22,6 +22,10 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Schola
 	@Autowired
 	ScholarshipRepository scholorshipRepository;
 	
+	@Override
+	protected boolean doRefereshDbBetweenTests() {
+		return true;
+	}
 
 	@After
 	public void tearDown() throws Exception {

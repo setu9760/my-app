@@ -1,0 +1,2 @@
+drop all objects;
+commit;

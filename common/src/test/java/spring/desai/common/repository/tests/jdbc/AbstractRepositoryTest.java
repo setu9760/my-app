@@ -1,6 +1,5 @@
 package spring.desai.common.repository.tests.jdbc;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
@@ -19,12 +18,15 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
@@ -36,13 +38,13 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import spring.desai.common.model.Persistable;
 import spring.desai.common.repository.BasePersistableRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
 @Ignore
-@ActiveProfiles(profiles = { "jdbc" })
+@EnableAspectJAutoProxy(proxyTargetClass=true)
+@ActiveProfiles(profiles = { "jdbc", "repoDebugLoggingEnabled" })
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/test-application-context.xml" })
+@ContextConfiguration(classes = JdbcTestConfigs.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public abstract class  AbstractRepositoryTest<T extends Persistable> {
 
@@ -96,7 +98,8 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 				getRepo().save(mockPersistable(getPersistableClazz(), "MOCK-ID-1"));
 				fail("Should have thrown DataAccessException while saving null to non-null column");
 			} catch (Exception e) {
-				assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+				assertThat(ExceptionUtils.indexOfThrowable(e, DataIntegrityViolationException.class), is(not(-1)));
+				
 			}
 		}
 		
@@ -133,7 +136,7 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 				getRepo().saveAll(mockPersistables(getPersistableClazz(), "studentid"));
 				fail("Should have thrown DataAccessException while saving null to non-null column");
 			} catch (Exception e) {
-				assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+				assertThat(ExceptionUtils.indexOfThrowable(e, DataIntegrityViolationException.class), is(not(-1)));
 			}
 		}
 		
@@ -164,7 +167,7 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 				getRepo().update(mockPersistable(getPersistableClazz(), idToUpdate));
 				fail("Should have thrown DataAccessException while saving null to non-null column");
 			} catch (Exception e) {
-				assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+				assertThat(ExceptionUtils.indexOfThrowable(e, DataIntegrityViolationException.class), is(not(-1)));
 			}
 		}
 		
@@ -204,7 +207,7 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 				getRepo().updateAll(mockPersistables(getPersistableClazz(), idToUpdate));
 				fail("Should have thrown DataAccessException while saving null to non-null column");
 			} catch (Exception e) {
-				assertThat(e, is(instanceOf(RepositoryDataAccessException.class)));
+				assertThat(ExceptionUtils.indexOfThrowable(e, DataIntegrityViolationException.class), is(not(-1)));
 			}
 		}
 		

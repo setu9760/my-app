@@ -1,6 +1,7 @@
 package spring.desai.common.repository.tests.jdbc;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -13,22 +14,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.After;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 
 import spring.desai.common.model.Role;
 import spring.desai.common.repository.BasePersistableRepository;
 import spring.desai.common.repository.RoleRepository;
-import spring.desai.common.repository.exception.RepositoryDataAccessException;
 import spring.desai.common.utils.I18N;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 
 	@Autowired
 	private RoleRepository roleRepository; 
-	
 	
 	@Override
 	protected boolean doRefereshDbBetweenTests() {
@@ -162,7 +166,7 @@ public class RoleRepositoryImplTest extends AbstractRepositoryTest<Role> {
 			roleRepository.assignRoleToUser(null, role);
 			fail("Should have thrown exception");
 		} catch (Exception e) {
-			assertThat(e, instanceOf(RepositoryDataAccessException.class));
+			assertThat(ExceptionUtils.indexOfThrowable(e, DataIntegrityViolationException.class), is(not(-1)));
 		}
 		boolean isAvailable = roleRepository.isRoleAvailableToUser("USER-1", new Role("ROLE3", ""));
 		assertFalse(isAvailable);

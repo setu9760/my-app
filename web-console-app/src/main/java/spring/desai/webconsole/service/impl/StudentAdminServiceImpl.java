@@ -1,10 +1,7 @@
 package spring.desai.webconsole.service.impl;
 
-import static org.springframework.util.Assert.notNull;
-
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +10,6 @@ import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
-import spring.desai.common.repository.StudentTotalToPayRepository;
 import spring.desai.common.service.BaseService;
 import spring.desai.common.service.StudentAdminService;
 import spring.desai.common.service.exception.ServiceException;
@@ -25,6 +21,7 @@ public class StudentAdminServiceImpl extends BaseService implements StudentAdmin
 
 	@Override
 	public void save(Student student) throws ServiceException {
+		notNull(student);
 		studentRepository.save(student);
 		studentTotalToPayRepository.addDefaultTotalToPayRow(student.getId());
 		for(Subject s : student.getSubjects())

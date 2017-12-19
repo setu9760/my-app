@@ -28,6 +28,10 @@ public class SubjectRepositoryImplTest extends AbstractRepositoryTest<Subject> {
 	@Autowired
 	SubjectRepository subjectRepository;
 	
+	@Override
+	protected boolean doRefereshDbBetweenTests() {
+		return true;
+	}
 
 	@After
 	public void tearDown() throws Exception {

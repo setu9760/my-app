@@ -5,46 +5,46 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
 
+@Configuration
+@ComponentScan(basePackages = { "spring.desai.common.rowmappers, spring.desai.common.repository.impl.jdbc" })
+public class JdbcTestConfigs {
 
-import spring.desai.common.repository.StudentRepository;
-import spring.desai.common.repository.impl.jdbc.StudentRepositoryImpl;
-
-//@Configuration
-public class Configs {
-	
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/test_test");
-		dataSource.setUsername("desai");
+		dataSource.setDriverClassName("org.h2.Driver");
+		dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MVCC=TRUE;DATABASE_TO_UPPER=FALSE");
+		dataSource.setUsername("sa");
 		dataSource.setPassword("password");
 		DatabasePopulatorUtils.execute(getDatabasePopulator(), dataSource);
 		return dataSource;
 	}
 
 	@Bean(name = "transactionManager")
-	public PlatformTransactionManager getTransactionManager() {
-		return new DataSourceTransactionManager(getDataSource());
+	public PlatformTransactionManager getTransactionManager(DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
 	}
 
-	@Bean(name = "studentRepository")
-	public StudentRepository getStudentRepository() {
-		return new StudentRepositoryImpl();
+	@Bean(name = "jdbcTemplate")
+	public JdbcTemplate getJdbcTemplate(DataSource dataSource) {
+		return new JdbcTemplate(dataSource, false);
 	}
 
-	@Value("sql/drop-schema.sql")
+	@Value("classpath:sql/drop-ddl.sql")
 	private Resource recreateDDL;
-	@Value("sql/ddl.sql")
+	@Value("classpath:sql/ddl.sql")
 	private Resource ddl;
-	@Value("sql/dml.sql")
+	@Value("classpath:sql/dml.sql")
 	private Resource dml;
 
 	private DatabasePopulator getDatabasePopulator() {

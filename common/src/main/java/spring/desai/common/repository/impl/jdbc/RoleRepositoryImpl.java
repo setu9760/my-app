@@ -35,18 +35,18 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	@Override
 	public Collection<String> getUserIdsforRole(Role role) throws RepositoryDataAccessException {
 		checkPersitableValidity(role);
-			return getJdbcTemplate().queryForList(GET_USER_ID_FOR_ROLE_SQL, new Object[] { role.getId() }, String.class);
+		return getJdbcTemplate().queryForList(GET_USER_ID_FOR_ROLE_SQL, new Object[] { role.getId() }, String.class);
 	}
 
 	@Override
 	public Collection<Role> getRolesForUserId(String userId) throws RepositoryDataAccessException {
-			return getJdbcTemplate().query(GET_ROLES_FOR_FOR_USER_SQL, new Object[] { userId }, getRowMapper());
+		return getJdbcTemplate().query(GET_ROLES_FOR_FOR_USER_SQL, new Object[] { userId }, getRowMapper());
 	}
 
 	@Override
 	public boolean isRoleAvailableToUser(String userId, Role role) throws RepositoryDataAccessException {
 		checkPersitableValidity(role);
-			return getJdbcTemplate().queryForObject(IS_ROLE_AVAILABLE_TO_USER_SQL, new Object[] {userId, role.getId()}, Integer.class) == 1;
+		return getJdbcTemplate().queryForObject(IS_ROLE_AVAILABLE_TO_USER_SQL, new Object[] {userId, role.getId()}, Integer.class) == 1;
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	@Override
 	public void unassignRole(String userId, Role role) throws RepositoryDataAccessException {
 		checkPersitableValidity(role);
-			getJdbcTemplate().update(UNASSIGN_ROLE_FOR_USER_SQL, new Object[] { userId, role.getId() });
+		getJdbcTemplate().update(UNASSIGN_ROLE_FOR_USER_SQL, new Object[] { userId, role.getId() });
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 		if (userId == null || userId.isEmpty()) {
 			throw new IllegalArgumentException(I18N.getString("error.null.id"));
 		}
-			getJdbcTemplate().update(REVOKE_ROLES_FOR_USER_SQL, new Object[] { userId });
+		getJdbcTemplate().update(REVOKE_ROLES_FOR_USER_SQL, new Object[] { userId });
 	}
 
 	@Override

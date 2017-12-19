@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/")
-public class IvyExamplesController extends BaseController {
+public class HomeController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {

@@ -2,13 +2,13 @@ package spring.desai.webconsole.service;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -120,7 +121,7 @@ public class StudentAdminServiceImplTest {
 		try {
 			studentAdminService.saveAll(c);
 		} catch (Exception e) {
-			assertThat(e.getCause(), is(instanceOf(DuplicateKeyException.class)));
+			assertTrue(ExceptionUtils.indexOfThrowable(e, DuplicateKeyException.class) != -1);
 		}
 	}
 	

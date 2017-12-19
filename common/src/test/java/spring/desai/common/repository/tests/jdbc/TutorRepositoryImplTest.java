@@ -27,7 +27,11 @@ public class TutorRepositoryImplTest extends AbstractRepositoryTest<Tutor> {
 	@Autowired
 	private TutorRepository tutorRepository;
 
-
+	@Override
+	protected boolean doRefereshDbBetweenTests() {
+		return true;
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 	}

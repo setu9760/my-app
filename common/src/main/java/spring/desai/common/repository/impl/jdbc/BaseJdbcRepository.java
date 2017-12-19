@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
@@ -40,10 +39,6 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 	private static final Logger logger = Logger.getLogger(BaseJdbcRepository.class);
 
 	private static final Logger sqlLogger = Logger.getLogger("jdbcdaolog");
-
-	@Autowired
-	@Qualifier("transactionManager")
-	private PlatformTransactionManager platformTransactionManager;
 
 	@Autowired
 	@Qualifier("jdbcTemplate")

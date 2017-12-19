@@ -21,7 +21,6 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 	@Autowired
 	private CostCodeRepository costCodeRepository;
 
-
 	@After
 	public void tearDown() throws Exception {
 	}

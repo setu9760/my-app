@@ -1,4 +1,4 @@
-package spring.desai.webconsole.config.aspects;
+package spring.desai.common.secure.interceptor;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class UserLoginHelperAspect {
+public class UserLoginHelperAspect{
 
 	@Pointcut("execution(* org.springframework.security.authentication.ProviderManager.authenticate())")
-	public void logUserLoginAttempt() {
+	public void pointcut() {
 
 	}
 
-	@Around("logUserLoginAttempt()")
+	@Around("pointcut()")
 	public Object aroundUserLoginAttempt(final ProceedingJoinPoint joinpoint) throws Throwable {
 		try {
 			Object result = joinpoint.proceed();
