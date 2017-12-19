@@ -56,11 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private CsrfTokenResponseHeaderBindingFilter csrfTokenFilter;
 	
 	@Autowired
-	private BCryptPasswordEncoder passwordEncrypter; 
+	private BCryptPasswordEncoder passwordEncoder; 
 	
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(getDaoAuthenticationProvider()).userDetailsService(userDetailsService).passwordEncoder(passwordEncrypter);
+		auth.authenticationProvider(getDaoAuthenticationProvider()); //.userDetailsService(userDetailsService).passwordEncoder(passwordEncrypter);
 	}
 
 	@Override
@@ -90,6 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setPreAuthenticationChecks(preAuthenticationCheckHandler);
 		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder);
 		return provider;
 	}
 }

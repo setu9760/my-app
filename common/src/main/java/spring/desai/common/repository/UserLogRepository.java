@@ -13,9 +13,15 @@ public interface UserLogRepository {
 	 * 
 	 * <p>
 	 * <b>
-	 * 0  : successful sign out
 	 * <p>1  : successful sign in
-	 * <p>-1 : Invalid sign in attempt
+	 * <p>2  : successful sign out
+	 * <p>3  : Credentials expired
+	 * <p>4  : Account locked
+	 * <p>5  : User already logged in
+	 * <p>6  : User exceeded MAX_FAILED_ATTEMPTS
+	 * <p>7  : Bad credentials supplied
+	 * <p>8  : Username not found
+	 * <p>-1 : Generic
 	 * </b>
 	 * 
 	 * @param userId userId of the user attempting to authenticate

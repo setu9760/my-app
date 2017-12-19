@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ import spring.desai.common.repository.UsrrRepository;
 
 @Component("loginSuccessHandler")
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+	
+	private final Logger log = Logger.getLogger(getClass());
 	
 	@Autowired
 	@Qualifier("userLogRepository")
@@ -40,7 +43,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	System.out.println("Logged In User " + ud.getUsername());
+    	log.info(String.format("Logged In User '%s'", ud.getUsername()));
     	usrrRepository.resetFailedAttempt(ud.getUsername());
     	usrrRepository.updateSignOnStatus(ud.getUsername(), SIGN_ON_STATUS.LOGGED_IN);
         userLogRepository.logUserActivity(ud.getUsername(), 1, request.getRemoteHost());

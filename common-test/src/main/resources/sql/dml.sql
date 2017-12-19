@@ -41,7 +41,7 @@ INSERT INTO user_function VALUES (3, 'Password expired');
 INSERT INTO user_function VALUES (4, 'Account locked');
 INSERT INTO user_function VALUES (5, 'User already logged in');
 INSERT INTO user_function VALUES (6, 'User exceeded MAX_FAILED_ATTEMPTS');
-INSERT INTO user_function VALUES (7, 'User tried to login from blocked ip address/host.');
+INSERT INTO user_function VALUES (7, 'Username not found');
 
 -- Insert to student
 INSERT INTO student VALUES('studentid1','f_name1','l_name1',21,'address1');
