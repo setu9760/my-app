@@ -12,7 +12,7 @@ public interface AdminUserMaintananceService {
 
 	void createUser(User user, String rawPassword, Collection<Role> rolesToAssign) throws ServiceException;
 
-	void removeUser(User user) throws ServiceException;
+	public User getUser(String userId) throws ServiceException;
 	
 	boolean isExistingUser(String userId) throws ServiceException;
 
@@ -27,5 +27,7 @@ public interface AdminUserMaintananceService {
 	void updateUserPersonalDetails(User user) throws ServiceException;
 
 	Collection<User> getAllUsers() throws ServiceException;
+
+	void removeUser(String userId) throws ServiceException;
 	
 }

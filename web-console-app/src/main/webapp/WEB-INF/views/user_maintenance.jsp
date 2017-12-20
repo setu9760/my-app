@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@page session="true"%>
 <html>
 <head>
@@ -25,7 +26,7 @@
 }
 
 #box {
-	width: 450px;
+	width: 350px;
 	padding: 10px;
 	margin: 10px auto;
 	background: #fff;
@@ -88,30 +89,26 @@
 	</c:if>
 	<div id="box">
 		<h3>Register User</h3>
-		<c:url value="/admin/register-user" var="registerUserUrl" />
-		<form name='registerForm' action="${registerUserUrl}" method="post"	onsubmit="return checkPasswords()">
+		<c:url value="${pageContext.request.contextPath}/admin/register-user" var="registerUserUrl" />
+		<form:form name="registerForm" action="${registerUserUrl}" method="post" modelAttribute="person" onsubmit="return checkPassword()">
 			<fieldset>
 				<table>
 					<tbody>
 						<tr>
+							<td><label for="id">User id</label></td>
+							<td><form:input path="id" type="text" id="id" name="id" /></td>
+						</tr>
+						<tr>
 							<td><label for="firstName">First Name</label></td>
-							<td><input type="text" id="firstName" name="firstName" /></td>
+							<td><form:input path ="firstname" type="text" id="firstName" name="firstName" /></td>
 						</tr>
 						<tr>
 							<td><label for="lastName">lastName</label></td>
-							<td><input type="text" id="lastName" name="lastName" /></td>
+							<td><form:input path ="lastname"  type="text" id="lastName" name="lastName" /></td>
 						</tr>
 						<tr>
-							<td><label for="username">Username</label></td>
-							<td><input type="text" id="username" name="username" /></td>
-						</tr>
-						<tr>
-							<td><label for="password1">Password</label></td>
-							<td><input type="password" id="password1" name="password1" /></td>
-						</tr>
-						<tr>
-							<td><label for="password2">Re-type Password</label></td>
-							<td><input type="password" id="password2" name="password2" /></td>
+							<td><label for="address">Address</label></td>
+							<td><form:input path ="address"  type="text" id="address" name="address" /></td>
 						</tr>
 						<tr>
 							<td><label for="adminUser">Admin user</label></td>
@@ -124,33 +121,26 @@
 				</table>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</fieldset>
-		</form>
+		</form:form>
 	</div>
 	<div id="box">
-		<h3>Reset user sign-on status</h3>
-		<c:url value="/admin/resetSignOnStatus" var="resetSignOnStatusUrl" />
-		<form name="resetSignOnStatus" action="${resetSignOnStatusUrl}" method="post">
+	<h2>User list</h2>
+		<form  method="post">
 			<fieldset>
-				<table>
-					<tbody>
-						<tr>
-							<td><label for="useId">User id</label></td>
-							<td><input type="text" id="userId" name="userId" /></td>
-						</tr>
-						<tr>
-							<td><input type="submit" value="Submit" /></td>
-						</tr>
-					</tbody>
-				</table>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<table style="width:100%;" border="1">
+				<c:forEach items="${users}" var="user">
+					<c:url value="/admin/delete-user/${user.id}" var="deleteUserUrl" />
+					<c:url value="/admin/reset-signin-status/${user.id}" var="resetSignOnStatusUrl" />
+					<tr>
+						<td style="width:33%;"><label for="useId"><c:out value="${user.id}" /></label></td>
+						<td style="width:33%;"><input type="submit" value="Delete" formaction="${deleteUserUrl}" <c:if test="${pageContext.request.userPrincipal.name == user.id}"><c:out value="disabled='disabled'"/></c:if>/></td>
+						<td style="width:33%;"><input type="submit" value="Reset" formaction="${resetSignOnStatusUrl}"<c:if test="${pageContext.request.userPrincipal.name == user.id}"><c:out value="disabled='disabled'"/></c:if>/></td>
+					</tr>
+				</c:forEach>
+			</table>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</fieldset>
 		</form>
-	</div>
-	<div id="box">
-	<h2>User id list</h2>
-		<c:forEach items="${users}" var="user">
-			<p><c:out value="${user.id}" /></p>
-		</c:forEach>
 	</div>
 </body>
 </html>

@@ -88,8 +88,8 @@ public class ControllerTest {
 		mvc.perform(post("/rest/student/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isInternalServerError()).andDo(print());
 		
 		dto = (StudentDTO) toObject(results.getResponse().getContentAsString(), StudentDTO.class);
-		dto.setF_name("Updated");
-		dto.setL_name("UPDATED");
+		dto.setFirstname("Updated");
+		dto.setLastname("UPDATED");
 		
 		mvc.perform(post("/rest/student/update").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
 			.andExpect(jsonPath("$.f_name").value("Updated"))

@@ -113,7 +113,7 @@ public final class DTOFactory {
 	*
 	****************************************************/
 	public Student fromStudentDTO(StudentDTO dto){
-		Student s = new Student(dto.getId(), dto.getF_name(), dto.getL_name(), dto.getAge(), dto.getAddress());
+		Student s = new Student(dto.getId(), dto.getFirstname(), dto.getLastname(), dto.getAge(), dto.getAddress());
 		s.setSubjects(fromSubjectDTOs(dto.getSubjects()));
 		s.setScholarships(fromScholorshipDTOs(dto.getScholorships()));
 		s.setPayments(fromPaymentDTOs(dto.getPayments()));
@@ -121,7 +121,7 @@ public final class DTOFactory {
 	}
 	
 	public Tutor fromTutorDTO(TutorDTO dto){
-		return new Tutor(dto.getId(), dto.getF_name(), dto.getL_name(), dto.getSubject(), dto.getAddress(), dto.isFulltime());
+		return new Tutor(dto.getId(), dto.getFirstname(), dto.getLastname(), dto.getSubject(), dto.getAddress(), dto.isFulltime());
 	}
 	
 	public Subject fromSubjectDTO(SubjectDTO dto){
@@ -141,7 +141,7 @@ public final class DTOFactory {
 	}
 	
 	public User fromPersonDTOToUser(PersonDTO p) {
-		return p != null ? new User(p.getId(),p.getF_name(), p.getL_name(), p.getAddress()) : null;
+		return p != null ? new User(p.getId(),p.getFirstname(), p.getLastname(), p.getAddress()) : null;
 	}
 	
 	public Collection<Student> fromStudentDTOs(Collection<StudentDTO> dtos){

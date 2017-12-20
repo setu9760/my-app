@@ -19,6 +19,7 @@ import spring.desai.common.repository.RoleRepository;
 import spring.desai.common.repository.UserRepository;
 import spring.desai.common.repository.UsrrRepository;
 import spring.desai.common.service.AdminUserMaintananceService;
+import spring.desai.common.service.exception.UsernameNotUniqueException;
 import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
@@ -48,6 +49,10 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 	public Collection<User> getAllUsers() throws ServiceException {
 		return userRepository.getAll();
 	}
+	
+	public User getUser(String userId) throws ServiceException {
+		return userRepository.findById(userId);
+	}
 
 	@Override
 	public void updateUserPersonalDetails(User user) throws ServiceException {
@@ -64,16 +69,16 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 			usrrRepository.createUser(user.getId(), passwordEncoder.encode(rawPassword));
 			assignRoles(user, rolesToAssign);
 		} else {
-			throw new ServiceException("User " + user.getId() + " already exists.");
+			throw new UsernameNotUniqueException(user.getId());
 		}
 	}
 
 	@Override
-	public void removeUser(User user) throws ServiceException {
-		notNull(user);
-		roleRepository.revokeAllRoles(user.getId());
-		usrrRepository.deleteUser(user.getId());
-		userRepository.deleteById(user.getId());
+	public void removeUser(String userId) throws ServiceException {
+		notNull(userId);
+		roleRepository.revokeAllRoles(userId);
+		usrrRepository.deleteUser(userId);
+		userRepository.deleteById(userId);
 	}
 
 	@Override
