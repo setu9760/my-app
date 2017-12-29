@@ -48,9 +48,9 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Schola
 	@Test
 	public void testUpdate() {
 		Scholarship s = scholorshipRepository.findById("schlrid1");
-		s.setAdditional_comments("UPDATED ADDITIONAL COMMENTS");
-		s.setExternal_ref("UPDATED_REF1");
-		s.setPaid_amount(400d);
+		s.setAdditionalComments("UPDATED ADDITIONAL COMMENTS");
+		s.setExternalRef("UPDATED_REF1");
+		s.setPaidAmount(400d);
 		doUpdateTest(s, "schlrid1");
 	}
 
@@ -60,9 +60,9 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Schola
 		
 		Collection<Scholarship> ipdateColl = scholorshipRepository.findByName("MGMT_PART");
 		for (Scholarship s : ipdateColl) {
-			s.setAdditional_comments("UPDATED ADDITIONAL COMMENTS");
-			s.setExternal_ref("UPDATED_REF1");
-			s.setTotal_amount(400d);
+			s.setAdditionalComments("UPDATED ADDITIONAL COMMENTS");
+			s.setExternalRef("UPDATED_REF1");
+			s.setTotalAmount(400d);
 		}
 		doUpdateAllTest(origColl, ipdateColl, "schlrid");
 	}

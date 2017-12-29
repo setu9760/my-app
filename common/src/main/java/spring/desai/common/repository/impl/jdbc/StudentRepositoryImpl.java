@@ -36,6 +36,11 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 		}
 		return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getRowMapper());
 	}
+	
+	@Override
+	public void setActiveStatusById(String id, int status) throws RepositoryDataAccessException {
+		getJdbcTemplate().update(getStatusSetSql(getTableName(), getIdField()), new Object[]{ status, id });
+	}
 
 	@Override
 	protected RowMapper<Student> getRowMapper() {
@@ -69,8 +74,8 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, s.getId());
-				ps.setString(2, s.getF_name());
-				ps.setString(3, s.getL_name());
+				ps.setString(2, s.getFirstname());
+				ps.setString(3, s.getLastname());
 				ps.setInt(4, s.getAge());
 				ps.setString(5, s.getAddress());
 			}
@@ -83,8 +88,8 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, s.getF_name());
-				ps.setString(2, s.getL_name());
+				ps.setString(1, s.getFirstname());
+				ps.setString(2, s.getLastname());
 				ps.setInt(3, s.getAge());
 				ps.setString(4, s.getAddress());
 				ps.setString(5, s.getId());
@@ -101,8 +106,8 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Student s = l.get(i);
 				ps.setString(1, s.getId());
-				ps.setString(2, s.getF_name());
-				ps.setString(3, s.getL_name());
+				ps.setString(2, s.getFirstname());
+				ps.setString(3, s.getLastname());
 				ps.setInt(4, s.getAge());
 				ps.setString(5, s.getAddress());
 			}
@@ -122,8 +127,8 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Student s = l.get(i);
-				ps.setString(1, s.getF_name());
-				ps.setString(2, s.getL_name());
+				ps.setString(1, s.getFirstname());
+				ps.setString(2, s.getLastname());
 				ps.setInt(3, s.getAge());
 				ps.setString(4, s.getAddress());
 				ps.setString(5, s.getId());

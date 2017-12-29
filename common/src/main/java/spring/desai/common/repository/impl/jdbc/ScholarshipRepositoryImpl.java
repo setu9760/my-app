@@ -64,14 +64,14 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, s.getId());
-				ps.setString(2, s.getExternal_ref());
+				ps.setString(2, s.getExternalRef());
 				ps.setString(3, String.valueOf(s.getType()));
-				ps.setDouble(4, s.getTotal_amount());
-				ps.setDouble(5, s.getPaid_amount());
+				ps.setDouble(4, s.getTotalAmount());
+				ps.setDouble(5, s.getPaidAmount());
 				ps.setString(6, String.valueOf(s.isFullyPaid()));
 				ps.setString(7, String.valueOf(s.isPostPay()));
-				ps.setString(8, s.getStud_id());
-				ps.setString(9, s.getAdditional_comments());
+				ps.setString(8, s.getStudentId());
+				ps.setString(9, s.getAdditionalComments());
 			}
 		};
 	}
@@ -82,14 +82,14 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, s.getExternal_ref());
+				ps.setString(1, s.getExternalRef());
 				ps.setString(2, String.valueOf(s.getType()));
-				ps.setDouble(3, s.getTotal_amount());
-				ps.setDouble(4, s.getPaid_amount());
+				ps.setDouble(3, s.getTotalAmount());
+				ps.setDouble(4, s.getPaidAmount());
 				ps.setString(5, String.valueOf(s.isFullyPaid()));
 				ps.setString(6, String.valueOf(s.isPostPay()));
-				ps.setString(7, s.getStud_id());
-				ps.setString(8, s.getAdditional_comments());
+				ps.setString(7, s.getStudentId());
+				ps.setString(8, s.getAdditionalComments());
 				ps.setString(9, s.getId());
 			}
 		};
@@ -104,14 +104,14 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Scholarship sch = l.get(i);
 				ps.setString(1, sch.getId());
-				ps.setString(2, sch.getExternal_ref());
+				ps.setString(2, sch.getExternalRef());
 				ps.setString(3, String.valueOf(sch.getType()));
-				ps.setDouble(4, sch.getTotal_amount());
-				ps.setDouble(5, sch.getPaid_amount());
+				ps.setDouble(4, sch.getTotalAmount());
+				ps.setDouble(5, sch.getPaidAmount());
 				ps.setString(6, String.valueOf(sch.isFullyPaid()));
 				ps.setString(7, String.valueOf(sch.isPostPay()));
-				ps.setString(8, sch.getStud_id());
-				ps.setString(9, sch.getAdditional_comments());
+				ps.setString(8, sch.getStudentId());
+				ps.setString(9, sch.getAdditionalComments());
 			}
 			
 			@Override
@@ -129,14 +129,14 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Scholarship sch = l.get(i);
-				ps.setString(1, sch.getExternal_ref());
+				ps.setString(1, sch.getExternalRef());
 				ps.setString(2, String.valueOf(sch.getType()));
-				ps.setDouble(3, sch.getTotal_amount());
-				ps.setDouble(4, sch.getPaid_amount());
+				ps.setDouble(3, sch.getTotalAmount());
+				ps.setDouble(4, sch.getPaidAmount());
 				ps.setString(5, String.valueOf(sch.isFullyPaid()));
 				ps.setString(6, String.valueOf(sch.isPostPay()));
-				ps.setString(7, sch.getStud_id());
-				ps.setString(8, sch.getAdditional_comments());
+				ps.setString(7, sch.getStudentId());
+				ps.setString(8, sch.getAdditionalComments());
 				ps.setString(9, sch.getId());
 			}
 			

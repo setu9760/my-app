@@ -63,10 +63,10 @@ public class AllTests {
 		 System.out.println(pr.findByStudentId("studentid1"));
 		 System.out.println(pr.findByType(PaymentType.CHEQUE));
 		 Payment p = new Payment("DummyInsertPaymentID", 300d, PaymentType.BRAC);
-		 p.setStud_id("studentid3");
+		 p.setStudentId("studentid3");
 		 pr.save(p);
 		 
-		 p.setStud_id("studentid2");
+		 p.setStudentId("studentid2");
 		 p.setAmount(300d);
 		 p.setPaymentType(PaymentType.CASH);
 		 pr.update(p);
@@ -93,7 +93,7 @@ public class AllTests {
 		 System.out.println(sbr.getSubjectsForStudentId("studentid5"));
 		 
 		 StudentRepository str = context.getBean(StudentRepository.class);
-		 str.deleteById("studentid1");
+		 str.setActiveStatusById("studentid1", -1);
 		 
 		 System.out.println(str.getStudentsForSubjectId("subject5"));
 		 

@@ -47,19 +47,19 @@ public class StudentTotalPayRepositoryImplTest {
 		assertThat(newTotalToPay, is(equalTo(0d)));
 		
 		newTotalToPay = studentTotalPayRepository.getCurrentTotalToPay("studentid1");
-		assertThat(newTotalToPay, is(equalTo(0d)));
+		assertThat(newTotalToPay, is(equalTo(4700d)));
 		
 		try {
-			newTotalToPay = studentTotalPayRepository.updateTotalToPayBy(null, 500);
+			newTotalToPay = studentTotalPayRepository.updateTotalToPay(null, 500);
 			fail("Should have failed with IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertThat(e.getMessage(), is(equalTo(I18N.getNoArgString("error.null.id"))));
 		}
-		studentTotalPayRepository.addDefaultTotalToPayRow("studentid1");
-		newTotalToPay = studentTotalPayRepository.updateTotalToPayBy("studentid1", 500d);
+//		studentTotalPayRepository.addDefaultTotalToPayRow("studentid1");
+		newTotalToPay = studentTotalPayRepository.updateTotalToPay("studentid1", 500d);
 		assertThat(newTotalToPay, is(equalTo(500d)));
 		
-		newTotalToPay = studentTotalPayRepository.updateTotalToPayBy("studentid1", -200d);
+		newTotalToPay = studentTotalPayRepository.updateTotalToPay("studentid1", -200d);
 		assertThat(newTotalToPay, is(equalTo(-200d)));
 	}
 

@@ -53,8 +53,8 @@ public class TutorRepositoryImplTest extends AbstractRepositoryTest<Tutor> {
 	@Test
 	public void testUpdate() {
 		Tutor t = tutorRepository.findById("tutorid1");
-		t.setF_name("UPDATED_F_NAME");
-		t.setL_name("UPDATED_L_NAME");
+		t.setFirstname("UPDATED_F_NAME");
+		t.setLastname("UPDATED_L_NAME");
 		doUpdateTest(t, "tutorid1");
 	}
 
@@ -64,8 +64,8 @@ public class TutorRepositoryImplTest extends AbstractRepositoryTest<Tutor> {
 		
 		Collection<Tutor> updateCollection = tutorRepository.findByName("f_name");
 		for (Tutor t : updateCollection) {
-			t.setF_name("UPDATED_F_NAME");
-			t.setL_name("UPDATED_L_NAME");
+			t.setFirstname("UPDATED_F_NAME");
+			t.setLastname("UPDATED_L_NAME");
 		}
 		doUpdateAllTest(origCollection, updateCollection, "tutorid");
 	}

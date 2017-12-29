@@ -17,7 +17,7 @@ public class Tutor extends Person {
 //	@ManyToOne(targetEntity = Subject.class)
 //	@JoinColumn(name = SUBJ_ID, nullable = false, referencedColumnName = ID)
 	@Column(name = SUBJ_ID)
-	private String subj_id;
+	private String subjectId;
 	
 	@Column(name = IS_FULLTIME)
 	private boolean isFulltime;
@@ -26,26 +26,26 @@ public class Tutor extends Person {
 		this(null, null, null, null, null, false);
 	}
 	
-	public Tutor(String f_name, String l_name, String subj_id) {
-		this(f_name, l_name, subj_id, "", true);
+	public Tutor(String firstname, String lastname, String subj_id) {
+		this(firstname, lastname, subj_id, "", true);
 	}
 
-	public Tutor(String f_name, String l_name, String subj_id, String address, boolean isFulltime) {
-		this(null, f_name, l_name, subj_id, address, isFulltime);
+	public Tutor(String firstname, String lastname, String subj_id, String address, boolean isFulltime) {
+		this(null, firstname, lastname, subj_id, address, isFulltime);
 	}
 	
-	public Tutor(String id, String f_name, String l_name, String subj_id, String address, boolean isFulltime) {
-		super(id, f_name, l_name, address);
-		this.subj_id = subj_id;
+	public Tutor(String id, String firstname, String lastname, String subj_id, String address, boolean isFulltime) {
+		super(id, firstname, lastname, address);
+		this.subjectId = subj_id;
 		this.isFulltime = isFulltime;
 	}
 
 	public String getSubj_id() {
-		return subj_id;
+		return subjectId;
 	}
 	
 	public void setSubj_id(String subj_id) {
-		this.subj_id = subj_id;
+		this.subjectId = subj_id;
 	}
 
 	public boolean isFulltime() {
@@ -61,14 +61,14 @@ public class Tutor extends Person {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Tutor [id=");
 		builder.append(id);
-		builder.append(", f_name=");
-		builder.append(f_name);
-		builder.append(", l_name=");
-		builder.append(l_name);
+		builder.append(", firstname=");
+		builder.append(firstname);
+		builder.append(", lastname=");
+		builder.append(lastname);
 		builder.append(", address=");
 		builder.append(address);
-		builder.append(", subj_id=");
-		builder.append(subj_id);
+		builder.append(", subjectId=");
+		builder.append(subjectId);
 		builder.append(", isFulltime=");
 		builder.append(isFulltime);
 		builder.append(']');
@@ -80,7 +80,7 @@ public class Tutor extends Person {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (isFulltime ? 1231 : 1237);
-		result = prime * result + ((subj_id == null) ? 0 : subj_id.hashCode());
+		result = prime * result + ((subjectId == null) ? 0 : subjectId.hashCode());
 		return result;
 	}
 
@@ -95,10 +95,10 @@ public class Tutor extends Person {
 		Tutor other = (Tutor) obj;
 		if (isFulltime != other.isFulltime)
 			return false;
-		if (subj_id == null) {
-			if (other.subj_id != null)
+		if (subjectId == null) {
+			if (other.subjectId != null)
 				return false;
-		} else if (!subj_id.equals(other.subj_id))
+		} else if (!subjectId.equals(other.subjectId))
 			return false;
 		return true;
 	}

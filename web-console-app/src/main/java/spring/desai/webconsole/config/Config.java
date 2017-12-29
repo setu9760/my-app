@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Import({ AspectsConfig.class, JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class, SecurityConfig.class, DefaultSecurityConfig.class, WebConfig.class })
 @ComponentScan({ "spring.desai.webconsole.controllers", "spring.desai.common.rowmappers", "spring.desai.webconsole.config.core"})
 @EnableAspectJAutoProxy
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @EnableTransactionManagement
 public class Config {
 

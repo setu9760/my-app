@@ -1,11 +1,12 @@
 package spring.desai.common.model.dto;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
+import spring.desai.common.model.Persistable;
 import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
@@ -31,8 +32,20 @@ public final class DTOFactory {
 	*	Object to DTO methods
 	*
 	****************************************************/
+	public DTO fromPersistable(Persistable p) {
+		if (p instanceof Student)
+			return fromStudent((Student) p);
+		else if (p instanceof Subject)
+			return fromSubject((Subject) p);
+		else if (p instanceof Tutor)
+			return fromTutor((Tutor) p);
+		else if (p instanceof Scholarship)
+			return fromScholorship((Scholarship) p);
+		return null;
+	}
+	
 	public TutorDTO fromTutor(Tutor t) {
-		return t != null ? new TutorDTO(t.getId(), t.getF_name(), t.getL_name(), t.getAddress(), t.getSubj_id(), t.isFulltime()) : null;
+		return t != null ? new TutorDTO(t.getId(), t.getFirstname(), t.getLastname(), t.getAddress(), t.getSubj_id(), t.isFulltime()) : null;
 	}
 
 	public SubjectDTO fromSubject(Subject s) {
@@ -40,15 +53,15 @@ public final class DTOFactory {
 	}
 	
 	public StudentDTO fromStudent(Student s) {
-		return s != null ? new StudentDTO(s.getId(), s.getF_name(), s.getL_name(), s.getAge(), s.getAddress(), fromSubjects(s.getSubjects()), fromPayments(s.getPayments()), fromScholorships(s.getScholarships())): null;
+		return s != null ? new StudentDTO(s.getId(), s.getFirstname(), s.getLastname(), s.getAge(), s.getAddress(), fromSubjects(s.getSubjects()), fromPayments(s.getPayments()), fromScholorships(s.getScholarships())): null;
 	}
 	
 	public ScholorshipDTO fromScholorship(Scholarship s) {
-		return s != null ?new ScholorshipDTO(s.getId(), s.getExternal_ref(), s.getTypeString(), s.getTotal_amount(), s.getPaid_amount(), s.isFullyPaid(), s.isPostPay(), s.getStud_id(), s.getAdditional_comments()): null;
+		return s != null ?new ScholorshipDTO(s.getId(), s.getExternalRef(), s.getTypeString(), s.getTotalAmount(), s.getPaidAmount(), s.isFullyPaid(), s.isPostPay(), s.getStudentId(), s.getAdditionalComments()): null;
 	}
 	
 	public PaymentDTO fromPayment(Payment p) {
-		return p != null ? new PaymentDTO(p.getId(), p.getAmount(), p.getPaymentTypeString(), p.getStud_id(), p.getPaymentDateTime().toDate(), p.getComments()) : null;
+		return p != null ? new PaymentDTO(p.getId(), p.getAmount(), p.getPaymentTypeString(), p.getStudentId(), p.getPaymentDateTime().toDate(), p.getComments()) : null;
 	}
 	
 	public CostDTO fromCost(Cost c) {
@@ -56,7 +69,7 @@ public final class DTOFactory {
 	}
 	
 	public PersonDTO fromUserToPersonDTOs(User u){
-		return u != null ? new PersonDTO(u.getId(), u.getF_name(), u.getL_name(), u.getAddress()) : null;
+		return u != null ? new PersonDTO(u.getId(), u.getFirstname(), u.getLastname(), u.getAddress()) : null;
 	}
 	
 	public Collection<SubjectDTO> fromSubjects(Collection<Subject> subjects){
@@ -133,7 +146,7 @@ public final class DTOFactory {
 	}
 	
 	public Scholarship fromScholorshipDTO(ScholorshipDTO dto){
-		return new Scholarship(dto.getId(), dto.getExternalRef(), ScholorshipType.valueOf(dto.getType()), dto.getTotalAmount(), dto.getPaidAmount(), dto.getIsFullyPaid(), dto.getIsPostPay(), dto.getAdditionalComments(), dto.getStudId());
+		return new Scholarship(dto.getId(), dto.getExternalRef(), ScholorshipType.valueOf(dto.getType()), dto.getTotalAmount(), dto.getPaidAmount(), dto.getIsFullyPaid(), dto.getIsPostPay(), dto.getAdditionalComments(), dto.getStudentId());
 	}
 	
 	public Payment fromPaymentDTO(PaymentDTO dto) {

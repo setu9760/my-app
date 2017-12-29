@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class PaymentDTO {
+public class PaymentDTO implements DTO {
 
 	private String id;
 	private Double amount;

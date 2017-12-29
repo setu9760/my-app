@@ -115,6 +115,18 @@
 							<td><input type="checkbox" id="adminUser" name="adminUser" /></td>
 						</tr>
 						<tr>
+							<td><label for="hrUser">HR user</label></td>
+							<td><input type="checkbox" id="hrAdmin" name="hrAdmin" /></td>
+						</tr>
+						<tr>
+							<td><label for="financeUser">Finance user</label></td>
+							<td><input type="checkbox" id="financeUser" name="financeUser" /></td>
+						</tr>
+						<tr>
+							<td><label for="mgmtUser">Management user</label></td>
+							<td><input type="checkbox" id="mgmtUser" name="mgmtUser" /></td>
+						</tr>
+						<tr>
 							<td><input type="submit" value="Submit" /></td>
 						</tr>
 					</tbody>
@@ -125,7 +137,7 @@
 	</div>
 	<div id="box">
 	<h2>User list</h2>
-		<form  method="post">
+		<form:form  method="post">
 			<fieldset>
 			<table style="width:100%;" border="1">
 				<c:forEach items="${users}" var="user">
@@ -140,7 +152,7 @@
 			</table>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</fieldset>
-		</form>
+		</form:form>
 	</div>
 </body>
 </html>

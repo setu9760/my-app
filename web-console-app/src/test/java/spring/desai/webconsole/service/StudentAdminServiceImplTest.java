@@ -42,7 +42,7 @@ import spring.desai.common.model.Subject;
 import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.service.ReadOnlyService;
-import spring.desai.common.service.StudentAdminService;
+import spring.desai.common.service.SchoolService;
 import spring.desai.common.utils.I18N;
 
 @ActiveProfiles(profiles = { "jdbc" })
@@ -52,7 +52,7 @@ import spring.desai.common.utils.I18N;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class StudentAdminServiceImplTest {
 
-	@Autowired private StudentAdminService studentAdminService;
+	@Autowired private SchoolService schoolService;
 	
 	@Autowired private ReadOnlyService readOnlyService;
 	
@@ -79,18 +79,18 @@ public class StudentAdminServiceImplTest {
 	public void testSave() {
 		Student s = null;
 		try {
-			studentAdminService.save(s);
+			schoolService.save(s);
 		} catch (Exception e) {
 			assertThat(e.getMessage(), startsWith(I18N.getString("error.null.object")));
 		}
 		try {
 			s = new Student();
-			studentAdminService.save(s);
+			schoolService.save(s);
 		} catch (Exception e) {
 			assertThat(e.getMessage(), startsWith(I18N.getString("error.null.id")));
 		}
 		s = new Student("TEST_ID","f","n",25,"a");
-		studentAdminService.save(s);
+		schoolService.save(s);
 		Student retrieved = readOnlyService.getStudentById(s.getId());
 		assertThat(retrieved, is(not(nullValue())));
 		if(!s.equals(retrieved))
@@ -104,22 +104,22 @@ public class StudentAdminServiceImplTest {
 	public void testSaveAll() {
 		Collection<Student> c = null;
 		try {
-			studentAdminService.saveAll(c);
+			schoolService.saveAll(c);
 		} catch (Exception e) {
 			assertThat(e, is(instanceOf(IllegalArgumentException.class)));
 		}
 		c = new ArrayList<>();
-		studentAdminService.saveAll(c);
+		schoolService.saveAll(c);
 		
 		for (int i = 0; i < 3; i++) {
 			c.add(new Student("TEST_ID" +i,"f","n",25,"a"));
 		}
-		studentAdminService.saveAll(c);
+		schoolService.saveAll(c);
 		assertThat(readOnlyService.getStudentById("TEST_ID1"), is(not(nullValue())));
 		assertThat(readOnlyService.getAllStudents(), hasSize(8));
 		c.add(new Student("TEST_ID" +1,"f","n",25,"a"));
 		try {
-			studentAdminService.saveAll(c);
+			schoolService.saveAll(c);
 		} catch (Exception e) {
 			assertTrue(ExceptionUtils.indexOfThrowable(e, DuplicateKeyException.class) != -1);
 		}
@@ -129,49 +129,49 @@ public class StudentAdminServiceImplTest {
 	public void testFull() {
 		// test saving a student
 		Student s = new Student("SS1", "s", "s", 34, "s");
-		studentAdminService.save(s);
+		schoolService.save(s);
 		
 		// add to subject and test payment modification
 		Subject sub = readOnlyService.getSubjectById("subjectid5");
-		studentAdminService.addToSubject(s, sub);
+		schoolService.addToSubject(s.getId(), sub.getId());
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(800d)));
 		
 		// test adding to same subject again
-		studentAdminService.addToSubject(s, sub);
+		schoolService.addToSubject(s.getId(), sub.getId());
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(not(equalTo(1600d))));
 		
 		// make a payment
 		Payment p1 = new Payment("PAY1", 100, PaymentType.CASH, s.getId(), "N/A");
-		studentAdminService.makePayment(p1);
+		schoolService.makePayment(p1);
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(700d)));
 		
 		// amend the payment for amount
 		Payment up = readOnlyService.getPaymentById("PAY1");
 		up.setAmount(200);
-		studentAdminService.amendPayment(up);
+		schoolService.amendPayment(up);
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(600d)));
 		
 		// award scholarship
 		Scholarship schol = new Scholarship("SCH1", ScholorshipType.STATE_PART, 1000, 1000, true, false, "Provided by ABCD", s.getId());
-		studentAdminService.awardScholorship(schol);
+		schoolService.awardScholorship(schol);
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(-400d)));
 		
 		// issue refund
 		Payment p2 = new Payment("PAY2", -100d, PaymentType.REFUND_CASH, s.getId(), "N/A");
-		studentAdminService.issueRefund(p2);
+		schoolService.issueRefund(p2);
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(-300d)));
 		
 		// add to another subject
 		sub = readOnlyService.getSubjectById("subjectid4");
-		studentAdminService.addToSubject(s, sub);
+		schoolService.addToSubject(s.getId(), sub.getId());
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(700d)));
 		
 		// remove from subject
-		studentAdminService.removeFromSubject(s, readOnlyService.getSubjectById("subjectid5"));
+		schoolService.removeFromSubject(s.getId(), "subjectid5");
 		assertThat(readOnlyService.getTotalToPay(s.getId()), is(equalTo(-100d)));
 		
 		try {
-			studentAdminService.makePayment(new Payment("PAY3", 13400d, PaymentType.CASH, s.getId(), "N/A"));
+			schoolService.makePayment(new Payment("PAY3", 13400d, PaymentType.CASH, s.getId(), "N/A"));
 			fail("should have failed with IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// Ignroe as this indicates test success

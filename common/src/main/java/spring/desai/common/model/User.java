@@ -4,7 +4,7 @@ public class User extends Person {
 
 	private static final long serialVersionUID = 1234324545L;
 	
-	private int failed_attempts;
+	private int failedAttempts;
 	private boolean isAccountNonLocked;
 	private SIGN_ON_STATUS signOnStatus;
 	
@@ -13,23 +13,23 @@ public class User extends Person {
 		LOGGED_OUT
 	}
 	
-	public User(String id, String f_name, String l_name, String address, int failed_attempts, boolean isAccountNonLocked, SIGN_ON_STATUS signOnStatus) {
-		super(id, f_name, l_name, address);
-		this.failed_attempts = failed_attempts;
+	public User(String id, String firstname, String lastname, String address, int failedAttempts, boolean isAccountNonLocked, SIGN_ON_STATUS signOnStatus) {
+		super(id, firstname, lastname, address);
+		this.failedAttempts = failedAttempts;
 		this.isAccountNonLocked = isAccountNonLocked;
 		this.signOnStatus = signOnStatus;
 	}
 	
-	public User(String user_id, String f_name, String l_name, String address) {
-		this(user_id, f_name, l_name, address, 0, true, SIGN_ON_STATUS.LOGGED_OUT);
+	public User(String user_id, String firstname, String lastname, String address) {
+		this(user_id, firstname, lastname, address, 0, true, SIGN_ON_STATUS.LOGGED_OUT);
 	}
 	
-	public int getFailed_attempts() {
-		return failed_attempts;
+	public int getFailedAttempts() {
+		return failedAttempts;
 	}
 
-	public void setFailed_attempts(int failed_attempts) {
-		this.failed_attempts = failed_attempts;
+	public void setFailedAttempts(int failedAttempts) {
+		this.failedAttempts = failedAttempts;
 	}
 
 	public boolean isAccountNonLocked() {
@@ -51,18 +51,18 @@ public class User extends Person {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("User [failed_attempts=");
-		builder.append(failed_attempts);
+		builder.append("User [failedAttempts=");
+		builder.append(failedAttempts);
 		builder.append(", isAccountLocked=");
 		builder.append(isAccountNonLocked);
 		builder.append(", signOnStatus=");
 		builder.append(signOnStatus);
 		builder.append(", id=");
 		builder.append(id);
-		builder.append(", f_name=");
-		builder.append(f_name);
-		builder.append(", l_name=");
-		builder.append(l_name);
+		builder.append(", firstname=");
+		builder.append(firstname);
+		builder.append(", lastname=");
+		builder.append(lastname);
 		builder.append(", address=");
 		builder.append(address);
 		builder.append(']');
@@ -73,7 +73,7 @@ public class User extends Person {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + failed_attempts;
+		result = prime * result + failedAttempts;
 		result = prime * result + (isAccountNonLocked ? 1231 : 1237);
 		result = prime * result + signOnStatus.hashCode();
 		return result;
@@ -88,7 +88,7 @@ public class User extends Person {
 		if (!(obj instanceof User))
 			return false;
 		User other = (User) obj;
-		if (failed_attempts != other.failed_attempts)
+		if (failedAttempts != other.failedAttempts)
 			return false;
 		if (isAccountNonLocked != other.isAccountNonLocked)
 			return false;

@@ -37,7 +37,7 @@ public class Payment implements Persistable {
 //	@ManyToOne(targetEntity = Payment.class)
 //	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
 	@Column(name = STUD_ID)
-	private String stud_id;
+	private String studentId;
 	
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @Column(name=DATETIME, nullable=false, columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
@@ -54,19 +54,19 @@ public class Payment implements Persistable {
 		this(id, amount, paymentType, null);
 	}
 	
-	public Payment(double amount, PaymentType paymentType, String stud_id) {
-		this(null, amount, paymentType, stud_id);
+	public Payment(double amount, PaymentType paymentType, String studentId) {
+		this(null, amount, paymentType, studentId);
 	}
 	
-	public Payment(String id, double amount, PaymentType paymentType, String stud_id) {
-		this(id, amount, paymentType, stud_id, null);
+	public Payment(String id, double amount, PaymentType paymentType, String studentId) {
+		this(id, amount, paymentType, studentId, null);
 	}
 	
-	public Payment(String id, double amount, PaymentType paymentType, String stud_id, String comments) {
+	public Payment(String id, double amount, PaymentType paymentType, String studentId, String comments) {
 		this.id = id;
 		this.amount = amount;
 		this.paymentType = paymentType;
-		this.stud_id = stud_id;
+		this.studentId = studentId;
 		this.comments = comments;
 		this.paymentDateTime = DateTime.now();
 	}
@@ -104,12 +104,12 @@ public class Payment implements Persistable {
 		this.paymentDateTime = paymentDateTime;
 	}
 
-	public String getStud_id() {
-		return stud_id;
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public void setStud_id(String stud_id) {
-		this.stud_id = stud_id;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 	
 	public String getComments() {
@@ -130,7 +130,7 @@ public class Payment implements Persistable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((paymentDateTime == null) ? 0 : paymentDateTime.hashCode());
 		result = prime * result + ((paymentType == null) ? 0 : paymentType.hashCode());
-		result = prime * result + ((stud_id == null) ? 0 : stud_id.hashCode());
+		result = prime * result + ((studentId == null) ? 0 : studentId.hashCode());
 		return result;
 	}
 
@@ -158,10 +158,10 @@ public class Payment implements Persistable {
 //			return false;
 		if (paymentType != other.paymentType)
 			return false;
-		if (stud_id == null) {
-			if (other.stud_id != null)
+		if (studentId == null) {
+			if (other.studentId != null)
 				return false;
-		} else if (!stud_id.equals(other.stud_id))
+		} else if (!studentId.equals(other.studentId))
 			return false;
 		return true;
 	}
@@ -175,8 +175,8 @@ public class Payment implements Persistable {
 		builder.append(amount);
 		builder.append(", paymentType=");
 		builder.append(paymentType);
-		builder.append(", stud_id=");
-		builder.append(stud_id);
+		builder.append(", studentId=");
+		builder.append(studentId);
 		builder.append(", paymentDateTime=");
 		builder.append(paymentDateTime);
 		builder.append(", comments=");

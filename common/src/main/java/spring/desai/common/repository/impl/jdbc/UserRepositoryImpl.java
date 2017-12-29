@@ -66,10 +66,10 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, u.getId());
-				ps.setString(2, u.getF_name());
-				ps.setString(3, u.getL_name());
+				ps.setString(2, u.getFirstname());
+				ps.setString(3, u.getLastname());
 				ps.setString(4, u.getAddress());
-				ps.setInt(5, u.getFailed_attempts());
+				ps.setInt(5, u.getFailedAttempts());
 				ps.setString(6, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(7, String.valueOf(u.getSignOnStatus()));
 			}
@@ -82,8 +82,8 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, u.getF_name());
-				ps.setString(2, u.getL_name());
+				ps.setString(1, u.getFirstname());
+				ps.setString(2, u.getLastname());
 				ps.setString(3, u.getAddress());
 //				ps.setInt(4, u.getFailed_attempts());
 //				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
@@ -101,10 +101,10 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				User u = l.get(i);
 				ps.setString(1, u.getId());
-				ps.setString(2, u.getF_name());
-				ps.setString(3, u.getL_name());
+				ps.setString(2, u.getFirstname());
+				ps.setString(3, u.getLastname());
 				ps.setString(4, u.getAddress());
-				ps.setInt(5, u.getFailed_attempts());
+				ps.setInt(5, u.getFailedAttempts());
 				ps.setString(6, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(7, String.valueOf(u.getSignOnStatus()));
 			}
@@ -124,8 +124,8 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				User u = l.get(i);
-				ps.setString(1, u.getF_name());
-				ps.setString(2, u.getL_name());
+				ps.setString(1, u.getFirstname());
+				ps.setString(2, u.getLastname());
 				ps.setString(3, u.getAddress());
 //				ps.setInt(4, u.getFailed_attempts());
 //				ps.setString(5, String.valueOf(u.isAccountNonLocked()));

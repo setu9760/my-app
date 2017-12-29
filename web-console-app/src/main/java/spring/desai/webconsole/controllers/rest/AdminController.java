@@ -2,7 +2,6 @@ package spring.desai.webconsole.controllers.rest;
 
 import static java.lang.String.format;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +30,9 @@ import spring.desai.common.service.exception.UsernameNotUniqueException;
 
 @Controller
 @RequestMapping(value = "/admin")
-public class UserMaintananceController {
+public class AdminController {
 
-	private static final Logger logger = Logger.getLogger(UserMaintananceController.class);
+	private static final Logger logger = Logger.getLogger(AdminController.class);
 	
 	@Autowired
 	@Qualifier("adminUserMaintananceService")
@@ -50,15 +50,9 @@ public class UserMaintananceController {
 	}
 
 	@PostMapping(value = "/reset-signin-status/{userId}")
-	public ModelAndView resetSignOnStatus(@PathVariable String userId, Principal principal) throws Exception {
+	@PreAuthorize("#userId != principal.username")
+	public ModelAndView resetSignOnStatus(@PathVariable String userId) throws Exception {
 		ModelAndView mv = getAdminHomeModelAndView();
-		String currentUser = principal.getName();
-		if (userId.equalsIgnoreCase(currentUser)) {
-			String msg = format("Admin User '%s' cannot reset its own signon status Unless the user has role SUPER assigned", currentUser);
-			logger.warn(msg);
-			mv.addObject("error", msg);
-			return mv;
-		}
 		adminUserMaintananceService.resetUserSignOn(userId);
 		mv.addObject("msg", format("reset status for user '%s'", userId));
 		return addDefaultObjects(mv);
@@ -71,15 +65,9 @@ public class UserMaintananceController {
 			mv.addObject("error", result.getAllErrors());
 			return addDefaultObjects(mv);
 		}
-		Object a = request.getParameter("adminUser");
 		try {
-			List<Role> roles = new ArrayList<>();
-			roles.add(readOnlyService.getRestUserRole());
-			if (a != null) {
-				roles.add(readOnlyService.getAdminRole());
-			}
-			adminUserMaintananceService.createUser(dtoFactory.fromPersonDTOToUser(person), person.getId(), roles);
-			mv.addObject("msg", "success");
+			adminUserMaintananceService.createUser(dtoFactory.fromPersonDTOToUser(person), person.getId(), extractRoles(request));
+			mv.addObject("msg", format("user '%s' created successfully", person.getId()));
 		} catch (UsernameNotUniqueException e) {
 			logger.warn(e.getMessage(), e);
 			mv.addObject("error", e.getMessage());
@@ -87,7 +75,22 @@ public class UserMaintananceController {
 		return addDefaultObjects(mv);
 	}
 	
+	private List<Role> extractRoles(HttpServletRequest request) {
+		List<Role> roles = new ArrayList<>();
+		roles.add(readOnlyService.getRestUserRole());
+		if (request.getParameter("adminUser") != null) 
+			roles.add(readOnlyService.getAdminRole());
+		if (request.getParameter("hrUser") != null)
+			roles.add(readOnlyService.getRole("ROLE_HR_USER"));
+		if (request.getParameter("financeUser") != null)
+			roles.add(readOnlyService.getRole("ROLE_FINANCE_USER"));
+		if (request.getParameter("mgmtUser") != null)
+			roles.add(readOnlyService.getRole("ROLE_MGMT_USER"));
+		return roles;
+	}
+
 	@PostMapping(value = "/delete-user/{userId}")
+	@PreAuthorize("#userId != principal.username")
 	public ModelAndView deleteUser(@PathVariable String userId) {
 		ModelAndView mv = new ModelAndView("user_maintenance");
 		mv.addObject("person", new PersonDTO());

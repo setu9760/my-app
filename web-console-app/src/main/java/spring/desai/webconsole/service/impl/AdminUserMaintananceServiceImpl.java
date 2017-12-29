@@ -78,7 +78,8 @@ public class AdminUserMaintananceServiceImpl implements AdminUserMaintananceServ
 		notNull(userId);
 		roleRepository.revokeAllRoles(userId);
 		usrrRepository.deleteUser(userId);
-		userRepository.deleteById(userId);
+		// TODO fix this. currently there is no is_active field on user_details table.
+//		userRepository.setActiveStatusById(userId, -1);
 	}
 
 	@Override

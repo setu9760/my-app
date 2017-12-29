@@ -55,7 +55,7 @@ public class PaymentRepositoryImplTest extends AbstractRepositoryTest<Payment> {
 		p.setAmount(100d);
 		p.setComments("SOME_RANDOM_COMMENT");
 		p.setPaymentType(PaymentType.CASH);
-		p.setStud_id("studentid2");
+		p.setStudentId("studentid2");
 		doUpdateTest(p, "payment3");
 	}
 

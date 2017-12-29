@@ -3,6 +3,7 @@ package spring.desai.webconsole.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,7 +73,7 @@ public class ControllerTest {
 		// POST request testing
 		StudentDTO dto = new StudentDTO(UUID.randomUUID().toString(), "MOCK_F", "MOCK_L", 24 , "ADDRESS", null, null , null);
 		
-		MvcResult results = mvc.perform(post("/rest/student/save").principal(new Principal() {
+		MvcResult results = mvc.perform(post("/rest/student/" + dto.getId() + "/save").principal(new Principal() {
 			
 			@Override
 			public String getName() {
@@ -80,22 +81,22 @@ public class ControllerTest {
 			}
 		}).content(toJson(dto)).contentType(contentType))
 			.andExpect(status().isOk()).andDo(print())
-			.andExpect(jsonPath("$.f_name").value("MOCK_F"))
-			.andExpect(jsonPath("$.l_name").value("MOCK_L"))
+			.andExpect(jsonPath("$.firstname").value("MOCK_F"))
+			.andExpect(jsonPath("$.lastname").value("MOCK_L"))
 			.andReturn();
 		
 		// Duplicate save to test controller advice and exception handler
-		mvc.perform(post("/rest/student/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isInternalServerError()).andDo(print());
+		mvc.perform(post("/rest/student/" + dto.getId() + "/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isInternalServerError()).andDo(print());
 		
 		dto = (StudentDTO) toObject(results.getResponse().getContentAsString(), StudentDTO.class);
 		dto.setFirstname("Updated");
 		dto.setLastname("UPDATED");
 		
-		mvc.perform(post("/rest/student/update").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
-			.andExpect(jsonPath("$.f_name").value("Updated"))
-			.andExpect(jsonPath("$.l_name").value("UPDATED"));
+		mvc.perform(put("/rest/student/" + dto.getId() + "/update").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
+			.andExpect(jsonPath("$.firstname").value("Updated"))
+			.andExpect(jsonPath("$.lastname").value("UPDATED"));
 		
-		mvc.perform(delete("/rest/delete")).andExpect(status().isOk()).andDo(print()).andReturn().getResponse();
+		mvc.perform(delete("/rest/student/delete").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print()).andReturn().getResponse();
 
 	}
 

@@ -121,7 +121,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, r.getId());
-				ps.setString(2, r.getRole_full());
+				ps.setString(2, r.getRoleFull());
 				ps.setString(3, r.getDescription());
 			}
 		};
@@ -133,7 +133,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, r.getRole_full());
+				ps.setString(1, r.getRoleFull());
 				ps.setString(2, r.getDescription());
 				ps.setString(3, r.getId());
 			}

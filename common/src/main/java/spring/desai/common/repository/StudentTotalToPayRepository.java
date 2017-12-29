@@ -15,7 +15,7 @@ public interface StudentTotalToPayRepository {
 	 * @return
 	 * @throws RepositoryDataAccessException
 	 */
-	Double updateTotalToPayBy(String studId, double addToTotal) throws RepositoryDataAccessException;
+	Double updateTotalToPay(String studId, double addToTotal) throws RepositoryDataAccessException;
 	
 	/**
 	 * @param studId

@@ -19,21 +19,24 @@ public abstract class Person implements Persistable {
 	protected String id;
 	
 	@Column(name = F_NAME, length = 36, nullable = false)
-	protected String f_name;
+	protected String firstname;
 	
 	@Column(name = L_NAME, length = 36, nullable = false)
-	protected String l_name;
+	protected String lastname;
 	
 	@Column(name = ADDRESS, length = 255)
 	protected String address;
+	
+	@Column(name = "is_active")
+	protected int isActive = 1;
 
 	public Person() {
 	}
 	
-	protected Person(String id, String f_name, String l_name, String address) {
+	protected Person(String id, String firstname, String lastname, String address) {
 		this.id = id;
-		this.f_name = f_name;
-		this.l_name = l_name;
+		this.firstname = firstname;
+		this.lastname = lastname;
 		this.address = address;
 	}
 
@@ -41,20 +44,20 @@ public abstract class Person implements Persistable {
 		return id;
 	}
 
-	public String getF_name() {
-		return f_name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setF_name(String f_name) {
-		this.f_name = f_name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
-	public String getL_name() {
-		return l_name;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setL_name(String l_name) {
-		this.l_name = l_name;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public String getAddress() {
@@ -66,7 +69,15 @@ public abstract class Person implements Persistable {
 	}
 
 	public String getFullName() {
-		return f_name + " " + l_name;
+		return firstname + " " + lastname;
+	}
+	
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}
+	
+	public int getIsActive() {
+		return isActive;
 	}
 
 	public abstract String toString();
@@ -76,9 +87,9 @@ public abstract class Person implements Persistable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + ((f_name == null) ? 0 : f_name.hashCode());
+		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((l_name == null) ? 0 : l_name.hashCode());
+		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
 		return result;
 	}
 
@@ -96,20 +107,20 @@ public abstract class Person implements Persistable {
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (f_name == null) {
-			if (other.f_name != null)
+		if (firstname == null) {
+			if (other.firstname != null)
 				return false;
-		} else if (!f_name.equals(other.f_name))
+		} else if (!firstname.equals(other.firstname))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (l_name == null) {
-			if (other.l_name != null)
+		if (lastname == null) {
+			if (other.lastname != null)
 				return false;
-		} else if (!l_name.equals(other.l_name))
+		} else if (!lastname.equals(other.lastname))
 			return false;
 		return true;
 	}

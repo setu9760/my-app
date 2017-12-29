@@ -275,15 +275,15 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 	
 	protected void doDeleteByIdTest(String id){
 		int origCount = getRepo().countAll();
-		getRepo().deleteById(null);
+		getRepo().setActiveStatusById(null, -1);
 		int updatedCount = getRepo().countAll();
 		assertThat(updatedCount, is(equalTo(origCount)));
 		
-		getRepo().deleteById("");
+		getRepo().setActiveStatusById("", -1);
 		updatedCount = getRepo().countAll();
 		assertThat(updatedCount, is(equalTo(origCount)));
 		
-		getRepo().deleteById(id);
+		getRepo().setActiveStatusById(id, -1);
 		T p = getRepo().findById(id);
 		assertThat(p, is(nullValue()));
 		updatedCount = getRepo().countAll();

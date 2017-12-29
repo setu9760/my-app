@@ -59,8 +59,8 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 	@Test
 	public void testUpdate() {
 		Student updatedPersistable = studentRepository.findById("studentid1");
-		updatedPersistable.setF_name("UPDATED_F_NAME");
-		updatedPersistable.setL_name("UPDATED_L_NAME");
+		updatedPersistable.setFirstname("UPDATED_F_NAME");
+		updatedPersistable.setLastname("UPDATED_L_NAME");
 		doUpdateTest(updatedPersistable, "studentid1");
 	}
 	
@@ -71,8 +71,8 @@ public class StudentRepositoryImplTest extends AbstractRepositoryTest<Student> {
 		
 		Collection<Student> updateStuds = studentRepository.findByName("f_name");
 		for (Student student : updateStuds) {
-			student.setF_name("UPDATED_F_NAME");
-			student.setL_name("UPDATED_L_NAME");
+			student.setFirstname("UPDATED_F_NAME");
+			student.setLastname("UPDATED_L_NAME");
 		}
 		doUpdateAllTest(origStuds, updateStuds, "studentid");
 	}

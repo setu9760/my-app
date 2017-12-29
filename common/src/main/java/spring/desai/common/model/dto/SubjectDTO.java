@@ -1,6 +1,6 @@
 package spring.desai.common.model.dto;
 
-public class SubjectDTO {
+public class SubjectDTO implements DTO {
 	private String id;
 	private String name;
 	private String costCode;

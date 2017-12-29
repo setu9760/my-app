@@ -20,17 +20,9 @@ public class StudentTotalToPayRepositoryImpl implements StudentTotalToPayReposit
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public Double updateTotalToPayBy(String studId, double newTotalToPay) throws RepositoryDataAccessException{
+	public Double updateTotalToPay(String studId, double newTotalToPay) throws RepositoryDataAccessException{
 		notNull(studId, I18N.getString("error.null.id"));
-		
-//		if (existingTotal != null) {
-//			existingTotal -= newTotalToPay;
-			getJdbcTemplate().update("update " + STUD_TOTAL_PAY_TABLE_NAME + " set " + TOTAL_TO_PAY + " = ? where " + STUD_ID + " = ?", new Object[] {newTotalToPay, studId});
-//		}
-//		else {
-//			existingTotal = addToTotal;
-//			getJdbcTemplate().update("insert into " + STUD_TOTAL_PAY_TABLE_NAME + " values (?, ?)", new Object[] {studId, existingTotal});
-//		}
+		getJdbcTemplate().update("update " + STUD_TOTAL_PAY_TABLE_NAME + " set " + TOTAL_TO_PAY + " = ? where " + STUD_ID + " = ?", new Object[] {newTotalToPay, studId});
 		return getCurrentTotalToPay(studId);
 	}
 	

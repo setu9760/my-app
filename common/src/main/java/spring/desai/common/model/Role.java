@@ -8,16 +8,16 @@ public class Role implements Persistable, GrantedAuthority {
 
 	private static final long serialVersionUID = -3981099290239790487L;
 	private String role;
-	private String role_full;
+	private String roleFull;
 	private String description;
 
-	public Role(String role, String role_full) {
-		this(role, role_full, null);
+	public Role(String role, String roleFull) {
+		this(role, roleFull, null);
 	}
 	
-	public Role(String role, String role_full, String description) {
+	public Role(String role, String roleFull, String description) {
 		this.role = role.toUpperCase(Locale.getDefault());
-		this.role_full = role_full;
+		this.roleFull = roleFull;
 		this.description = description;
 	}
 	
@@ -30,8 +30,8 @@ public class Role implements Persistable, GrantedAuthority {
 		return role;
 	}
 
-	public String getRole_full() {
-		return role_full;
+	public String getRoleFull() {
+		return roleFull;
 	}
 
 	public String getDescription() {
@@ -48,7 +48,7 @@ public class Role implements Persistable, GrantedAuthority {
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((role_full == null) ? 0 : role_full.hashCode());
+		result = prime * result + ((roleFull == null) ? 0 : roleFull.hashCode());
 		return result;
 	}
 
@@ -66,10 +66,10 @@ public class Role implements Persistable, GrantedAuthority {
 				return false;
 		} else if (!role.equals(other.role))
 			return false;
-		if (role_full == null) {
-			if (other.role_full != null)
+		if (roleFull == null) {
+			if (other.roleFull != null)
 				return false;
-		} else if (!role_full.equals(other.role_full))
+		} else if (!roleFull.equals(other.roleFull))
 			return false;
 		if (description == null) {
 			if (other.description != null)

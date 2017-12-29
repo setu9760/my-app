@@ -76,7 +76,7 @@ public interface BasePersistableRepository <T extends Persistable>{
 	 * @param id
 	 * @throws RepositoryDataAccessException
 	 */
-	void deleteById(String id) throws RepositoryDataAccessException;
+	void setActiveStatusById(String id, int status) throws RepositoryDataAccessException;
 	
 	/**
 	 * Performs delete operations based on persistable name field.

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.Principal;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+
+import spring.desai.common.model.dto.PersonDTO;
 
 @WebAppConfiguration
 @ActiveProfiles({ "jdbc", "secure" })
@@ -52,12 +55,15 @@ public class UserMaintananceControllerTest {
 	@Test
 	public void testIt() throws Exception{
 		System.out.println("UserMaintananceControllerTest.testIt()");
-		mvc.perform(post("/admin/register-user").param("firstName", "ABC")
-				.param("lastName", "ABC").param("username", "ABC")
+		String id= UUID.randomUUID().toString();
+		mvc.perform(post("/admin/register-user").param("firstname", "ABC")
+				.param("id", id).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("lastname", "ABC").param("address", "ABC")
 				.param("password1", "password").param("adminUser", "yes"))
-				.andExpect(model().attribute("msg","success")).andDo(print());
+				.andExpect(status().isOk())
+				.andExpect(view().name("user_maintenance"))
+				.andExpect(model().attributeExists("msg"));
 		
-		mvc.perform(get("/admin/list-user")).andDo(print());
 	}
 
 	public String toJson(Object o) throws IOException {

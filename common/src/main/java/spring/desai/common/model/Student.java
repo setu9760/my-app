@@ -42,16 +42,16 @@ public class Student extends Person {
 		this(null, null, null, 0, null);
 	}
 	
-	public Student(String f_name, String l_name, int age) {
-		this(f_name, l_name, age, null);
+	public Student(String firstname, String lastname, int age) {
+		this(firstname, lastname, age, null);
 	}
 
-	public Student(String f_name, String l_name, int age, String address) {
-		this(null, f_name, l_name, age, address);
+	public Student(String firstname, String lastname, int age, String address) {
+		this(null, firstname, lastname, age, address);
 	}
 	
-	public Student(String id, String f_name, String l_name, int age, String address) {
-		super(id, f_name, l_name, address);
+	public Student(String id, String firstname, String lastname, int age, String address) {
+		super(id, firstname, lastname, address);
 		this.age = age;
 	}
 
@@ -100,10 +100,10 @@ public class Student extends Person {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Student [id= ");
 		builder.append(id);
-		builder.append(", f_name= ");
-		builder.append(f_name);
-		builder.append(", l_name= ");
-		builder.append(l_name);
+		builder.append(", firstname= ");
+		builder.append(firstname);
+		builder.append(", lastname= ");
+		builder.append(lastname);
 		builder.append(", address= ");
 		builder.append(address);
 		builder.append(", age= ");

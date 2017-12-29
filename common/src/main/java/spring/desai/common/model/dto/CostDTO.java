@@ -1,6 +1,6 @@
 package spring.desai.common.model.dto;
 
-public class CostDTO {
+public class CostDTO implements DTO {
 	private String costCode;
 	private Double amount;
 
@@ -25,6 +25,9 @@ public class CostDTO {
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	
-	
+
+	@Override
+	public String getId() {
+		return costCode;
+	}
 }

@@ -56,7 +56,7 @@ public final class InterceptorUtils {
 
 	public static void logException(JoinPoint jp, Throwable ex) {
 		Logger log = getLog(jp);
-		log.error(ex.getMessage());
+		log.error("Exception occured", ex);
 		logReturn(jp, null, log, true);
 	}
 

@@ -2,7 +2,7 @@ package spring.desai.common.model.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class PersonDTO {
+public class PersonDTO implements DTO {
 	
 	@NotEmpty(message="Person id cannot be null while persisting")
 	private String id;

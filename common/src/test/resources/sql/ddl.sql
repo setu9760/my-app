@@ -54,6 +54,7 @@ CREATE TABLE `student` (
   `f_name` varchar(45) NOT NULL,
   `l_name` varchar(45) NOT NULL,
   `age` int(11) NOT NULL,
+  `is_active` int(2) NOT NULL DEFAULT 1,
   `address` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -82,6 +83,7 @@ CREATE TABLE `subject` (
   `id` varchar(36) NOT NULL,
   `name` varchar(45) NOT NULL,
   `cost_code` varchar(36) NOT NULL,
+  `is_active` int(2) NOT NULL DEFAULT 1,
   `isMandatory` varchar(6) NOT NULL DEFAULT 'false',
   PRIMARY KEY (`id`),
   CONSTRAINT `cost_code_fk` FOREIGN KEY (`cost_code`) REFERENCES `cost` (`cost_code`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -91,6 +93,7 @@ CREATE TABLE `tutor` (
   `id` varchar(36) NOT NULL,
   `f_name` varchar(45) NOT NULL,
   `l_name` varchar(45) NOT NULL,
+  `is_active` int(2) NOT NULL DEFAULT 1,
   `address` varchar(45) NOT NULL,
   `isFulltime` varchar(6) NOT NULL DEFAULT 'true',
   `subj_id` varchar(36) NOT NULL DEFAULT 'N/A',

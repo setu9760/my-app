@@ -44,11 +44,11 @@ INSERT INTO user_function VALUES (6, 'User exceeded MAX_FAILED_ATTEMPTS');
 INSERT INTO user_function VALUES (7, 'Username not found');
 
 -- Insert to student
-INSERT INTO student VALUES('studentid1','f_name1','l_name1',21,'address1');
-INSERT INTO student VALUES('studentid2','f_name2','l_name2',21,'address2');
-INSERT INTO student VALUES('studentid3','f_name3','l_name3',21,'address3');
-INSERT INTO student VALUES('studentid4','f_name4','l_name4',21,'address4');
-INSERT INTO student VALUES('studentid5','f_name4','l_name5',21,'address5');
+INSERT INTO student VALUES('studentid1','f_name1','l_name1',21,1,'address1');
+INSERT INTO student VALUES('studentid2','f_name2','l_name2',21,1,'address2');
+INSERT INTO student VALUES('studentid3','f_name3','l_name3',21,1,'address3');
+INSERT INTO student VALUES('studentid4','f_name4','l_name4',21,1,'address4');
+INSERT INTO student VALUES('studentid5','f_name4','l_name5',21,1,'address5');
 
 -- Insert to cost 
 INSERT INTO cost VALUES('BASIC',1000);
@@ -68,20 +68,20 @@ INSERT INTO cost VALUES('UCC4',2000);
 INSERT INTO cost VALUES('UCC5',100);
 
 -- Insert to subject
-INSERT INTO subject VALUES('subjectid1','name1','BASIC','true');
-INSERT INTO subject VALUES('subjectid2','name2','RESEARCH','false');
-INSERT INTO subject VALUES('subjectid3','name3','PRACTICAL','true');
-INSERT INTO subject VALUES('subjectid4','name4','BASIC','true');
-INSERT INTO subject VALUES('subjectid5','name5','DISTANCE_LEARNING','false');
+INSERT INTO subject VALUES('subjectid1','name1','BASIC',1,'true');
+INSERT INTO subject VALUES('subjectid2','name2','RESEARCH',1,'false');
+INSERT INTO subject VALUES('subjectid3','name3','PRACTICAL',1,'true');
+INSERT INTO subject VALUES('subjectid4','name4','BASIC',1,'true');
+INSERT INTO subject VALUES('subjectid5','name5','DISTANCE_LEARNING',1,'false');
 
 -- Insert to tutor
-INSERT INTO tutor VALUES('tutorid1','f_name1','l_name1','address1', 'true', 'subjectid1');
-INSERT INTO tutor VALUES('tutorid2','f_name2','l_name2','address2', 'true', 'subjectid2');
-INSERT INTO tutor VALUES('tutorid3','f_name3','l_name3','address3', 'true', 'subjectid3');
-INSERT INTO tutor VALUES('tutorid4','f_name4','l_name4','address4', 'true', 'subjectid4');
-INSERT INTO tutor VALUES('tutorid5','f_name4','l_name5','address5', 'true', 'subjectid5');
-INSERT INTO tutor VALUES('tutorid6','f_name4','l_name6','address6', 'false', 'subjectid2');
-INSERT INTO tutor VALUES('tutorid7','f_name7','l_name7','address7', 'false', 'subjectid4');
+INSERT INTO tutor VALUES('tutorid1','f_name1','l_name1',1,'address1', 'true', 'subjectid1');
+INSERT INTO tutor VALUES('tutorid2','f_name2','l_name2',1,'address2', 'true', 'subjectid2');
+INSERT INTO tutor VALUES('tutorid3','f_name3','l_name3',1,'address3', 'true', 'subjectid3');
+INSERT INTO tutor VALUES('tutorid4','f_name4','l_name4',1,'address4', 'true', 'subjectid4');
+INSERT INTO tutor VALUES('tutorid5','f_name4','l_name5',1,'address5', 'true', 'subjectid5');
+INSERT INTO tutor VALUES('tutorid6','f_name4','l_name6',1,'address6', 'false', 'subjectid2');
+INSERT INTO tutor VALUES('tutorid7','f_name7','l_name7',1,'address7', 'false', 'subjectid4');
 
 -- Insert to payment
 INSERT INTO payment (id, amount, type, stud_id) VALUES('payment1', 800, 'CHEQUE', 'studentid1');
@@ -111,3 +111,9 @@ INSERT INTO subj_stud_link VALUES ('subjectid3', 'studentid4');
 INSERT INTO subj_stud_link VALUES ('subjectid3', 'studentid3');
 INSERT INTO subj_stud_link VALUES ('subjectid3', 'studentid2');
 INSERT INTO subj_stud_link VALUES ('subjectid4', 'studentid5');
+
+INSERT INTO STUD_TOTAL_PAYMENT  VALUES ('studentid1', 4700);
+INSERT INTO STUD_TOTAL_PAYMENT  VALUES ('studentid2', 2500);
+INSERT INTO STUD_TOTAL_PAYMENT  VALUES ('studentid3', 3700);
+INSERT INTO STUD_TOTAL_PAYMENT  VALUES ('studentid4', 3700);
+INSERT INTO STUD_TOTAL_PAYMENT  VALUES ('studentid5', 1000);

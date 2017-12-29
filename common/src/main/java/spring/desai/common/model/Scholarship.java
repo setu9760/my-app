@@ -32,16 +32,16 @@ public class Scholarship implements Persistable{
 	private String id;
 	
 	@Column(name = EXTERNAL_REF)
-	private String external_ref;
+	private String externalRef;
 	
 	@Transient
 	private ScholorshipType type;
 	
 	@Column(name = TOTAL_AMOUNT)
-	private double total_amount;
+	private double totalAmount;
 	
 	@Column(name = PAID_AMOUNT)
-	private double paid_amount;
+	private double paidAmount;
 	
 	@Column(name = IS_FULLY_PAID)
 	private boolean isFullyPaid;
@@ -51,34 +51,34 @@ public class Scholarship implements Persistable{
 	
 	@ManyToOne(targetEntity = Scholarship.class)
 	@JoinColumn(name = STUD_ID, nullable = false, referencedColumnName = ID)
-	private String stud_id;
+	private String studentId;
 	
 	@Column(name = ADDITIONAL_COMMENTS)
-	private String additional_comments;
+	private String additionalComments;
 
 	public Scholarship() {
 	}
 	
-	public Scholarship(String id, ScholorshipType type, double total_amount) {
+	public Scholarship(String id, ScholorshipType type, double totalAmount) {
 		this.id = id;
 		this.type = type;
-		this.total_amount = total_amount;
+		this.totalAmount = totalAmount;
 	}
 
-	public Scholarship(String id, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
-		this(id, "N/A", type, total_amount, paid_amount, isFullyPaid, isPostPay, additional_comments, stud_id);
+	public Scholarship(String id, ScholorshipType type, double totalAmount, double paidAmount, boolean isFullyPaid, boolean isPostPay, String additionalComments,  String studentId) {
+		this(id, "N/A", type, totalAmount, paidAmount, isFullyPaid, isPostPay, additionalComments, studentId);
 	}
 	
-	public Scholarship(String id, String external_ref, ScholorshipType type, double total_amount, double paid_amount, boolean isFullyPaid, boolean isPostPay, String additional_comments,  String stud_id) {
+	public Scholarship(String id, String externalRef, ScholorshipType type, double totalAmount, double paidAmount, boolean isFullyPaid, boolean isPostPay, String additionalComments,  String studentId) {
 		this.id = id;
-		this.external_ref = external_ref;
+		this.externalRef = externalRef;
 		this.type = type;
-		this.total_amount = total_amount;
-		this.paid_amount = paid_amount;
+		this.totalAmount = totalAmount;
+		this.paidAmount = paidAmount;
 		this.isFullyPaid = isFullyPaid;
 		this.isPostPay = isPostPay;
-		this.stud_id = stud_id;
-		this.additional_comments = additional_comments;
+		this.studentId = studentId;
+		this.additionalComments = additionalComments;
 	}
 
 	public String getId() {
@@ -89,12 +89,12 @@ public class Scholarship implements Persistable{
 		this.id = id;
 	}
 
-	public String getExternal_ref() {
-		return external_ref;
+	public String getExternalRef() {
+		return externalRef;
 	}
 
-	public void setExternal_ref(String external_ref) {
-		this.external_ref = external_ref;
+	public void setExternalRef(String externalRef) {
+		this.externalRef = externalRef;
 	}
 
 	public ScholorshipType getType() {
@@ -110,20 +110,20 @@ public class Scholarship implements Persistable{
 		this.type = type;
 	}
 
-	public double getTotal_amount() {
-		return total_amount;
+	public double getTotalAmount() {
+		return totalAmount;
 	}
 
-	public void setTotal_amount(double total_amount) {
-		this.total_amount = total_amount;
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
-	public double getPaid_amount() {
-		return paid_amount;
+	public double getPaidAmount() {
+		return paidAmount;
 	}
 
-	public void setPaid_amount(double paid_amount) {
-		this.paid_amount = paid_amount;
+	public void setPaidAmount(double paidAmount) {
+		this.paidAmount = paidAmount;
 	}
 
 	public boolean isFullyPaid() {
@@ -142,20 +142,20 @@ public class Scholarship implements Persistable{
 		this.isPostPay = isPostPay;
 	}
 	
-	public void setStud_id(String stud_id) {
-		this.stud_id = stud_id;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 	
-	public String getStud_id() {
-		return stud_id;
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public String getAdditional_comments() {
-		return additional_comments;
+	public String getAdditionalComments() {
+		return additionalComments;
 	}
 
-	public void setAdditional_comments(String additional_comments) {
-		this.additional_comments = additional_comments;
+	public void setAdditionalComments(String additionalComments) {
+		this.additionalComments = additionalComments;
 	}
 
 	@Override
@@ -163,22 +163,22 @@ public class Scholarship implements Persistable{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Scholorship [id=");
 		builder.append(id);
-		builder.append(", external_ref=");
-		builder.append(external_ref);
+		builder.append(", externalRef=");
+		builder.append(externalRef);
 		builder.append(", type=");
 		builder.append(type);
-		builder.append(", total_amount=");
-		builder.append(total_amount);
-		builder.append(", paid_amount=");
-		builder.append(paid_amount);
+		builder.append(", totalAmount=");
+		builder.append(totalAmount);
+		builder.append(", paidAmount=");
+		builder.append(paidAmount);
 		builder.append(", isFullyPaid=");
 		builder.append(isFullyPaid);
 		builder.append(", isPostPay=");
 		builder.append(isPostPay);
-		builder.append(", stud_id=");
-		builder.append(stud_id);
-		builder.append(", additional_comments=");
-		builder.append(additional_comments);
+		builder.append(", studentId=");
+		builder.append(studentId);
+		builder.append(", additionalComments=");
+		builder.append(additionalComments);
 		builder.append(']');
 		return builder.toString();
 	}
@@ -187,11 +187,11 @@ public class Scholarship implements Persistable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((external_ref == null) ? 0 : external_ref.hashCode());
+		result = prime * result + ((externalRef == null) ? 0 : externalRef.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((stud_id == null) ? 0 : stud_id.hashCode());
+		result = prime * result + ((studentId == null) ? 0 : studentId.hashCode());
 		long temp;
-		temp = Double.doubleToLongBits(total_amount);
+		temp = Double.doubleToLongBits(totalAmount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -206,22 +206,22 @@ public class Scholarship implements Persistable{
 		if (!(obj instanceof Scholarship))
 			return false;
 		Scholarship other = (Scholarship) obj;
-		if (external_ref == null) {
-			if (other.external_ref != null)
+		if (externalRef == null) {
+			if (other.externalRef != null)
 				return false;
-		} else if (!external_ref.equals(other.external_ref))
+		} else if (!externalRef.equals(other.externalRef))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (stud_id == null) {
-			if (other.stud_id != null)
+		if (studentId == null) {
+			if (other.studentId != null)
 				return false;
-		} else if (!stud_id.equals(other.stud_id))
+		} else if (!studentId.equals(other.studentId))
 			return false;
-		if (Double.doubleToLongBits(total_amount) != Double.doubleToLongBits(other.total_amount))
+		if (Double.doubleToLongBits(totalAmount) != Double.doubleToLongBits(other.totalAmount))
 			return false;
 		if (type != other.type)
 			return false;

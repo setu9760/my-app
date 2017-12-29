@@ -1,6 +1,7 @@
 package spring.desai.common.repository.tests.jpa;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import spring.desai.common.repository.StudentRepository;
 import spring.desai.common.repository.SubjectRepository;
 import spring.desai.common.repository.TutorRepository;
 
+@Ignore
 @ActiveProfiles(profiles = { "jpa" })
 @Transactional(noRollbackForClassName="")
 @RunWith(SpringJUnit4ClassRunner.class)

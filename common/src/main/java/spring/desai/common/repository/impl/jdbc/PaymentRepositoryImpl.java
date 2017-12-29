@@ -78,7 +78,7 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 				ps.setString(1, p.getId());
 				ps.setDouble(2, p.getAmount());
 				ps.setString(3, String.valueOf(p.getPaymentType()));
-				ps.setString(4, p.getStud_id());
+				ps.setString(4, p.getStudentId());
 				ps.setString(5, p.getComments());
 			}
 		};
@@ -92,7 +92,7 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setDouble(1, p.getAmount());
 				ps.setString(2, String.valueOf(p.getPaymentType()));
-				ps.setString(3, p.getStud_id());
+				ps.setString(3, p.getStudentId());
 				ps.setString(4, p.getComments());
 				ps.setString(5, p.getId());
 			}
@@ -110,7 +110,7 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 				ps.setString(1, p.getId());
 				ps.setDouble(2, p.getAmount());
 				ps.setString(3, String.valueOf(p.getPaymentType()));
-				ps.setString(4, p.getStud_id());
+				ps.setString(4, p.getStudentId());
 				ps.setString(5, p.getComments());
 			}
 
@@ -131,7 +131,7 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 				Payment p = l.get(i);
 				ps.setDouble(1, p.getAmount());
 				ps.setString(2, String.valueOf(p.getPaymentType()));
-				ps.setString(3, p.getStud_id());
+				ps.setString(3, p.getStudentId());
 				ps.setString(4, p.getComments());
 				ps.setString(5, p.getId());
 			}

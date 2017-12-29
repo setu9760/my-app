@@ -2,8 +2,6 @@ package spring.desai.common.repository;
 
 import java.util.Collection;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import spring.desai.common.model.Role;
 import spring.desai.common.repository.exception.RepositoryDataAccessException;
 

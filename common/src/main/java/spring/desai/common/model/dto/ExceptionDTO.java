@@ -1,5 +1,7 @@
 package spring.desai.common.model.dto;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ExceptionDTO {
@@ -19,25 +21,8 @@ public class ExceptionDTO {
 		this.responseCode = responseCode;
 		this.developerMessage = developerMessage;
 		this.e = e;
-		this.errorMessageStack = generateErrorStackMessage(e);
+		this.errorMessageStack = ExceptionUtils.getStackTrace(e);
 	}
-	
-	/**
-	 * Generate an error message that is the concatenation of all the stacks
-	 * @param t
-	 * @return String
-	 */
-	private String generateErrorStackMessage(Throwable t) {
-		StringBuilder buf = new StringBuilder(t.getMessage()==null ? "" : t.getMessage());
-		Throwable cause = t.getCause();
-		while (cause != null) {
-			buf.append(System.lineSeparator());
-			buf.append(cause.getMessage());
-			cause = cause.getCause();
-		}
-		return buf.toString();
-	}
-	
 
 	public String getResponseCode() {
 		return responseCode;

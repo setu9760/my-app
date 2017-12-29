@@ -1,6 +1,6 @@
 package spring.desai.common.model.dto;
 
-public class RoleDTO {
+public class RoleDTO implements DTO {
 	String role;
 	String roleFull;
 	String description;
@@ -35,5 +35,9 @@ public class RoleDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	@Override
+	public String getId() {
+		return role;
+	}
 }

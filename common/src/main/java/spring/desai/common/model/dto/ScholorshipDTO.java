@@ -1,6 +1,6 @@
 package spring.desai.common.model.dto;
 
-public class ScholorshipDTO {
+public class ScholorshipDTO implements DTO {
 	private String id;
 	private String externalRef;
 	private String type;
@@ -8,14 +8,14 @@ public class ScholorshipDTO {
 	private Double paidAmount;
 	private Boolean isFullyPaid;
 	private Boolean isPostPay;
-	private String studId;
+	private String studentId;
 	private String additionalComments;
 
 	public ScholorshipDTO() {
 	}
 	
 	public ScholorshipDTO(String id, String externalRef, String type, Double totalAmount, Double paidAmount,
-			Boolean isFullyPaid, Boolean isPostPay, String studId, String additionalComments) {
+			Boolean isFullyPaid, Boolean isPostPay, String studentId, String additionalComments) {
 		super();
 		this.id = id;
 		this.externalRef = externalRef;
@@ -24,7 +24,7 @@ public class ScholorshipDTO {
 		this.paidAmount = paidAmount;
 		this.isFullyPaid = isFullyPaid;
 		this.isPostPay = isPostPay;
-		this.studId = studId;
+		this.studentId = studentId;
 		this.additionalComments = additionalComments;
 	}
 
@@ -84,12 +84,12 @@ public class ScholorshipDTO {
 		this.isPostPay = isPostPay;
 	}
 
-	public String getStudId() {
-		return studId;
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public void setStudId(String studId) {
-		this.studId = studId;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 
 	public String getAdditionalComments() {

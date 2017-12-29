@@ -26,6 +26,11 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 	public Collection<Tutor> getTutorsForSubject(String subj_id) throws RepositoryDataAccessException {
 		return getJdbcTemplate().query(getFindBySql(TUTOR_TABLE_NAME, SUBJ_ID), new Object[] { subj_id }, getRowMapper());
 	}
+	
+	@Override
+	public void setActiveStatusById(String id, int status) throws RepositoryDataAccessException {
+		getJdbcTemplate().update(getStatusSetSql(getTableName(), getIdField()), new Object[]{ status, id });
+	}
 
 	@Override
 	protected RowMapper<Tutor> getRowMapper() {
@@ -44,7 +49,7 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 	
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO tutor VALUES (?, ?, ?, ?, ?, ?)";
+		return "INSERT INTO tutor VALUES (?, ?, ?, 1, ?, ?, ?)";
 	}
 	
 	@Override
@@ -59,8 +64,8 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, t.getId());
-				ps.setString(2, t.getF_name());
-				ps.setString(3, t.getL_name());
+				ps.setString(2, t.getFirstname());
+				ps.setString(3, t.getLastname());
 				ps.setString(4, t.getAddress());
 				ps.setString(5, String.valueOf(t.isFulltime()));
 				ps.setString(6, t.getSubj_id());
@@ -74,8 +79,8 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, t.getF_name());
-				ps.setString(2, t.getL_name());
+				ps.setString(1, t.getFirstname());
+				ps.setString(2, t.getLastname());
 				ps.setString(3, t.getAddress());
 				ps.setString(4, String.valueOf(t.isFulltime()));
 				ps.setString(5, t.getSubj_id());
@@ -93,8 +98,8 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Tutor t = l.get(i);
 				ps.setString(1, t.getId());
-				ps.setString(2, t.getF_name());
-				ps.setString(3, t.getL_name());
+				ps.setString(2, t.getFirstname());
+				ps.setString(3, t.getLastname());
 				ps.setString(4, t.getAddress());
 				ps.setString(5, String.valueOf(t.isFulltime()));
 				ps.setString(6, t.getSubj_id());
@@ -115,8 +120,8 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Tutor t = l.get(i);
-				ps.setString(1, t.getF_name());
-				ps.setString(2, t.getL_name());
+				ps.setString(1, t.getFirstname());
+				ps.setString(2, t.getLastname());
 				ps.setString(3, t.getAddress());
 				ps.setString(4, String.valueOf(t.isFulltime()));
 				ps.setString(5, t.getSubj_id());

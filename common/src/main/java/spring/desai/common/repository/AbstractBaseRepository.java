@@ -88,14 +88,14 @@ public abstract class AbstractBaseRepository<T extends Persistable> implements B
 	}
 	
 	/**
-	 * return delete by field sql for given tableName
+	 * return sql to set is_active field on given table with the fieldname being the where clause.
 	 * @param tableName
 	 * @param fieldName
 	 * @return
 	 */
-	protected final String getDeleteBySql(String tableName, String fieldName) {
+	protected final String getStatusSetSql(String tableName, String fieldName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("DELETE FROM ").append(tableName).append(" WHERE ").append(fieldName).append(" = ?");
+		sb.append("UPDATE ").append(tableName).append(" SET IS_ACTIVE = ? WHERE ").append(fieldName).append(" = ?");
 		return sb.toString();
 	}
 	
