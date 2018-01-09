@@ -116,7 +116,7 @@ public class StudentAdminServiceImplTest {
 		}
 		schoolService.saveAll(c);
 		assertThat(readOnlyService.getStudentById("TEST_ID1"), is(not(nullValue())));
-		assertThat(readOnlyService.getAllStudents(), hasSize(8));
+		assertThat(readOnlyService.getAllEntities("student"), hasSize(8));
 		c.add(new Student("TEST_ID" +1,"f","n",25,"a"));
 		try {
 			schoolService.saveAll(c);

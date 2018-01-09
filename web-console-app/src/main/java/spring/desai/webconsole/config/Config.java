@@ -13,6 +13,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import spring.desai.common.model.dto.StudentDTO;
+
 @EnableWebMvc
 @Configuration
 @Import({ AspectsConfig.class, JdbcConfig.class, JpaConfig.class, ServiceConfig.class, RmiConfig.class, SecurityConfig.class, DefaultSecurityConfig.class, WebConfig.class })

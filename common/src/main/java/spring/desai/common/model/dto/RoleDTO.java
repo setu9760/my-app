@@ -1,9 +1,13 @@
 package spring.desai.common.model.dto;
 
+import spring.desai.common.annotations.NotEmptyAndMinMaxSizeID;
+
 public class RoleDTO implements DTO {
-	String role;
-	String roleFull;
-	String description;
+	
+	@NotEmptyAndMinMaxSizeID
+	private String role;
+	private String roleFull;
+	private String description;
 
 	public RoleDTO(String role, String roleFull, String description) {
 		super();

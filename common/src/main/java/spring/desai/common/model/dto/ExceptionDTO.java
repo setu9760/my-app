@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ExceptionDTO {
 
 	private String responseCode;
-	private String developerMessage;
+	private String userMessage;
 	private String errorMessageStack;
 	
 	@JsonIgnore
@@ -16,10 +16,10 @@ public class ExceptionDTO {
 	public ExceptionDTO() {
 	}
 	
-	public ExceptionDTO(String responseCode, String developerMessage, Exception e) {
+	public ExceptionDTO(String responseCode, String userMessage, Exception e) {
 		super();
 		this.responseCode = responseCode;
-		this.developerMessage = developerMessage;
+		this.userMessage = userMessage;
 		this.e = e;
 		this.errorMessageStack = ExceptionUtils.getStackTrace(e);
 	}
@@ -32,12 +32,12 @@ public class ExceptionDTO {
 		this.responseCode = responseCode;
 	}
 
-	public String getDeveloperMessage() {
-		return developerMessage;
+	public void setUserMessage(String userMessage) {
+		this.userMessage = userMessage;
 	}
-
-	public void setDeveloperMessage(String developerMessage) {
-		this.developerMessage = developerMessage;
+	
+	public String getUserMessage() {
+		return userMessage;
 	}
 
 	public String getStackTrace() {

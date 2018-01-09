@@ -103,24 +103,6 @@ public class AdminController {
 		return addDefaultObjects(mv);
 	}
 	
-//	@GetMapping(value="/update-user-details/{userId}")
-//	public ModelAndView updateUserDetails(@PathVariable String userId){
-//		ModelAndView mv = new ModelAndView("update-user-details");
-//		if (adminUserMaintananceService.isExistingUser(userId))
-//			mv.addObject("person", adminUserMaintananceService.getUser(userId));
-//		else 
-//			mv.addObject("error", format("Tried to update non-existing user '%s'", userId));
-//		return mv;
-//	}
-//	
-//	@PostMapping(value="/update-user-details")
-//	public ModelAndView updateUserDetails(@ModelAttribute @Valid PersonDTO user) throws Exception {
-//		ModelAndView mv = new ModelAndView();
-//		
-//		adminUserMaintananceService.updateUserPersonalDetails(dtoFactory.fromPersonDTOToUser(user));
-//		return mv;
-//	}
-	
 	private ModelAndView getAdminHomeModelAndView(){
 		return new ModelAndView("user_maintenance");
 	}

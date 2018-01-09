@@ -1,6 +1,10 @@
 package spring.desai.common.model.dto;
 
+import spring.desai.common.annotations.NotEmptyAndMinMaxSizeID;
+
 public class SubjectDTO implements DTO {
+	
+	@NotEmptyAndMinMaxSizeID
 	private String id;
 	private String name;
 	private String costCode;

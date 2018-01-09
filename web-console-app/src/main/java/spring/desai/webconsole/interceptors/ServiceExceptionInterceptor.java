@@ -27,6 +27,7 @@ public class ServiceExceptionInterceptor {
 			// System exceptions were logged at source
 			// do not log the exception, just the return
 			logReturn(jp, null, getLog(jp), true);
+			getLog(jp).error(ex.getMessage());
 			throw new ServiceException(ex);
 		} else {
 			logException(jp, ex);

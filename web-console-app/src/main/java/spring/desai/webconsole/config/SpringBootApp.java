@@ -34,7 +34,7 @@ public class SpringBootApp extends SpringBootServletInitializer {
 		return new EmbeddedServletContainerFactory();
 	}
 	
-	static class EmbeddedServletContainerFactory extends TomcatEmbeddedServletContainerFactory {
+	class EmbeddedServletContainerFactory extends TomcatEmbeddedServletContainerFactory {
 		@Override
 		protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(Tomcat tomcat) {
 			tomcat.enableNaming();
@@ -57,6 +57,5 @@ public class SpringBootApp extends SpringBootServletInitializer {
 			resource.setProperty("password", "");
 			context.getNamingResources().addResource(resource);
 		}
-
 	}
 }

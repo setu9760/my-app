@@ -27,7 +27,7 @@ public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements 
 	
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO cost VALUES (?, ?)";
+		return "INSERT INTO cost VALUES (?, ?, 1)";
 	}
 
 	@Override

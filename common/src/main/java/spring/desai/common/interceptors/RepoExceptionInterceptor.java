@@ -1,8 +1,6 @@
 package spring.desai.common.interceptors;
 
-import static spring.desai.common.interceptors.InterceptorUtils.getLog;
 import static spring.desai.common.interceptors.InterceptorUtils.logException;
-import static spring.desai.common.interceptors.InterceptorUtils.logReturn;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -30,9 +28,7 @@ public class RepoExceptionInterceptor {
 	public void afterThrowing(final JoinPoint jp, Throwable ex) throws Throwable {
 
 		if (ex instanceof DataAccessException || ex instanceof DataIntegrityViolationException) {
-			// System exceptions were logged at source
-			// do not log the exception, just the return
-			logReturn(jp, null, getLog(jp), true);
+			logException(jp, ex);
 			throw new RepositoryDataAccessException(ex);
 		} else {
 			logException(jp, ex);

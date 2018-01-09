@@ -2,21 +2,28 @@ package spring.desai.common.model.dto;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import spring.desai.common.annotations.NotEmptyAndMinMaxSizeID;
 
 public class PaymentDTO implements DTO {
 
+	@NotEmptyAndMinMaxSizeID
 	private String id;
 	private Double amount;
+	@NotEmpty(message = "payment type must be present")
 	private String paymentType;
+	@NotEmpty(message = "payment must have student id")
 	private String studentId;
-	@JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "CET")
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = JsonFormat.DEFAULT_TIMEZONE)
 	private Date date;
 	private String comments;
-	
+
 	public PaymentDTO() {
 	}
-	
+
 	public PaymentDTO(String id, Double amount, String paymentType, String studentId, Date date, String comments) {
 		super();
 		this.id = id;
@@ -74,5 +81,5 @@ public class PaymentDTO implements DTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	
+
 }

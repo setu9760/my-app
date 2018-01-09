@@ -7,6 +7,7 @@ import java.util.List;
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
 import spring.desai.common.model.Persistable;
+import spring.desai.common.model.Role;
 import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
@@ -35,13 +36,48 @@ public final class DTOFactory {
 	public DTO fromPersistable(Persistable p) {
 		if (p instanceof Student)
 			return fromStudent((Student) p);
+		else if (p instanceof Scholarship)
+			return fromScholorship((Scholarship) p);
+		else if (p instanceof Payment)
+			return fromPayment((Payment) p);
 		else if (p instanceof Subject)
 			return fromSubject((Subject) p);
 		else if (p instanceof Tutor)
 			return fromTutor((Tutor) p);
-		else if (p instanceof Scholarship)
-			return fromScholorship((Scholarship) p);
+		else if (p instanceof Cost)
+			return fromCost((Cost) p);
+		else if (p instanceof Role)
+			return fromRole((Role)p);
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<? extends DTO> fromPersistables(String entityType, Collection<? extends Persistable> coll) {
+		Collection<? extends DTO> c = new ArrayList<>(coll.size());
+		switch (entityType.toLowerCase()) {
+		case "student":
+			c = fromstudents((Collection<Student>) coll);
+			break;
+		case "subject":
+			c = fromSubjects((Collection<Subject>) coll);
+			break;
+		case "payment":
+			c = fromPayments((Collection<Payment>) coll);
+			break;
+		case "scholorship":
+			c = fromScholorships((Collection<Scholarship>) coll);
+			break;
+		case "tutor":
+			c = fromTutors((Collection<Tutor>) coll);
+			break;
+		case "role":
+			c = fromRoles((Collection<Role>) coll);
+			break;
+		case "cost":
+			c = fromCosts((Collection<Cost>) coll);
+			break;
+		}
+		return c;
 	}
 	
 	public TutorDTO fromTutor(Tutor t) {
@@ -56,8 +92,8 @@ public final class DTOFactory {
 		return s != null ? new StudentDTO(s.getId(), s.getFirstname(), s.getLastname(), s.getAge(), s.getAddress(), fromSubjects(s.getSubjects()), fromPayments(s.getPayments()), fromScholorships(s.getScholarships())): null;
 	}
 	
-	public ScholorshipDTO fromScholorship(Scholarship s) {
-		return s != null ?new ScholorshipDTO(s.getId(), s.getExternalRef(), s.getTypeString(), s.getTotalAmount(), s.getPaidAmount(), s.isFullyPaid(), s.isPostPay(), s.getStudentId(), s.getAdditionalComments()): null;
+	public ScholarshipDTO fromScholorship(Scholarship s) {
+		return s != null ?new ScholarshipDTO(s.getId(), s.getExternalRef(), s.getTypeString(), s.getTotalAmount(), s.getPaidAmount(), s.isFullyPaid(), s.isPostPay(), s.getStudentId(), s.getAdditionalComments()): null;
 	}
 	
 	public PaymentDTO fromPayment(Payment p) {
@@ -66,6 +102,10 @@ public final class DTOFactory {
 	
 	public CostDTO fromCost(Cost c) {
 		return c != null ? new CostDTO(c.getCostCode(), c.getAmount()) : null;
+	}
+	
+	public RoleDTO fromRole(Role r) {
+		return r != null ? new RoleDTO(r.getId(), r.getRoleFull(), r.getDescription()) : null;
 	}
 	
 	public PersonDTO fromUserToPersonDTOs(User u){
@@ -88,8 +128,8 @@ public final class DTOFactory {
 		return pays;
 	}
 	
-	public Collection<ScholorshipDTO> fromScholorships(Collection<Scholarship> scholorships) {
-		List<ScholorshipDTO> ss = new ArrayList<>(scholorships.size());
+	public Collection<ScholarshipDTO> fromScholorships(Collection<Scholarship> scholorships) {
+		List<ScholarshipDTO> ss = new ArrayList<>(scholorships.size());
 		for (Scholarship s: scholorships) { 
 			ss.add(fromScholorship(s));
 		}
@@ -102,6 +142,22 @@ public final class DTOFactory {
 			ss.add(fromStudent(s));
 		}
 		return ss;
+	}
+	
+	public Collection<RoleDTO> fromRoles(Collection<Role> roles) {
+		Collection<RoleDTO> rr = new ArrayList<>(roles.size());
+		for (Role role : roles) {
+			rr.add(fromRole(role));
+		}
+		return rr;
+	}
+	
+	public Collection<CostDTO> fromCosts(Collection<Cost> costs) {
+		Collection<CostDTO> cc = new ArrayList<>(costs.size());
+		for (Cost cost : costs) {
+			cc.add(fromCost(cost));
+		}
+		return cc;
 	}
 	
 	public Collection<TutorDTO> fromTutors(Collection<Tutor> tutors) {
@@ -125,10 +181,28 @@ public final class DTOFactory {
 	*	DTO to Object methods
 	*
 	****************************************************/
+	public Persistable fromDTO(DTO dto) {
+		if (dto instanceof StudentDTO) 
+			return fromStudentDTO((StudentDTO) dto);
+		else if (dto instanceof ScholarshipDTO)
+			return fromScholorshipDTO((ScholarshipDTO) dto);
+		else if (dto instanceof PaymentDTO)
+			return fromPaymentDTO((PaymentDTO) dto);
+		else if (dto instanceof SubjectDTO)
+			return fromSubjectDTO((SubjectDTO) dto);
+		else if (dto instanceof TutorDTO)
+			return fromTutorDTO((TutorDTO) dto);
+		else if (dto instanceof CostDTO)
+			return fromCostDTO((CostDTO) dto);
+		else if (dto instanceof RoleDTO)
+			return fromRoleDTO((RoleDTO) dto);
+		return null;
+	}
+	
 	public Student fromStudentDTO(StudentDTO dto){
 		Student s = new Student(dto.getId(), dto.getFirstname(), dto.getLastname(), dto.getAge(), dto.getAddress());
 		s.setSubjects(fromSubjectDTOs(dto.getSubjects()));
-		s.setScholarships(fromScholorshipDTOs(dto.getScholorships()));
+		s.setScholarships(fromScholorshipDTOs(dto.getScholarships()));
 		s.setPayments(fromPaymentDTOs(dto.getPayments()));
 		return s;
 	}
@@ -145,7 +219,11 @@ public final class DTOFactory {
 		return new Cost(dto.getCostCode(), dto.getAmount());
 	}
 	
-	public Scholarship fromScholorshipDTO(ScholorshipDTO dto){
+	public Role fromRoleDTO(RoleDTO dto) {
+		return new Role(dto.getId(), dto.getRoleFull(), dto.getDescription());
+	}
+	
+	public Scholarship fromScholorshipDTO(ScholarshipDTO dto){
 		return new Scholarship(dto.getId(), dto.getExternalRef(), ScholorshipType.valueOf(dto.getType()), dto.getTotalAmount(), dto.getPaidAmount(), dto.getIsFullyPaid(), dto.getIsPostPay(), dto.getAdditionalComments(), dto.getStudentId());
 	}
 	
@@ -197,11 +275,11 @@ public final class DTOFactory {
 		return costs;
 	}
 	
-	public Collection<Scholarship> fromScholorshipDTOs(Collection<ScholorshipDTO> dtos){
+	public Collection<Scholarship> fromScholorshipDTOs(Collection<ScholarshipDTO> dtos){
 		if(dtos == null)
 			return new ArrayList<>();
 		List<Scholarship> schols = new ArrayList<>(dtos.size());
-		for (ScholorshipDTO s : dtos) {
+		for (ScholarshipDTO s : dtos) {
 			schols.add(fromScholorshipDTO(s));
 		}
 		return schols;

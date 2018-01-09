@@ -1,13 +1,18 @@
 package spring.desai.common.model.dto;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Length;
+
+import spring.desai.common.annotations.NotEmptyAndMinMaxSizeID;
 
 public class PersonDTO implements DTO {
 	
-	@NotEmpty(message="Person id cannot be null while persisting")
+	@NotEmptyAndMinMaxSizeID
 	private String id;
+	@Length(min=3, max=45, message="firstname needs to be between 3 and 45 characters")
 	private String firstname;
+	@Length(min=3, max=45, message="lastname needs to be between 3 and 45 characters")
 	private String lastname;
+	@Length(min=3, max=100, message="address needs to be between 3 and 100 characters")
 	private String address;
 
 	public PersonDTO() {

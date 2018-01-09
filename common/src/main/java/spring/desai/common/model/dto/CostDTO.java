@@ -1,7 +1,14 @@
 package spring.desai.common.model.dto;
 
+import org.hibernate.validator.constraints.Range;
+
+import spring.desai.common.annotations.NotEmptyAndMinMaxSizeID;
+
 public class CostDTO implements DTO {
+	
+	@NotEmptyAndMinMaxSizeID
 	private String costCode;
+	@Range(min=0, message="amount must be greater than zero")
 	private Double amount;
 
 	public CostDTO() {

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
+import spring.desai.common.model.Persistable;
 import spring.desai.common.model.Role;
 import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
@@ -23,34 +24,55 @@ import spring.desai.common.utils.I18N;
 @Service("studentAdminService")
 public class SchoolServiceImpl extends BaseService implements SchoolService {
 
-	@Override
-	public void save(Student student) throws ServiceException {
-		notNull(student);
-		studentRepository.save(student);
-		studentTotalToPayRepository.addDefaultTotalToPayRow(student.getId());
-		for(Subject s : student.getSubjects())
-			addToSubject(student.getId(), s.getId());
-		for(Payment p : student.getPayments())
-			makePayment(p);
-		for(Scholarship s : student.getScholarships())
-			awardScholorship(s);
-		
+	public void save(Persistable p) throws ServiceException {
+		notNull(p);
+		if (p instanceof Student) {
+			Student student = (Student) p;
+			studentRepository.save(student);
+			studentTotalToPayRepository.addDefaultTotalToPayRow(student.getId());
+			for(Subject s : student.getSubjects())
+				addToSubject(student.getId(), s.getId());
+			for(Payment payment : student.getPayments())
+				makePayment(payment);
+			for(Scholarship s : student.getScholarships())
+				awardScholorship(s);
+		} else if (p instanceof Subject) {
+			subjectRepository.save((Subject) p);
+		} else if (p instanceof Tutor) {
+			tutorRepository.save((Tutor) p);
+		} else if (p instanceof Cost) {
+			costCodeRepository.save((Cost) p);
+		} else if (p instanceof Role) {
+			roleRepository.save((Role) p);
+		} else {
+			throw new IllegalArgumentException(format("Calling schoolService.save(persistable) for %s is not valid", p.getClass().getName()));
+		}
 	}
-
+	
+	@Override
+	public void update(Persistable p) throws ServiceException {
+		notNull(p);
+		if (p instanceof Student) {
+			studentRepository.update((Student)p);
+		} else if (p instanceof Subject) {
+			subjectRepository.update((Subject) p);
+		} else if (p instanceof Tutor) {
+			costCodeRepository.update((Cost) p);
+		} else if (p instanceof Cost) {
+			tutorRepository.update((Tutor) p);
+		} else if (p instanceof Role) {
+			roleRepository.update((Role) p);
+		} else {
+			throw new IllegalArgumentException(format("Calling schoolService.update(persistable) for %s is not valid", p.getClass().getName()));
+		}
+	}
+	
 	@Override
 	public void saveAll(Collection<Student> students) throws ServiceException {
 		notNull(students);
 		// TODO This should use the saveAll methods from repositories instead of looping through the list. 
 		for (Student s : students)
 			save(s);
-	}
-
-	/**
-	 * <b>NOTE - </b>This method must only be used to update personal details of the student. 
-	 */
-	@Override
-	public void update(Student student) throws ServiceException {
-		studentRepository.update(student);
 	}
 
 	/**
@@ -161,53 +183,5 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 		Payment p = paymentRepository.findById(scholorship.getId());
 		p.setAmount(scholorship.getTotalAmount());
 		amendPayment(p);
-	}
-
-	@Override
-	public void save(Subject subject) throws ServiceException {
-		notNull(subject);
-		subjectRepository.save(subject);
-	}
-
-	@Override
-	public void update(Subject subject) throws ServiceException {
-		notNull(subject);
-		subjectRepository.update(subject);
-	}
-
-	@Override
-	public void save(Cost cost) throws ServiceException {
-		notNull(cost);
-		costCodeRepository.save(cost);
-	}
-
-	@Override
-	public void update(Cost cost) throws ServiceException {
-		notNull(cost);
-		costCodeRepository.update(cost);
-	}
-
-	@Override
-	public void save(Tutor tutor) throws ServiceException {
-		notNull(tutor);
-		tutorRepository.save(tutor);
-	}
-
-	@Override
-	public void update(Tutor tutor) throws ServiceException {
-		notNull(tutor);
-		tutorRepository.update(tutor);
-	}
-
-	@Override
-	public void save(Role role) throws ServiceException {
-		notNull(role);
-		roleRepository.save(role);
-	}
-
-	@Override
-	public void update(Role role) throws ServiceException {
-		notNull(role);
-		roleRepository.update(role);
 	}
 }

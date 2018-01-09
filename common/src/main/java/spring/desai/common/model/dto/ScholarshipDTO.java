@@ -1,6 +1,10 @@
 package spring.desai.common.model.dto;
 
-public class ScholorshipDTO implements DTO {
+import spring.desai.common.annotations.NotEmptyAndMinMaxSizeID;
+
+public class ScholarshipDTO implements DTO {
+	
+	@NotEmptyAndMinMaxSizeID
 	private String id;
 	private String externalRef;
 	private String type;
@@ -11,10 +15,10 @@ public class ScholorshipDTO implements DTO {
 	private String studentId;
 	private String additionalComments;
 
-	public ScholorshipDTO() {
+	public ScholarshipDTO() {
 	}
 	
-	public ScholorshipDTO(String id, String externalRef, String type, Double totalAmount, Double paidAmount,
+	public ScholarshipDTO(String id, String externalRef, String type, Double totalAmount, Double paidAmount,
 			Boolean isFullyPaid, Boolean isPostPay, String studentId, String additionalComments) {
 		super();
 		this.id = id;

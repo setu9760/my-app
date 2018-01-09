@@ -76,6 +76,7 @@ CREATE TABLE `scholorship` (
 CREATE TABLE `cost` (
   `cost_code` varchar(36) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
+  `is_active` int(2) NOT NULL DEFAULT 1,
   PRIMARY KEY (`cost_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
