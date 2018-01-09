@@ -21,6 +21,7 @@ common-security/.settings/org.eclipse.wst.common.component
 common-security/.settings/org.eclipse.wst.validation.prefs
 common-security/.settings/org.eclipse.wst.common.project.facet.core.xml
 common-security/.springBeans
+/common-security/.springBeans
 desktop-app/.project
 desktop-app/.classpath
 desktop-app/.settings/

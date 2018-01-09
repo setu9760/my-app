@@ -2,7 +2,6 @@ package spring.desai.common.secure.handlers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
@@ -94,6 +93,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		public Map<String, String[]> getParameterMap() {
 			if (allParameters == null) {
 				allParameters = new TreeMap<String, String[]>();
