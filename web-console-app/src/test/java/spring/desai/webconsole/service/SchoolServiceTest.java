@@ -1,7 +1,8 @@
 package spring.desai.webconsole.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -126,7 +127,7 @@ public class SchoolServiceTest {
 			schoolService.save(s);
 		} catch (Exception e) {
 			assertThat(ExceptionUtils.getRootCause(e) instanceof DuplicateKeyException);
-			assertThat(ExceptionUtils.indexOfThrowable(e, RepositoryDataAccessException.class), equalTo(-1));
+			assertThat(ExceptionUtils.indexOfThrowable(e, RepositoryDataAccessException.class), is(not(-1)));
 			throw e;
 		}
 	}

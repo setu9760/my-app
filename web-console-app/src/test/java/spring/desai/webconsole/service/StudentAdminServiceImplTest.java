@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -119,7 +118,7 @@ public class StudentAdminServiceImplTest {
 		try {
 			schoolService.saveAll(c);
 		} catch (Exception e) {
-			assertThat(ExceptionUtils.indexOfThrowable(e, DuplicateKeyException.class), equalTo(-1));
+			assertThat(ExceptionUtils.indexOfThrowable(e, DuplicateKeyException.class), is(not(-1)));
 		}
 	}
 	
