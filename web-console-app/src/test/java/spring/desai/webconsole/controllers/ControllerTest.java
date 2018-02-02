@@ -1,20 +1,20 @@
 package spring.desai.webconsole.controllers;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.security.Principal;
 import java.util.UUID;
-
-
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +24,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -38,10 +40,10 @@ import org.springframework.web.context.WebApplicationContext;
 import spring.desai.common.model.dto.StudentDTO;
 
 @WebAppConfiguration
-@ActiveProfiles({"jdbc", "secure"})
+@ActiveProfiles({"jdbc"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcTestConfig.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, WithSecurityContextTestExecutionListener.class })
 public class ControllerTest {
 
 	@Autowired
@@ -55,48 +57,55 @@ public class ControllerTest {
 	
 	@Before
 	public void setup() {
-		mvc = webAppContextSetup(webApplicationContext).build();
+		mvc = webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
 	}
 
 	@Test
+	@WithMockUser(username="rest",password="password",roles="REST_USER")
 	public void testIt() throws Exception {
 		System.out.println("ControllerTests.testIt()");
 		// Default mapping request. 
-		mvc.perform(get("")).andExpect(status().isOk()).andDo(print());
+		mvc.perform(get("")).andExpect(status().isOk()); //.andDo(print());
 		
 		// Path not found request
-		mvc.perform(get("/student/studentid1")).andExpect(status().isNotFound()).andDo(print());
+		mvc.perform(get("/student/studentid1")).andExpect(status().isNotFound()); //.andDo(print());
 		
 		// Valid request
-		mvc.perform(get("/rest/student/student")).andExpect(status().isNotFound()).andDo(print());
+		mvc.perform(get("/rest/student/student")).andExpect(status().isNotFound()); //.andDo(print());
+		
+		mvc.perform(get("/rest/student/all")).andExpect(status().isOk());
 		
 		// POST request testing
 		StudentDTO dto = new StudentDTO(UUID.randomUUID().toString(), "MOCK_F", "MOCK_L", 24 , "ADDRESS", null, null , null);
 		
-		MvcResult results = mvc.perform(post("/rest/student/" + dto.getId() + "/save").principal(new Principal() {
-			
-			@Override
-			public String getName() {
-				return "rest";
-			}
-		}).content(toJson(dto)).contentType(contentType))
-			.andExpect(status().isOk()).andDo(print())
-			.andExpect(jsonPath("$.firstname").value("MOCK_F"))
-			.andExpect(jsonPath("$.lastname").value("MOCK_L"))
+		MvcResult results = mvc.perform(post("/rest/student/" + dto.getId() + "/create").with(csrf())
+			.content(toJson(dto)).contentType(contentType))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$..firstname").value("MOCK_F"))
+			.andExpect(jsonPath("$..lastname").value("MOCK_L"))
 			.andReturn();
 		
 		// Duplicate save to test controller advice and exception handler
-		mvc.perform(post("/rest/student/" + dto.getId() + "/save").content(toJson(dto)).contentType(contentType)).andExpect(status().isInternalServerError()).andDo(print());
+		mvc.perform(post("/rest/student/" + dto.getId() + "/create").with(csrf())
+				.content(toJson(dto)).contentType(contentType))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("responseCode", is("BAD_REQUEST")))
+				.andExpect(jsonPath("userMessage", containsString("Unique index or primary key violation")));
 		
 		dto = (StudentDTO) toObject(results.getResponse().getContentAsString(), StudentDTO.class);
 		dto.setFirstname("Updated");
 		dto.setLastname("UPDATED");
 		
-		mvc.perform(put("/rest/student/" + dto.getId() + "/update").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print())
-			.andExpect(jsonPath("$.firstname").value("Updated"))
-			.andExpect(jsonPath("$.lastname").value("UPDATED"));
+		mvc.perform(put("/rest/student/" + dto.getId() + "/update")
+				.with(csrf())
+				.content(toJson(dto)).contentType(contentType)).andExpect(status().isOk())
+				.andExpect(jsonPath("$..firstname").value("Updated"))
+				.andExpect(jsonPath("$..lastname").value("UPDATED"));
 		
-		mvc.perform(delete("/rest/student/delete").content(toJson(dto)).contentType(contentType)).andExpect(status().isOk()).andDo(print()).andReturn().getResponse();
+		mvc.perform(delete("/rest/student/" + dto.getId() + "/delete")
+				.with(csrf())
+				.content(toJson(dto)).contentType(contentType))
+				.andExpect(status().isOk());
 
 	}
 

@@ -1,11 +1,11 @@
 -- Any changes to this sql file could result in many test failing. Refer to relevent repository implementation test to modify tests in case the ddl or dml changes are necessary
 
 -- Insert to users
-INSERT INTO user_details VALUES ('USER-1', 'F_NAME', 'l_name', 'aDDress', 0, 'true', 'LOGGED_IN');
-INSERT INTO user_details VALUES ('USER-2', 'F_NAME4', 'l_name', 'aDDress', 2, 'true', 'LOGGED_OUT');
-INSERT INTO user_details VALUES ('USER-3', 'F_NAME1', 'l_name', 'aDDress', 6, 'false', 'LOGGED_OUT');
-INSERT INTO user_details VALUES ('USER-4', 'F_NAME2', 'l_name', 'aDDress', 4, 'false', 'LOGGED_OUT');
-INSERT INTO user_details VALUES ('USER-5', 'F_NAME3', 'l_name', 'aDDress', 1, 'true', 'LOGGED_OUT');
+INSERT INTO user_details (user_id, f_name, l_name, address, failed_attempts, account_non_locked, sign_on_status) VALUES ('USER-1', 'F_NAME', 'l_name', 'aDDress', 0, 'true', 'LOGGED_IN');
+INSERT INTO user_details (user_id, f_name, l_name, address, failed_attempts, account_non_locked, sign_on_status) VALUES ('USER-2', 'F_NAME4', 'l_name', 'aDDress', 2, 'true', 'LOGGED_OUT');
+INSERT INTO user_details (user_id, f_name, l_name, address, failed_attempts, account_non_locked, sign_on_status) VALUES ('USER-3', 'F_NAME1', 'l_name', 'aDDress', 6, 'false', 'LOGGED_OUT');
+INSERT INTO user_details (user_id, f_name, l_name, address, failed_attempts, account_non_locked, sign_on_status) VALUES ('USER-4', 'F_NAME2', 'l_name', 'aDDress', 4, 'false', 'LOGGED_OUT');
+INSERT INTO user_details (user_id, f_name, l_name, address, failed_attempts, account_non_locked, sign_on_status) VALUES ('USER-5', 'F_NAME3', 'l_name', 'aDDress', 1, 'true', 'LOGGED_OUT');
 
 --Insert to usrr
 INSERT INTO usrr VALUES ('USER-1', 'password1', 'true', 'N/A');
@@ -15,13 +15,13 @@ INSERT INTO usrr VALUES ('USER-4', 'password4', 'false', 'password');
 INSERT INTO usrr VALUES ('USER-5', 'password5', 'true', 'N/A');
 
 -- Insert to roles
-INSERT INTO roles VALUES ('ROLE1', 'ROLE-FULL-1', 'some description');
-INSERT INTO roles VALUES ('ROLE2', 'ROLE-FULL-1', 'some description');
-INSERT INTO roles VALUES ('ROLE3', 'ROLE-FULL-1', 'some description');
-INSERT INTO roles VALUES ('ADMIN', 'ROLE-FULL-1', 'some description');
-INSERT INTO roles VALUES ('READ_ONLY', 'ROLE-FULL-1', 'some description');
-INSERT INTO roles VALUES ('ROLE_REST_USER', 'ROLE-REST', 'rest user for tests');
-INSERT INTO roles VALUES ('ROLE_ADMIN_USER', 'ROLE-ADMIN', 'admin user for tests');
+INSERT INTO roles (role, role_full, description) VALUES ('ROLE1', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles (role, role_full, description) VALUES ('ROLE2', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles (role, role_full, description) VALUES ('ROLE3', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles (role, role_full, description) VALUES ('ADMIN', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles (role, role_full, description) VALUES ('READ_ONLY', 'ROLE-FULL-1', 'some description');
+INSERT INTO roles (role, role_full, description) VALUES ('ROLE_REST_USER', 'ROLE-REST', 'rest user for tests');
+INSERT INTO roles (role, role_full, description) VALUES ('ROLE_ADMIN_USER', 'ROLE-ADMIN', 'admin user for tests');
 
 -- Insert to user_role
 INSERT INTO user_role VALUES ('USER-1', 'ROLE1');
@@ -51,21 +51,15 @@ INSERT INTO student VALUES('studentid4','f_name4','l_name4',21,1,'address4');
 INSERT INTO student VALUES('studentid5','f_name4','l_name5',21,1,'address5');
 
 -- Insert to cost 
-INSERT INTO cost VALUES('BASIC',1000);
-INSERT INTO cost VALUES('RESEARCH',1200);
-INSERT INTO cost VALUES('PRACTICAL',1500);
-INSERT INTO cost VALUES('DISTANCE_LEARNING',800);
---INSERT INTO cost VALUES('TEST_1',100);
---INSERT INTO cost VALUES('TEST_2',300);
---INSERT INTO cost VALUES('TEST_3',1600);
---INSERT INTO cost VALUES('TEST_4',400);
---INSERT INTO cost VALUES('TEST_5',500);
-
-INSERT INTO cost VALUES('UCC1',1100);
-INSERT INTO cost VALUES('UCC2',700);
-INSERT INTO cost VALUES('UCC3',2500);
-INSERT INTO cost VALUES('UCC4',2000);
-INSERT INTO cost VALUES('UCC5',100);
+INSERT INTO cost (cost_code, amount) VALUES('BASIC',1000);
+INSERT INTO cost (cost_code, amount) VALUES('RESEARCH',1200);
+INSERT INTO cost (cost_code, amount) VALUES('PRACTICAL',1500);
+INSERT INTO cost (cost_code, amount) VALUES('DISTANCE_LEARNING',800);
+INSERT INTO cost (cost_code, amount) VALUES('UCC1',1100);
+INSERT INTO cost (cost_code, amount) VALUES('UCC2',700);
+INSERT INTO cost (cost_code, amount) VALUES('UCC3',2500);
+INSERT INTO cost (cost_code, amount) VALUES('UCC4',2000);
+INSERT INTO cost (cost_code, amount) VALUES('UCC5',100);
 
 -- Insert to subject
 INSERT INTO subject VALUES('subjectid1','name1','BASIC',1,'true');

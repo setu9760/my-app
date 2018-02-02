@@ -28,16 +28,14 @@ public abstract class Person implements Persistable {
 	protected String address;
 	
 	@Column(name = "is_active")
-	protected int isActive = 1;
+	protected int isActive;
 
-	public Person() {
-	}
-	
 	protected Person(String id, String firstname, String lastname, String address) {
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.address = address;
+		isActive = 1;
 	}
 
 	public String getId() {
@@ -89,6 +87,7 @@ public abstract class Person implements Persistable {
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + isActive;
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
 		return result;
 	}
@@ -99,7 +98,7 @@ public abstract class Person implements Persistable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Person))
+		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
 		if (address == null) {
@@ -117,6 +116,8 @@ public abstract class Person implements Persistable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (isActive != other.isActive)
+			return false;
 		if (lastname == null) {
 			if (other.lastname != null)
 				return false;
@@ -124,5 +125,4 @@ public abstract class Person implements Persistable {
 			return false;
 		return true;
 	}
-
 }

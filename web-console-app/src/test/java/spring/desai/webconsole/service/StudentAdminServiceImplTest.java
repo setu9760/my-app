@@ -43,6 +43,7 @@ import spring.desai.common.model.enums.PaymentType;
 import spring.desai.common.model.enums.ScholorshipType;
 import spring.desai.common.service.ReadOnlyService;
 import spring.desai.common.service.SchoolService;
+import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
 @ActiveProfiles(profiles = { "jdbc" })
@@ -52,8 +53,8 @@ import spring.desai.common.utils.I18N;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class StudentAdminServiceImplTest {
 
+	@Autowired private DataSource dataSource;
 	@Autowired private SchoolService schoolService;
-	
 	@Autowired private ReadOnlyService readOnlyService;
 	
 	@Value("classpath:sql/drop-ddl.sql")
@@ -62,9 +63,6 @@ public class StudentAdminServiceImplTest {
 	private Resource ddl;
 	@Value("classpath:sql/dml.sql")
 	private Resource dml;
-	
-	@Autowired
-	private DataSource dataSource;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -121,7 +119,7 @@ public class StudentAdminServiceImplTest {
 		try {
 			schoolService.saveAll(c);
 		} catch (Exception e) {
-			assertTrue(ExceptionUtils.indexOfThrowable(e, DuplicateKeyException.class) != -1);
+			assertThat(ExceptionUtils.indexOfThrowable(e, DuplicateKeyException.class), equalTo(-1));
 		}
 	}
 	
@@ -173,7 +171,7 @@ public class StudentAdminServiceImplTest {
 		try {
 			schoolService.makePayment(new Payment("PAY3", 13400d, PaymentType.CASH, s.getId(), "N/A"));
 			fail("should have failed with IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
+		} catch (ServiceException e) {
 			// Ignroe as this indicates test success
 		}
 	}

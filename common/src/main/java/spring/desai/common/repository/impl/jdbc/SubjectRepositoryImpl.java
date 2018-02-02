@@ -106,29 +106,21 @@ public class SubjectRepositoryImpl extends BaseJdbcRepository<Subject> implement
 	
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Subject s) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, s.getId());
 				ps.setString(2, s.getName());
 				ps.setString(3, String.valueOf(s.getCostCode()));
 				ps.setString(4, String.valueOf(s.isMandatory()));
-			}
 		};
 	}
 	
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Subject s) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, s.getName());
 				ps.setString(2, String.valueOf(s.getCostCode()));
 				ps.setString(3, String.valueOf(s.isMandatory()));
 				ps.setString(4, s.getId());
-			}
 		};
 	}
 	

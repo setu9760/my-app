@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -275,19 +276,22 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 	
 	protected void doDeleteByIdTest(String id){
 		int origCount = getRepo().countAll();
-		getRepo().setActiveStatusById(null, -1);
+		getRepo().delete(null);
 		int updatedCount = getRepo().countAll();
 		assertThat(updatedCount, is(equalTo(origCount)));
 		
-		getRepo().setActiveStatusById("", -1);
+		getRepo().delete("");
 		updatedCount = getRepo().countAll();
 		assertThat(updatedCount, is(equalTo(origCount)));
 		
-		getRepo().setActiveStatusById(id, -1);
+		getRepo().delete(id);
 		T p = getRepo().findById(id);
-		assertThat(p, is(nullValue()));
+		assertThat(p, is(not(nullValue())));
+		assertThat(id, is(equalTo(p.getId())));
+		System.out.println(p);
+		assertThat(-1, is(equalTo(p.getIsActive())));
 		updatedCount = getRepo().countAll();
-		assertThat(updatedCount, is(equalTo(origCount-1)));
+		assertThat(updatedCount, is(equalTo(origCount)));
 		
 	}
 	
@@ -303,7 +307,7 @@ public abstract class  AbstractRepositoryTest<T extends Persistable> {
 		
 		getRepo().deleteByName(name);
 		updatedCount = getRepo().countAll();
-		assertThat(updatedCount, is(equalTo(origCount-1)));
+		assertThat(updatedCount, is(equalTo(origCount)));
 		
 	}
 	

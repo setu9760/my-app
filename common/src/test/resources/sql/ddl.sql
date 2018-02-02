@@ -8,6 +8,7 @@ CREATE TABLE `user_details` (
   `failed_attempts` int(11) NOT NULL DEFAULT '0',
   `account_non_locked` varchar(6) NOT NULL DEFAULT 'true',
   `sign_on_status` varchar(36) NOT NULL DEFAULT 'LOGGED_OUT',
+  `is_active` int(2) NOT NULL DEFAULT 1,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -24,6 +25,7 @@ CREATE TABLE `roles` (
  `role` varchar(36) NOT NULL,
  `role_full` varchar(36) NOT NULL,
  `description` varchar(255) DEFAULT 'N/A',
+ `is_active` int(2) NOT NULL DEFAULT 1,
  PRIMARY KEY(`role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

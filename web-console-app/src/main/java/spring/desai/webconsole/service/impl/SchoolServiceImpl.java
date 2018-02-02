@@ -15,14 +15,30 @@ import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
 import spring.desai.common.model.enums.PaymentType;
+import spring.desai.common.repository.CostCodeRepository;
+import spring.desai.common.repository.PaymentRepository;
+import spring.desai.common.repository.RoleRepository;
+import spring.desai.common.repository.ScholarshipRepository;
+import spring.desai.common.repository.StudentRepository;
+import spring.desai.common.repository.StudentTotalToPayRepository;
+import spring.desai.common.repository.SubjectRepository;
+import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.service.BaseService;
 import spring.desai.common.service.SchoolService;
 import spring.desai.common.service.exception.ServiceException;
 import spring.desai.common.utils.I18N;
 
 @Transactional
-@Service("studentAdminService")
+@Service("schoolService")
 public class SchoolServiceImpl extends BaseService implements SchoolService {
+
+	public SchoolServiceImpl(StudentRepository studentRepository, SubjectRepository subjectRepository,
+			TutorRepository tutorRepository, PaymentRepository paymentRepository,
+			ScholarshipRepository scholarshipRepository, RoleRepository roleRepository,
+			CostCodeRepository costCodeRepository, StudentTotalToPayRepository studentTotalToPayRepository) {
+		super(studentRepository, subjectRepository, tutorRepository, paymentRepository, scholarshipRepository, roleRepository,
+				costCodeRepository, studentTotalToPayRepository);
+	}
 
 	public void save(Persistable p) throws ServiceException {
 		notNull(p);
@@ -80,13 +96,14 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 	 */
 	@Override
 	public void updateAll(Collection<Student> students) throws ServiceException {
+		notNull(students);
 		studentRepository.updateAll(students);
 	}
 	
 	@Override
 	public void deactivateStudent(String studentId) throws ServiceException {
 		notNull(studentId);
-		studentRepository.setActiveStatusById(studentId, -1);
+		studentRepository.delete(studentId);
 	}
 
 	@Override

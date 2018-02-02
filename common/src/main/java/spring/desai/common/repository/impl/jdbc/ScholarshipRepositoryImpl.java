@@ -33,6 +33,11 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 	}
 	
 	@Override
+	public void delete(String id) throws RepositoryDataAccessException {
+		throwUnsupportedOperationException("delete(id)", getClass().getName());
+	}
+	
+	@Override
 	protected RowMapper<Scholarship> getRowMapper() {
 		return scholarshipRowMapper;
 	}
@@ -59,10 +64,7 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 	
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Scholarship s) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, s.getId());
 				ps.setString(2, s.getExternalRef());
 				ps.setString(3, String.valueOf(s.getType()));
@@ -72,16 +74,12 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 				ps.setString(7, String.valueOf(s.isPostPay()));
 				ps.setString(8, s.getStudentId());
 				ps.setString(9, s.getAdditionalComments());
-			}
 		};
 	}
 	
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Scholarship s) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, s.getExternalRef());
 				ps.setString(2, String.valueOf(s.getType()));
 				ps.setDouble(3, s.getTotalAmount());
@@ -91,7 +89,6 @@ public class ScholarshipRepositoryImpl extends BaseJdbcRepository<Scholarship> i
 				ps.setString(7, s.getStudentId());
 				ps.setString(8, s.getAdditionalComments());
 				ps.setString(9, s.getId());
-			}
 		};
 	}
 	

@@ -28,11 +28,6 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 	}
 	
 	@Override
-	public void setActiveStatusById(String id, int status) throws RepositoryDataAccessException {
-		getJdbcTemplate().update(getStatusSetSql(getTableName(), getIdField()), new Object[]{ status, id });
-	}
-
-	@Override
 	protected RowMapper<Tutor> getRowMapper() {
 		return tutorRowMapper;
 	}
@@ -59,33 +54,25 @@ public class TutorRepositoryImpl extends BaseJdbcRepository<Tutor> implements Tu
 	
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Tutor t) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, t.getId());
 				ps.setString(2, t.getFirstname());
 				ps.setString(3, t.getLastname());
 				ps.setString(4, t.getAddress());
 				ps.setString(5, String.valueOf(t.isFulltime()));
 				ps.setString(6, t.getSubj_id());
-			}
 		};
 	}
 	
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Tutor t) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, t.getFirstname());
 				ps.setString(2, t.getLastname());
 				ps.setString(3, t.getAddress());
 				ps.setString(4, String.valueOf(t.isFulltime()));
 				ps.setString(5, t.getSubj_id());
 				ps.setString(6, t.getId());
-			}
 		};
 	}
 	

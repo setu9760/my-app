@@ -2,14 +2,10 @@ package spring.desai.common.service;
 
 import java.util.Collection;
 
-import spring.desai.common.model.Cost;
 import spring.desai.common.model.Payment;
 import spring.desai.common.model.Persistable;
-import spring.desai.common.model.Role;
 import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
-import spring.desai.common.model.Subject;
-import spring.desai.common.model.Tutor;
 import spring.desai.common.service.exception.ServiceException;
 
 public interface SchoolService {
@@ -37,6 +33,4 @@ public interface SchoolService {
 	void amendScholorship(Scholarship scholorship) throws ServiceException;
 
 	void deactivateStudent(String studentId) throws ServiceException;
-
-	
 }

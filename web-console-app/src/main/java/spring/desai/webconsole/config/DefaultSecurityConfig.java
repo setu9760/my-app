@@ -39,7 +39,7 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("rest").password("password").roles("REST_USER").and()
-				.withUser("admin123").password("password").roles("USER", "ADMIN", "ACTUATOR").and()
+				.withUser("admin123").password("password").roles("USER", "ADMIN_USER", "ACTUATOR").and()
 				.withUser("test123").password("password").roles("REST_USER").and()
 				.withUser("dis").password("password").roles("REST_USER").disabled(true);
 	}
@@ -49,10 +49,12 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter{
 		CsrfTokenResponseHeaderBindingFilter csrfTokenFilter = new CsrfTokenResponseHeaderBindingFilter();
 		http.addFilterAfter(csrfTokenFilter, CsrfFilter.class);
 
-		http.authorizeRequests().antMatchers("/rest/**").access("hasRole('ROLE_REST_USER')")
-				.and().formLogin().successHandler(new AjaxAuthenticationSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler())).failureUrl("/login?error=1").permitAll()
+		http.authorizeRequests().antMatchers("/rest/**").hasRole("REST_USER")
+				.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN_USER')")
+				.and().formLogin()
+				.successHandler(new AjaxAuthenticationSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler()))
+				.failureUrl("/login?error=1").permitAll()
 				.and().exceptionHandling().accessDeniedPage("/403")
-//				.and().httpBasic()
 				.and().csrf();
 	}
 	

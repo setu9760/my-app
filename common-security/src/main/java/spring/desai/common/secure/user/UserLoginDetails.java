@@ -233,4 +233,9 @@ public class UserLoginDetails implements Serializable, UserDetails, CredentialsC
 	public boolean isEnabled() {
 		return true;
 	}
+	
+	@Override
+	public int getIsActive() {
+		return 0;
+	}
 }

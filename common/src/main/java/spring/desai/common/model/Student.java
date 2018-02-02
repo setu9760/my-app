@@ -108,6 +108,8 @@ public class Student extends Person {
 		builder.append(address);
 		builder.append(", age= ");
 		builder.append(age);
+		builder.append(", isActive= ");
+		builder.append(isActive);
 		builder.append(", subjects= ");
 		builder.append(subjects);
 		builder.append(", payments= ");

@@ -27,7 +27,7 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 
 	@Test
 	public void testSave() {
-		doSaveTest(new Cost("UC19", 1200d));
+		doSaveTest(new Cost("UC9", 1200d));
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 	@Test
 //	(expected=UnsupportedOperationException.class)
 	public void testGetAll() {
-		doGetAllTest(9);
+		doGetAllTest(10);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class CostCodeRepositoryImplTest extends AbstractRepositoryTest<Cost> {
 
 	@Test
 	public void testFindByName() {
-		doFindByNameTest("UCC1", 1, 9);
+		doFindByNameTest("UCC1", 2, 10);
 	}
 
 	@Test

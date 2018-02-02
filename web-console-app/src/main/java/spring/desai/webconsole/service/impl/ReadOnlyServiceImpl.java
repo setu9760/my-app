@@ -14,6 +14,14 @@ import spring.desai.common.model.Scholarship;
 import spring.desai.common.model.Student;
 import spring.desai.common.model.Subject;
 import spring.desai.common.model.Tutor;
+import spring.desai.common.repository.CostCodeRepository;
+import spring.desai.common.repository.PaymentRepository;
+import spring.desai.common.repository.RoleRepository;
+import spring.desai.common.repository.ScholarshipRepository;
+import spring.desai.common.repository.StudentRepository;
+import spring.desai.common.repository.StudentTotalToPayRepository;
+import spring.desai.common.repository.SubjectRepository;
+import spring.desai.common.repository.TutorRepository;
 import spring.desai.common.service.BaseService;
 import spring.desai.common.service.ReadOnlyService;
 import spring.desai.common.service.exception.ServiceException;
@@ -21,6 +29,14 @@ import spring.desai.common.service.exception.ServiceException;
 @Transactional(readOnly = true)
 @Service(value = "readOnlyService")
 public class ReadOnlyServiceImpl extends BaseService implements ReadOnlyService {
+
+	public ReadOnlyServiceImpl(StudentRepository studentRepository, SubjectRepository subjectRepository,
+			TutorRepository tutorRepository, PaymentRepository paymentRepository,
+			ScholarshipRepository scholarshipRepository, RoleRepository roleRepository,
+			CostCodeRepository costCodeRepository, StudentTotalToPayRepository studentTotalToPayRepository) {
+		super(studentRepository, subjectRepository, tutorRepository, paymentRepository, scholarshipRepository, roleRepository,
+				costCodeRepository, studentTotalToPayRepository);
+	}
 
 	@Override
 	public Persistable getEntityById(String entityType, String id) throws ServiceException {

@@ -52,25 +52,17 @@ public class CostCodeRepositoryImpl extends BaseJdbcRepository<Cost> implements 
 	
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Cost c) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, c.getId());
 				ps.setDouble(2, c.getAmount());
-			}
 		};
 	}
 	
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Cost c) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setDouble(1, c.getAmount());
 				ps.setString(2, c.getId());
-			}
 		};
 	}
 	

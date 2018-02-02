@@ -22,10 +22,6 @@ public class Tutor extends Person {
 	@Column(name = IS_FULLTIME)
 	private boolean isFulltime;
 	
-	public Tutor() {
-		this(null, null, null, null, null, false);
-	}
-	
 	public Tutor(String firstname, String lastname, String subj_id) {
 		this(firstname, lastname, subj_id, "", true);
 	}
@@ -71,6 +67,8 @@ public class Tutor extends Person {
 		builder.append(subjectId);
 		builder.append(", isFulltime=");
 		builder.append(isFulltime);
+		builder.append(", isActive=");
+		builder.append(isActive);
 		builder.append(']');
 		return builder.toString();
 	}

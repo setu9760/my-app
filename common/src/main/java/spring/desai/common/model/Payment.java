@@ -46,10 +46,6 @@ public class Payment implements Persistable {
 	@Column(name = ADDITIONAL_COMMENTS, nullable = true)
 	private String comments;
 
-	public Payment() {
-		this(null, 0, null, null, null);
-	}
-	
 	public Payment(String id, double amount, PaymentType paymentType) {
 		this(id, amount, paymentType, null);
 	}
@@ -118,6 +114,11 @@ public class Payment implements Persistable {
 	
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+	
+	@Override
+	public int getIsActive() {
+		return 0;
 	}
 
 	@Override

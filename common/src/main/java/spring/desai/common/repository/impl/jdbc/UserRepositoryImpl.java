@@ -31,7 +31,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 	
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO user_details VALUES (?, ?, ?, ?, ?, ?, ?)";
+		return "INSERT INTO user_details (user_id, f_name, l_name, address, failed_attempts, account_non_locked, sign_on_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	@Override
@@ -61,10 +61,7 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final User u) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, u.getId());
 				ps.setString(2, u.getFirstname());
 				ps.setString(3, u.getLastname());
@@ -72,24 +69,16 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setInt(5, u.getFailedAttempts());
 				ps.setString(6, String.valueOf(u.isAccountNonLocked()));
 				ps.setString(7, String.valueOf(u.getSignOnStatus()));
-			}
 		};
 	}
 
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final User u) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, u.getFirstname());
 				ps.setString(2, u.getLastname());
 				ps.setString(3, u.getAddress());
-//				ps.setInt(4, u.getFailed_attempts());
-//				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
-//				ps.setString(6, String.valueOf(u.getSignOnStatus()));
 				ps.setString(4, u.getId());
-			}
 		};
 	}
 
@@ -127,9 +116,6 @@ public class UserRepositoryImpl extends BaseJdbcRepository<User> implements User
 				ps.setString(1, u.getFirstname());
 				ps.setString(2, u.getLastname());
 				ps.setString(3, u.getAddress());
-//				ps.setInt(4, u.getFailed_attempts());
-//				ps.setString(5, String.valueOf(u.isAccountNonLocked()));
-//				ps.setString(6, String.valueOf(u.getSignOnStatus()));
 				ps.setString(4, u.getId());
 			}
 			

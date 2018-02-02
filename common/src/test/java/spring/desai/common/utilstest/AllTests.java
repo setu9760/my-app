@@ -93,7 +93,7 @@ public class AllTests {
 		 System.out.println(sbr.getSubjectsForStudentId("studentid5"));
 		 
 		 StudentRepository str = context.getBean(StudentRepository.class);
-		 str.setActiveStatusById("studentid1", -1);
+		 str.delete("studentid1");
 		 
 		 System.out.println(str.getStudentsForSubjectId("subject5"));
 		 

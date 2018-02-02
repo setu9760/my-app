@@ -4,6 +4,7 @@ import static spring.desai.common.utils.DataBaseConstants.ACCOUNT_NON_LOCKED;
 import static spring.desai.common.utils.DataBaseConstants.ADDRESS;
 import static spring.desai.common.utils.DataBaseConstants.FAILED_ATTEMPTS;
 import static spring.desai.common.utils.DataBaseConstants.F_NAME;
+import static spring.desai.common.utils.DataBaseConstants.IS_ACTIVE;
 import static spring.desai.common.utils.DataBaseConstants.L_NAME;
 import static spring.desai.common.utils.DataBaseConstants.USER_ID;
 
@@ -22,8 +23,10 @@ public class UserRowMapper implements RowMapper<User> {
 
 	@Override
 	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new User(rs.getString(USER_ID), rs.getString(F_NAME), rs.getString(L_NAME), rs.getString(ADDRESS), rs.getInt(FAILED_ATTEMPTS),	
+		User u = new User(rs.getString(USER_ID), rs.getString(F_NAME), rs.getString(L_NAME), rs.getString(ADDRESS), rs.getInt(FAILED_ATTEMPTS),	
 				Boolean.valueOf(rs.getString(ACCOUNT_NON_LOCKED)), SIGN_ON_STATUS.valueOf(rs.getString(DataBaseConstants.SIGN_ON_STATUS)));
+		u.setIsActive(rs.getInt(IS_ACTIVE));
+		return u;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import spring.desai.common.service.AdminUserMaintananceService;
 import spring.desai.common.service.exception.ServiceException;
 
+@SuppressWarnings("unused")
 public class RmiClient {
 //
 //	static StudentDao studentDao;
@@ -21,6 +22,8 @@ public class RmiClient {
 			System.out.println(aums.isExistingUser("USEr-1"));
 		} catch (ServiceException e) {
 			e.printStackTrace();
+		} finally {
+			((AnnotationConfigApplicationContext)context).close();
 		}
 //
 //		studentDao = (StudentDao) context.getBean("studentService");
@@ -50,6 +53,7 @@ public class RmiClient {
 
 	}
 
+	
 	private static void showMainMenu() {
 		System.out.println("!!!!! Please select on of the following option !!!!!");
 		System.out.println("1: Student");

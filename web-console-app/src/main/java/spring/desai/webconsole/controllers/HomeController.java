@@ -1,9 +1,16 @@
 package spring.desai.webconsole.controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +25,32 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/")
 public class HomeController extends BaseController {
 
+	public HomeController() {
+		essentialLoggers.add("org.springframework");
+		essentialLoggers.add("org.springframework.aop");
+		essentialLoggers.add("org.springframework.beans");
+		essentialLoggers.add("org.springframework.boot");
+		essentialLoggers.add("org.springframework.core");
+		essentialLoggers.add("org.springframework.context");
+		essentialLoggers.add("org.springframework.jdbc.core");
+		essentialLoggers.add("org.springframework.security");
+		essentialLoggers.add("org.springframework.web");
+		essentialLoggers.add("org.apache.commons.dbcp2");
+		essentialLoggers.add("org.hibernate");
+		essentialLoggers.add("jdbcdaoLog");
+		essentialLoggers.add("org.hibernate");
+		Enumeration<?> loggers = LogManager.getCurrentLoggers();
+		
+		Logger rootLogger = LogManager.getRootLogger();
+		loggersMap.put(rootLogger.getName(), rootLogger);
+		while (loggers.hasMoreElements()) {
+			Logger logger = (Logger) loggers.nextElement();
+			for (String s : essentialLoggers) 
+				if (logger.getName().startsWith(s))
+					loggersMap.put(logger.getName(), logger);
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
 		model.addAttribute("serverTime", getformattedDate());
@@ -25,9 +58,9 @@ public class HomeController extends BaseController {
 		logger.info("returning home");
 		return "home";
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value= "login")
-	public String login(HttpServletRequest request, HttpServletResponse response){
+
+	@RequestMapping(method = RequestMethod.GET, value = "login")
+	public String login(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("returning login form");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -35,98 +68,44 @@ public class HomeController extends BaseController {
 		}
 		return "login";
 	}
-	
-	@RequestMapping(value = "log4jAdmin", method = {RequestMethod.GET, RequestMethod.POST})
-	public String log4jAdmin(Model model, HttpServletRequest request, HttpServletResponse response){
-		model.addAllAttributes(request.getParameterMap());
+
+	@RequestMapping(value = "log4jAdmin", method = { RequestMethod.GET, RequestMethod.POST })
+	public String log4jAdmin(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String logger = request.getParameter("loggerName");
+		String level = request.getParameter("changeLevelTo");
+		if (null != logger && null != level)
+			changeLevel(logger, level);
+		model.addAttribute("loggerList", getListOfLoggers());
 		return "log4jAdmin";
 	}
 
-//	@RequestMapping(value = "/reloadLog4J", method = RequestMethod.GET)
-//	public String reloadlog4J(Model model) {
-//		logger.info("Reloading Log4J prop file");
-//		try {
-//			String path = "C:\\log4j.properties";
-//			PropertyConfigurator.configure(path);
-//			model.addAttribute("message", "Successfully reloaded log4j");
-//			logger.info("reloaded successfully");
-//		} catch (Exception e) {
-//			model.addAttribute("message",
-//					"failed to reload log4j properties see error log");
-//			logger.error("log4j reloading failed", e);
-//		}
-//		return "result";
-//	}
-//
-//	@RequestMapping(value = "/student", method = RequestMethod.GET)
-//	public String studentHome(Model model) {
-//
-//		String formattedDate = LocalDateTime.now().toString(
-//				"dd-MMMM-yyyy  kk-mm-ss  zzz");
-//		model.addAttribute("serverTime", formattedDate);
-//		model.addAttribute("title", "student");
-//		logger.info("student handler");
-//		return "main";
-//	}
-//
-//	@RequestMapping(value = "/subject", method = RequestMethod.GET)
-//	public String subjectHome(Model model) {
-//
-//		model.addAttribute("serverTime", getformattedDate());
-//		model.addAttribute("title", "subject");
-//		logger.info("subject handler");
-//		return "main";
-//	}
-//
-//	@RequestMapping(value = "/tutor", method = RequestMethod.GET)
-//	public String tutorHome(Model model) {
-//
-//		model.addAttribute("serverTime", getformattedDate());
-//		model.addAttribute("title", "tutor");
-//		logger.info("tutor handler");
-//		return "main";
-//	}
-//
-//	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
-//	public ModelAndView defaultPage() {
-//
-//		ModelAndView model = new ModelAndView();
-//		model.addObject("title", "Spring Security Login Form - Database Authentication");
-//		model.addObject("message", "This is default page!");
-//		model.setViewName("hello");
-//		return model;
-//
-//	}
-//
-//	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
-//	public ModelAndView adminPage() {
-//
-//		ModelAndView model = new ModelAndView();
-//		model.addObject("title", "Spring Security Login Form - Database Authentication");
-//		model.addObject("message", "This page is for ROLE_ADMIN only!");
-//		model.setViewName("admin");
-//		return model;
-//
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.GET)
-//	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-//			@RequestParam(value = "logout", required = false) String logout) {
-//
-//		ModelAndView model = new ModelAndView();
-//		if (error != null) {
-//			model.addObject("error", "Invalid username and password!");
-//		}
-//
-//		if (logout != null) {
-//			model.addObject("msg", "You've been logged out successfully.");
-//		}
-//		model.setViewName("login");
-//
-//		return model;
-//
-//	}
-//
+	private void changeLevel(String logger, String level) {
+		Logger l = LogManager.getLogger(logger);
+		if (l != null)
+			System.out.println(String.format("changing logging for %s from %s to %s", logger, String.valueOf(l.getEffectiveLevel()), level));
+		else 
+			System.err.println(String.format("supplied logger name %s didn't match with any loggers", logger));
+	}
+
+	List<String> essentialLoggers = new ArrayList<>();
+	HashMap<String, Logger> loggersMap = new HashMap<>();
+	
+	private List<LoggerDTO> getListOfLoggers() {
+		List<LoggerDTO> list = new ArrayList<>();
+		for (String s : loggersMap.keySet()) {
+			Logger logger = (Logger) loggersMap.get(s);
+			if (logger != null) {
+				LoggerDTO l = new LoggerDTO(logger.getName(),
+						null != logger.getParent() ? logger.getParent().getName() : null,
+						String.valueOf(logger.getEffectiveLevel()));
+				list.add(l);
+
+			}
+		}
+		Collections.sort(list);
+		return list;
+	}
+
 	// for 403 access denied page
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
 	public ModelAndView accesssDenied() {
@@ -144,9 +123,4 @@ public class HomeController extends BaseController {
 		return model;
 
 	}
-//
-//	@Override
-//	void initBinder(WebDataBinder binder) {
-//		// NO-OP
-//	}
 }

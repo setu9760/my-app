@@ -7,8 +7,6 @@ import static spring.desai.common.utils.DataBaseConstants.ROLE_FULL;
 import static spring.desai.common.utils.DataBaseConstants.USER_ID;
 import static spring.desai.common.utils.DataBaseConstants.USER_ROLE_TABLE;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Collection;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -74,7 +72,7 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 
 	@Override
 	protected String getInsertSql() {
-		return "INSERT INTO " + ROLES_TABLE + " VALUES (?, ?, ?)";
+		return "INSERT INTO " + ROLES_TABLE + " (" + ROLE + "," + ROLE_FULL + "," + DESCRIPTION + ") VALUES (?, ?, ?)";
 	}
 
 	@Override
@@ -116,27 +114,19 @@ public class RoleRepositoryImpl extends BaseJdbcRepository<Role> implements Role
 	
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Role r) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, r.getId());
 				ps.setString(2, r.getRoleFull());
 				ps.setString(3, r.getDescription());
-			}
 		};
 	}
 
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Role r) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, r.getRoleFull());
 				ps.setString(2, r.getDescription());
 				ps.setString(3, r.getId());
-			}
 		};
 	}
 

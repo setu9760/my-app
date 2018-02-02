@@ -13,15 +13,15 @@ public class User extends Person {
 		LOGGED_OUT
 	}
 	
+	public User(String user_id, String firstname, String lastname, String address) {
+		this(user_id, firstname, lastname, address, 0, true, SIGN_ON_STATUS.LOGGED_OUT);
+	}
+	
 	public User(String id, String firstname, String lastname, String address, int failedAttempts, boolean isAccountNonLocked, SIGN_ON_STATUS signOnStatus) {
 		super(id, firstname, lastname, address);
 		this.failedAttempts = failedAttempts;
 		this.isAccountNonLocked = isAccountNonLocked;
 		this.signOnStatus = signOnStatus;
-	}
-	
-	public User(String user_id, String firstname, String lastname, String address) {
-		this(user_id, firstname, lastname, address, 0, true, SIGN_ON_STATUS.LOGGED_OUT);
 	}
 	
 	public int getFailedAttempts() {
@@ -65,6 +65,8 @@ public class User extends Person {
 		builder.append(lastname);
 		builder.append(", address=");
 		builder.append(address);
+		builder.append(", isActive=");
+		builder.append(isActive);
 		builder.append(']');
 		return builder.toString();
 	}

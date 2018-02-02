@@ -56,9 +56,6 @@ public class Scholarship implements Persistable{
 	@Column(name = ADDITIONAL_COMMENTS)
 	private String additionalComments;
 
-	public Scholarship() {
-	}
-	
 	public Scholarship(String id, ScholorshipType type, double totalAmount) {
 		this.id = id;
 		this.type = type;
@@ -156,6 +153,11 @@ public class Scholarship implements Persistable{
 
 	public void setAdditionalComments(String additionalComments) {
 		this.additionalComments = additionalComments;
+	}
+	
+	@Override
+	public int getIsActive() {
+		return 0;
 	}
 
 	@Override

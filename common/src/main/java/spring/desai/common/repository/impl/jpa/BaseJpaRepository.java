@@ -44,7 +44,7 @@ public abstract class BaseJpaRepository<T extends Persistable> extends AbstractB
 	}
 	
 	@Override
-	public void setActiveStatusById(String id, int status) throws RepositoryDataAccessException {
+	public void delete(String id) throws RepositoryDataAccessException {
 		// TODO Auto-generated method stub
 		
 	}

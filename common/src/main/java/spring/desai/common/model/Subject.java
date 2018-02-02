@@ -32,8 +32,7 @@ public class Subject implements Persistable {
 	@Column(name = IS_MANDATORY)
 	private boolean isMandatory;
 
-	public Subject() {
-	}
+	private int isActive;
 	
 	public Subject(String name, String costCode) {
 		this(null, name, costCode, true);
@@ -48,6 +47,7 @@ public class Subject implements Persistable {
 		this.name = name;
 		this.costCode = costCode;
 		this.isMandatory = isMandatory;
+		isActive = 1;
 	}
 
 	public String getId() {
@@ -81,6 +81,14 @@ public class Subject implements Persistable {
 	public void setMandatory(boolean isMandatory) {
 		this.isMandatory = isMandatory;
 	}
+	
+	public int getIsActive() {
+		return isActive;
+	}
+	
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}
 
 	@Override
 	public int hashCode() {
@@ -88,6 +96,7 @@ public class Subject implements Persistable {
 		int result = 1;
 		result = prime * result + ((costCode == null) ? 0 : costCode.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + isActive;
 		result = prime * result + (isMandatory ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -99,15 +108,20 @@ public class Subject implements Persistable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Subject))
+		if (getClass() != obj.getClass())
 			return false;
 		Subject other = (Subject) obj;
-		if (!costCode.equals(other.costCode))
+		if (costCode == null) {
+			if (other.costCode != null)
+				return false;
+		} else if (!costCode.equals(other.costCode))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (isActive != other.isActive)
 			return false;
 		if (isMandatory != other.isMandatory)
 			return false;
@@ -122,15 +136,17 @@ public class Subject implements Persistable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Subject [id= ");
+		builder.append("Subject [id=");
 		builder.append(id);
-		builder.append(", name= ");
+		builder.append(", name=");
 		builder.append(name);
-		builder.append(", costCode= ");
+		builder.append(", costCode=");
 		builder.append(costCode);
-		builder.append(", isMandatory= ");
+		builder.append(", isMandatory=");
 		builder.append(isMandatory);
-		builder.append(']');
+		builder.append(", isActive=");
+		builder.append(isActive);
+		builder.append("]");
 		return builder.toString();
 	}
 }

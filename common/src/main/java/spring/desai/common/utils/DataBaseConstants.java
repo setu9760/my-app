@@ -56,4 +56,6 @@ public class DataBaseConstants {
 	public static final String SCHLRSHP_ID = "schlrshp_id";
 
 	public static final String TOTAL_TO_PAY = "total_to_pay";
+	
+	public static final String IS_ACTIVE = "is_active";
 }

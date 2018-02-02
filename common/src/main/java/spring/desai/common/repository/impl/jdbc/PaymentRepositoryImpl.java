@@ -43,6 +43,11 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 				new Object[] { studId }, Double.class);
 		return totalPaid != null ? totalPaid : 0d;
 	}
+	
+	@Override
+	public void delete(String id) throws RepositoryDataAccessException {
+		throwUnsupportedOperationException("delete(id)", getClass().getName());
+	}
 
 	@Override
 	protected RowMapper<Payment> getRowMapper() {
@@ -71,31 +76,23 @@ public class PaymentRepositoryImpl extends BaseJdbcRepository<Payment> implement
 
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Payment p) {
-		return new PreparedStatementSetter() {
-
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, p.getId());
 				ps.setDouble(2, p.getAmount());
 				ps.setString(3, String.valueOf(p.getPaymentType()));
 				ps.setString(4, p.getStudentId());
 				ps.setString(5, p.getComments());
-			}
 		};
 	}
 
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Payment p) {
-		return new PreparedStatementSetter() {
-
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setDouble(1, p.getAmount());
 				ps.setString(2, String.valueOf(p.getPaymentType()));
 				ps.setString(3, p.getStudentId());
 				ps.setString(4, p.getComments());
 				ps.setString(5, p.getId());
-			}
 		};
 	}
 

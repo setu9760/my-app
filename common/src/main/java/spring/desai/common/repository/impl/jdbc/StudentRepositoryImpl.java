@@ -30,18 +30,13 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 	
 	@Override
 	public Collection<Student> getStudentsForSubjectId(String subj_id) throws RepositoryDataAccessException {
-		List<String> stud_ids = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
-		if (stud_ids == null || stud_ids.isEmpty()) {
+		List<String> studentIds = getJdbcTemplate().queryForList(getFieldFindBySql(SUBJECT_STUDENT_LINK_TABLE_NAME, SUBJ_ID, STUD_ID), new Object[] { subj_id }, String.class);
+		if (studentIds == null || studentIds.isEmpty()) {
 			return new ArrayList<>();
 		}
-		return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, stud_ids.size()), stud_ids.toArray(), getRowMapper());
+		return getJdbcTemplate().query(getFindBySqlWhereIn(STUDENT_TABLE_NAME, ID, studentIds.size()), studentIds.toArray(), getRowMapper());
 	}
 	
-	@Override
-	public void setActiveStatusById(String id, int status) throws RepositoryDataAccessException {
-		getJdbcTemplate().update(getStatusSetSql(getTableName(), getIdField()), new Object[]{ status, id });
-	}
-
 	@Override
 	protected RowMapper<Student> getRowMapper() {
 		return studentRowMapper;
@@ -69,31 +64,24 @@ public class StudentRepositoryImpl extends BaseJdbcRepository<Student> implement
 
 	@Override
 	protected PreparedStatementSetter getInsertPreparedStatementSetter(final Student s) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, s.getId());
 				ps.setString(2, s.getFirstname());
 				ps.setString(3, s.getLastname());
 				ps.setInt(4, s.getAge());
 				ps.setString(5, s.getAddress());
-			}
+			
 		};
 	}
 	
 	@Override
 	protected PreparedStatementSetter getUpdatePreparedStatementSetter(final Student s) {
-		return new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
+		return ps -> {
 				ps.setString(1, s.getFirstname());
 				ps.setString(2, s.getLastname());
 				ps.setInt(3, s.getAge());
 				ps.setString(4, s.getAddress());
 				ps.setString(5, s.getId());
-			}
 		};
 	}
 	

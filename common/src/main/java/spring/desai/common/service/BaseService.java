@@ -2,7 +2,6 @@ package spring.desai.common.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 
 import spring.desai.common.repository.CostCodeRepository;
@@ -17,39 +16,33 @@ import spring.desai.common.utils.I18N;
 
 public abstract class BaseService {
 
-	@Autowired
-	@Qualifier("studentRepository")
 	protected StudentRepository studentRepository;
-
-	@Autowired
-	@Qualifier("subjectRepository")
 	protected SubjectRepository subjectRepository;
-
-	@Autowired
-	@Qualifier("tutorRepository")
 	protected TutorRepository tutorRepository;
-	
-	@Autowired
-	@Qualifier("paymentRepository")
 	protected PaymentRepository paymentRepository;
-	
-	@Autowired
-	@Qualifier("scholarshipRepository")
 	protected ScholarshipRepository scholarshipRepository;
-	
-	@Autowired
-	@Qualifier("roleRepository")
 	protected RoleRepository roleRepository;
-	
-	@Autowired
-	@Qualifier("costCodeRepository")
 	protected CostCodeRepository costCodeRepository;
-	
-	@Autowired
 	protected StudentTotalToPayRepository studentTotalToPayRepository;
 	
 	protected final Logger log = Logger.getLogger(getClass());
 	
+	@Autowired
+	public BaseService(StudentRepository studentRepository, SubjectRepository subjectRepository,
+			TutorRepository tutorRepository, PaymentRepository paymentRepository,
+			ScholarshipRepository scholarshipRepository, RoleRepository roleRepository,
+			CostCodeRepository costCodeRepository, StudentTotalToPayRepository studentTotalToPayRepository) {
+		super();
+		this.studentRepository = studentRepository;
+		this.subjectRepository = subjectRepository;
+		this.tutorRepository = tutorRepository;
+		this.paymentRepository = paymentRepository;
+		this.scholarshipRepository = scholarshipRepository;
+		this.roleRepository = roleRepository;
+		this.costCodeRepository = costCodeRepository;
+		this.studentTotalToPayRepository = studentTotalToPayRepository;
+	}
+
 	protected void notNull(Object  o) {
 		Assert.notNull(o, I18N.getString("error.null.object"));
 	}

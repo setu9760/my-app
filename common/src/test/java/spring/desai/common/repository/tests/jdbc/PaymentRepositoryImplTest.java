@@ -113,7 +113,7 @@ public class PaymentRepositoryImplTest extends AbstractRepositoryTest<Payment> {
 		assertThat(c.size(), is(equalTo(2)));
 	}
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteById() {
 		paymentRepository.save(new Payment("ID_TO_DELETE", 300d, PaymentType.DD, "studentid4"));
 		doDeleteByIdTest("ID_TO_DELETE");

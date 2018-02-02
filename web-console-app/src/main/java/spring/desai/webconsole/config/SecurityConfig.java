@@ -82,7 +82,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().logout().invalidateHttpSession(true).addLogoutHandler(logoutSuccessHandler).permitAll()
 			.and().exceptionHandling().accessDeniedPage("/403")
 			.and().csrf()
-//			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 			.and().sessionManagement().maximumSessions(1).expiredUrl("/login?logout");
 	}
 	

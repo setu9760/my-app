@@ -31,10 +31,9 @@ import spring.desai.common.service.SchoolService;
 @RequestMapping(value = "/rest", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class RestController {
 
-	@Autowired
-	private ReadOnlyService readOnlyService;
-	@Autowired
-	private SchoolService schoolService;
+	@Autowired private ReadOnlyService readOnlyService;
+	@Autowired private SchoolService schoolService;
+	
 	private DTOFactory dtoFactory = DTOFactory.getInstance();
 
 	@GetMapping

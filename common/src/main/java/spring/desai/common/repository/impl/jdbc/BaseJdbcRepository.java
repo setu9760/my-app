@@ -110,9 +110,7 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		getJdbcTemplate().batchUpdate(getUpdateSql(), getUpdateBatchPreparedStatementSetter(persistables));
 	}
 	
-//	@Deprecated
 	public Collection<T> getAll() throws RepositoryDataAccessException {
-//		throwUnsupportedOperationException("getAll()", this.getClass().getName());
 		return getJdbcTemplate().query(getSelectAllSql(getTableName()), getRowMapper());
 	}
 
@@ -125,15 +123,16 @@ public abstract class BaseJdbcRepository<T extends Persistable> extends Abstract
 		return getJdbcTemplate().query(getFindBySql(getTableName(), getNameField()), new Object[] { "%" + name + "%" }, getRowMapper());
 	}
 	
-	public void setActiveStatusById(String id, int status) throws RepositoryDataAccessException {
-		throwUnsupportedOperationException("setActiveStatusById(id, status)", this.getClass().getName());
+	public void delete(String id) throws RepositoryDataAccessException {
+//		throwUnsupportedOperationException("setActiveStatusById(id, status)", this.getClass().getName());
+		getJdbcTemplate().update(getStatusSetSql(getTableName(), getIdField()), new Object[] { -1, id });
 	}
 	
 	public void deleteByName(String name) throws RepositoryDataAccessException {
 		if (!isDeleteByNameOpSupported()) {
 			throwUnsupportedOperationException("deleteByName()", this.getClass().getName());
 		}
-		getJdbcTemplate().update(getStatusSetSql(getTableName(), getNameField()), new Object[] { name });
+		getJdbcTemplate().update(getStatusSetSql(getTableName(), getNameField()), new Object[] { -1, name });
 	}
 	
 	public void deleteAll() throws RepositoryDataAccessException {

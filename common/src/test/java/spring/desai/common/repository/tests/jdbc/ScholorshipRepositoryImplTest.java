@@ -102,7 +102,7 @@ public class ScholorshipRepositoryImplTest extends AbstractRepositoryTest<Schola
 	}
 
 
-	@Test
+	@Test(expected=UnsupportedOperationException.class)
 	public void testDeleteById() {
 		scholorshipRepository.save(new Scholarship("ID-TO-DELETE", "CCHD232", ScholorshipType.NATIONAL_PART, 1400, 300, false, false, null, "studentid1"));
 		doDeleteByIdTest("ID-TO-DELETE");

@@ -6,4 +6,5 @@ public interface Persistable extends Serializable {
 
 	public String getId();
 	
+	public int getIsActive();
 }

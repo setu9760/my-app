@@ -1,6 +1,7 @@
 package spring.desai.common.rowmappers;
 
 import static spring.desai.common.utils.DataBaseConstants.DESCRIPTION;
+import static spring.desai.common.utils.DataBaseConstants.IS_ACTIVE;
 import static spring.desai.common.utils.DataBaseConstants.ROLE;
 import static spring.desai.common.utils.DataBaseConstants.ROLE_FULL;
 
@@ -17,7 +18,9 @@ public class RolesRowMapper implements RowMapper<Role> {
 
 	@Override
 	public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new Role(rs.getString(ROLE), rs.getString(ROLE_FULL), rs.getString(DESCRIPTION));
+		Role r = new Role(rs.getString(ROLE), rs.getString(ROLE_FULL), rs.getString(DESCRIPTION));
+		r.setIsActive(rs.getInt(IS_ACTIVE));
+		return r;
 	}
 
 }

@@ -11,7 +11,7 @@
 
 	<context:annotation-config />
 
-	<bean id="studentAdminService" class="spring.desai.webconsole.service.impl.SchoolServiceImpl" />
+	<bean id="schoolService" class="spring.desai.webconsole.service.impl.SchoolServiceImpl" />
 	
 	<bean id="readOnlyService" class="spring.desai.webconsole.service.impl.ReadOnlyServiceImpl" />
 	
